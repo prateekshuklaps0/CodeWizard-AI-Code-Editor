@@ -14,8 +14,18 @@
   top: 0;
   z-index: -1;
 
-  background-color: #0d47a1;
-  background-image: url("");
+  /* background-color: #0d47a1;
+  background-color: #31304d;
+  background-color: #b6bbc4;
+  background-color: #cdb4db;
+  background-color: #ffc8dd;
+  background-color: #bde0fe;
+  background-color: #1d3557;
+  background-color: #a2d2ff;
+  background-color: #ffafcc;
+  background-color: #7b66ff; */
+
+  background-image: url("https://i.ibb.co/582TKQH/wallpaperflare-com-wallpaper-3.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 50% 50%;

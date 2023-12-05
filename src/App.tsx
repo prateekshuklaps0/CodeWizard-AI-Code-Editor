@@ -15,8 +15,9 @@ function App() {
     await loadFull(engine);
   }, []);
 
+  // bg="bgA"
   return (
-    <Box>
+    <Box color="greyA" minH="100dvh">
       <Particles
         options={ParticleOptions as ParticleOptionsType}
         init={ParticleInit}

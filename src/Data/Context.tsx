@@ -14,5 +14,3 @@ const ContextProvider = ({ children }: any) => {
 };
 
 export default ContextProvider;
-
-export const useMyContext = useContext(Context);
