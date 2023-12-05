@@ -1,0 +1,154 @@
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Particle Css */
+#tsparticles {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  top: 0;
+  z-index: -1;
+
+  background-color: #0d47a1;
+  background-image: url("");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+/* Scroll Bar Css */
+/* For Firefox */
+/* width */
+::-moz-scrollbar {
+  width: 7.5px;
+}
+/* track */
+::-moz-scrollbar-track {
+  background: #120059ea;
+  border-radius: 50px;
+}
+/* handle */
+::-moz-scrollbar-thumb {
+  background: orange;
+  border-radius: 50px;
+}
+/* For Chrome, Safari, and Opera */
+/* width */
+::-webkit-scrollbar {
+  width: 7.5px;
+}
+/* track */
+::-webkit-scrollbar-track {
+  background: #120059ea;
+  border-radius: 50px;
+}
+/* handle */
+::-webkit-scrollbar-thumb {
+  background: orange;
+  border-radius: 50px;
+}
+
+@media (max-width: 768px) {
+  ::-moz-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+}
+@media (max-width: 480px) {
+  ::-moz-scrollbar {
+    width: 2px;
+  }
+  ::-webkit-scrollbar {
+    width: 2px;
+  }
+}
+
+/* NavBar border animation */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 90deg;
+  inherits: true;
+}
+@property --gradX {
+  syntax: "<percentage>";
+  initial-value: 50%;
+  inherits: true;
+}
+@property --gradY {
+  syntax: "<percentage>";
+  initial-value: 0%;
+  inherits: true;
+}
+:root {
+  --d: 2500ms;
+  --angle: 90deg;
+  --gradX: 100%;
+  --gradY: 50%;
+  --c1: orange;
+  --c2: #120059aa;
+}
+.navAnim {
+  position: absolute;
+  z-index: 1;
+  border: 2px solid;
+  height: 35px;
+  border-image: conic-gradient(
+      from var(--angle),
+      var(--c2),
+      var(--c1) 0.1turn,
+      var(--c1) 0.35turn,
+      var(--c2) 0.35turn
+    )
+    8;
+  animation: borderRotate var(--d) linear infinite forwards;
+
+  @media screen and (max-width: 992px) {
+    border: 2px solid;
+    position: absolute;
+    z-index: 1;
+    height: 32px;
+    border-image: conic-gradient(
+        from var(--angle),
+        var(--c2),
+        var(--c1) 0.1turn,
+        var(--c1) 0.35turn,
+        var(--c2) 0.35turn
+      )
+      8;
+    animation: borderRotate var(--d) linear infinite forwards;
+  }
+}
+@keyframes borderRotate {
+  100% {
+    --angle: 420deg;
+  }
+}
+@keyframes borderRadial {
+  20% {
+    --gradX: 100%;
+    --gradY: 50%;
+  }
+  40% {
+    --gradX: 100%;
+    --gradY: 100%;
+  }
+  60% {
+    --gradX: 50%;
+    --gradY: 100%;
+  }
+  80% {
+    --gradX: 0%;
+    --gradY: 50%;
+  }
+  100% {
+    --gradX: 50%;
+    --gradY: 0%;
+  }
+}
