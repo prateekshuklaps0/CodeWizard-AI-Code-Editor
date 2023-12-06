@@ -1,23 +1,26 @@
-# ProTask
+# CodeWizard
 
-Link : <a href="https://pro-task-gold.vercel.app">https://pro-task-gold.vercel.app</a>
+Link : <a href="https://codewizard-khaki.vercel.app">https://codewizard-khaki.vercel.app</a>
 
-## What is ProTask about?
+## What is CodeWizard about?
 
-ProTask is designed to empower efficient task and project management. Seamlessly organize, track, and prioritize tasks while overseeing the progress of complex projects. ProTask's intuitive interface fosters collaboration, ensuring your team stays aligned and projects stay on course. Elevate your project management experience with ProTask today.
+CodeWizard is AI-powered interview prep platform for tech stacks. Choose stack, get relevant questions via open API, answer by typing or speech-to-text, get evaluated results. Track progress, log in, and sign up.
 
 ## Features :-
 
-- Users can SignUp and LogIn.
-- Registered users can create new projects.
-- Projects can be assigned to other users also.
-- Assigned users can contribute to project created by the User.
-- Members can see the overview of the project i.e: Completed, UnderProgress etc.
-- Users can proceed to checkout and complete their purchase.
+
+
+
+- Seamless cross-language code translation
+- Built-in code debugger
+- Comprehensive code quality assessment and reporting
+- User-friendly code writing, conversion, and debugging capabilities
+- Utilization of OpenAPI for generating detailed quality reports
+- Agile adaptation to new technologies using Generative AI
 
 ## Tech Stacks Used :-
 
-React / Redux / Tailwind Css / Chakra UI / React-Router-Dom / Express / MongoDB
+React / Chakra UI / OpenAPI / NodeJS / TypeScript / Redux
 
 ## Installation :-
 
@@ -45,29 +48,7 @@ npm install
 npm run dev
 ```
 
-## Start The Back-End Server
 
-- Install Dependencies :
-
-```
-cd Back-End
-```
-
-```
-npm install
-```
-
-- Create .env file and add :-
-
-```
-DB_Url=Your-MongoDB-URL
-```
-
-- Start the Back-End Server :
-
-```
-npm run server
-```
 
 ![Landing Normal](./PageImages/LandingNormal.jpg)
 ![Landing Features](./PageImages/LandingFeatures.jpg)
