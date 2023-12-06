@@ -9,6 +9,7 @@ import { useState } from "react";
 import {
   Box,
   Button,
+  useTheme,
   Image,
   Text,
   Spinner,
@@ -16,14 +17,15 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
   Center,
+  Flex,
 } from "@chakra-ui/react";
+import { IoMdArrowDropdown as DownArrow } from "react-icons/io";
+import { GiCheckMark as TickMark } from "react-icons/gi";
 
 const CodeArea = () => {
+  const theme = useTheme();
+  const ContextColors = theme.colors;
   const [currImg, setCurrImg] = useState(Languages[0].img);
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("JavaScript");
@@ -95,39 +97,77 @@ const CodeArea = () => {
         <Box css={css.CurrLangCont}>
           <Menu closeOnSelect={true}>
             <MenuButton>
-              <Box css={css.CurrLangSelectBox}>
+              <Flex color="greyA" css={css.CurrLangSelectBox}>
                 <Text css={css.TextCurrLang}>{`Convert to : `}</Text>
-                <Image src={currImg} />
-                <Text>{language}</Text>
-              </Box>
+                <Box
+                  bg="bgD"
+                  border={[`1px solid ${ContextColors.whiteA}`]}
+                  css={css.CurrOptionBox}
+                >
+                  <Box>
+                    <Image src={currImg} />
+                    <Text>{language}</Text>
+                  </Box>
+                  <Image as={DownArrow} />
+                </Box>
+              </Flex>
             </MenuButton>
-            <MenuList defaultValue="JavaScript">
+            <MenuList
+              bg="bgA"
+              color="whiteA"
+              defaultValue="JavaScript"
+              css={css.MenuListCont}
+            >
               {Languages.map((item: any, ind: number) => (
                 <MenuItem
                   onClick={() => {
                     setLanguage(item.name);
                     setCurrImg(item.img);
                   }}
+                  _hover={{ bg: language != item.name ? "bgC" : "transparent" }}
+                  bg="transparent"
                   value={item.name}
-                  css={css.LangOptionsCss}
+                  css={css.LangItemCss}
                   key={ind}
                 >
-                  <Image src={item.img} />
-                  <span>{item.name}</span>
+                  <Box>
+                    <Image src={item.img} />
+                    <span>{item.name}</span>
+                  </Box>
+
+                  {language == item.name && <Image as={TickMark} />}
                 </MenuItem>
               ))}
             </MenuList>
           </Menu>
         </Box>
-        <Box display="flex" flexDirection="column" marginTop="50px">
+        <Box
+          css={css.BtnContainer(
+            ContextColors.greyA,
+            ContextColors.greyA,
+            ContextColors.greyA
+          )}
+        >
           <Button onClick={handleConvert} disabled={!code}>
             Convert
+            <span className="first"></span>
+            <span className="second"></span>
+            <span className="third"></span>
+            <span className="fourth"></span>
           </Button>
           <Button onClick={handleDebug} disabled={!code}>
             Debug
+            <span className="first"></span>
+            <span className="second"></span>
+            <span className="third"></span>
+            <span className="fourth"></span>
           </Button>
           <Button onClick={handleQualityCheck} disabled={!code}>
             Quality Check
+            <span className="first"></span>
+            <span className="second"></span>
+            <span className="third"></span>
+            <span className="fourth"></span>
           </Button>
         </Box>
       </Box>
