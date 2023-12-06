@@ -2,9 +2,10 @@ import { css } from "@emotion/react";
 
 export const Outer = css`
   display: flex;
-  justify-content: space-between;
-  width: 95%;
+  width: 97%;
   margin: auto;
+  gap: 30px;
+  margin-top: 50px;
 
   @media (max-width: 992px) {
   }
@@ -14,9 +15,11 @@ export const Outer = css`
   }
 `;
 export const ButtonsCont = css`
+  height: fit-content;
   padding: 25px;
   border-radius: 12px;
   backdrop-filter: blur(5px);
+  margin-top: 100px;
 
   @media (max-width: 992px) {
   }
@@ -133,20 +136,25 @@ export const BtnContainer = (
 ) => css`
   display: flex;
   flex-direction: column;
+  gap: 25px;
+  margin-top: 40px;
 
   button {
+    display: flex;
+    align-items: center;
+    gap: 7.5px;
     border: none;
-    font-size: 20px;
-    position: relative;
-    background: transparent;
+    font-size: 18px;
+    border-radius: 6px;
+    border: 1px solid ${borderColor};
     color: ${color};
-    text-transform: uppercase;
-    border: 3px solid ${borderColor};
-    transition: all 0.7s;
     overflow: hidden;
-    border-radius: 100px;
+    background: transparent;
+    position: relative;
+    transition: all 0.75s;
   }
   button:hover {
+    border-radius: 100px;
     color: #000;
     background-color: transparent;
   }

@@ -17,11 +17,14 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  Center,
+  // Center,
   Flex,
 } from "@chakra-ui/react";
 import { IoMdArrowDropdown as DownArrow } from "react-icons/io";
 import { GiCheckMark as TickMark } from "react-icons/gi";
+import { LiaExchangeAltSolid as ConvertIcon } from "react-icons/lia";
+import { VscDebug as DebugIcon } from "react-icons/vsc";
+import { LiaClipboardCheckSolid as QualityIcon } from "react-icons/lia";
 
 const CodeArea = () => {
   const theme = useTheme();
@@ -70,10 +73,10 @@ const CodeArea = () => {
       });
   };
 
-  const handleClear = () => {
-    setCode("");
-    setOutput("Your Output Will Come here...");
-  };
+  // const handleClear = () => {
+  //   setCode("");
+  //   setOutput("Your Output Will Come here...");
+  // };
 
   const handleQualityCheck = () => {
     setLoading(true);
@@ -101,7 +104,7 @@ const CodeArea = () => {
                 <Text css={css.TextCurrLang}>{`Convert to : `}</Text>
                 <Box
                   bg="bgD"
-                  border={[`1px solid ${ContextColors.whiteA}`]}
+                  border={[`1px solid ${ContextColors.greyA}`]}
                   css={css.CurrOptionBox}
                 >
                   <Box>
@@ -145,11 +148,12 @@ const CodeArea = () => {
           css={css.BtnContainer(
             ContextColors.greyA,
             ContextColors.greyA,
-            ContextColors.greyA
+            ContextColors.redB
           )}
         >
           <Button onClick={handleConvert} disabled={!code}>
             Convert
+            <Image as={ConvertIcon} />
             <span className="first"></span>
             <span className="second"></span>
             <span className="third"></span>
@@ -157,13 +161,15 @@ const CodeArea = () => {
           </Button>
           <Button onClick={handleDebug} disabled={!code}>
             Debug
+            <Image as={DebugIcon} />
             <span className="first"></span>
             <span className="second"></span>
             <span className="third"></span>
             <span className="fourth"></span>
           </Button>
           <Button onClick={handleQualityCheck} disabled={!code}>
-            Quality Check
+            Check Quality
+            <Image as={QualityIcon} />
             <span className="first"></span>
             <span className="second"></span>
             <span className="third"></span>
@@ -174,7 +180,7 @@ const CodeArea = () => {
 
       <Box css={css.EditorCont}>
         {/* editor input */}
-        <Box className="pt-4 bg-[#272822]">
+        <Box bg="bgD" boxShadow="shadowA">
           <AceEditor
             placeholder="Type or Paste your Code here"
             mode="javascript" // Set the editor mode
@@ -198,11 +204,7 @@ const CodeArea = () => {
           />
         </Box>
         {/* output */}
-        <Box
-          className={`w-[600px] h-[500px] ${
-            loading && "flex justify-center items-center"
-          }  h-500px border text-slate-300 p-1 pl-5 font-mono bg-black overflow-scroll`}
-        >
+        <Box bg="bgD" boxShadow="shadowA">
           {loading ? (
             <Spinner
               thickness="4px"

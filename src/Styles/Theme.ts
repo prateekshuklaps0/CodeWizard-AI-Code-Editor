@@ -7,11 +7,13 @@ const Theme = extendTheme({
 
     lightPurpleA: "#7b66ff",
     lightBlueA: "#83A2FF",
+    lightBlueB: "#a2d2ff",
     orangeA: "#F05941",
     orangeB: "#FA7070",
     orangeC: "#FF6C22",
     orangeD: "#e76f51",
     redA: "#ff006e",
+    redB: "#ffc8dd",
     yellowA: "#ccff33",
     greenA: "#9ef01a",
     greenB: "#70e000",
