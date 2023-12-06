@@ -15,6 +15,9 @@ function App() {
     await loadFull(engine);
   }, []);
 
+  const test1 = () => {
+    console.log("testing");
+  };
   // bg="bgA"
   return (
     <Box color="greyA" minH="100dvh">

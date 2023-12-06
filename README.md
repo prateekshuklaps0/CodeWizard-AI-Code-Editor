@@ -22,7 +22,7 @@
 ### Start The Front-End Server
 
 - Clone Repo : `git clone https://github.com/prateekshuklaps0/CodeWizard-AI-Code-Converter`
-- Install Dependencies : `cd Front-End` `npm install`
+- Install Dependencies : `cd Front-End`, `npm install`
 - Start the Front-End Server : `npm run dev`
 
 ![Landing Normal](./PageImages/LandingNormal.jpg)
