@@ -109,7 +109,15 @@ export const BtnCss = (
   @media (max-width: 992px) {
   }
   @media (max-width: 768px) {
+    padding: 4px 8px;
+    gap: 4.5px;
+    font-size: 16.5px;
+    border-radius: 5.5px;
   }
   @media (max-width: 480px) {
+    padding: 3.8px 7.8px;
+    gap: 4px;
+    font-size: 16px;
+    border-radius: 5px;
   }
 `;

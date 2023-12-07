@@ -18,16 +18,14 @@ import "ace-builds/src-noconflict/theme-ambiance";
 import "ace-builds/src-noconflict/theme-chaos";
 import "ace-builds/src-noconflict/theme-cobalt";
 import "ace-builds/src-noconflict/theme-nord_dark";
-import { useEffect, useState, useRef } from "react";
-import { Box, Select, useTheme, Image } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Box, Select, useTheme, Image, Text } from "@chakra-ui/react";
 import { LiaExchangeAltSolid as ConvertIcon } from "react-icons/lia";
 import { VscDebug as DebugIcon } from "react-icons/vsc";
 import { LiaClipboardCheckSolid as QualityIcon } from "react-icons/lia";
 import { MdContentCopy as Copy } from "react-icons/md";
-import { AiOutlineDelete as Clear } from "react-icons/ai";
 import { MdOutlineImagesearchRoller as ThemeIcon } from "react-icons/md";
 import { BiFontSize as FontSizeIcon } from "react-icons/bi";
-import { RxFontSize } from "react-icons/rx";
 import { BiPlus as IncIcon, BiMinus as DecIcon } from "react-icons/bi";
 
 const CodeArea = () => {
@@ -35,7 +33,7 @@ const CodeArea = () => {
   const ContextColors = theme.colors;
   const [currImg, setCurrImg] = useState(Languages[0].img);
   const [language, setLanguage] = useState("JavaScript");
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
   const [currentTheme, setTheme] = useState("monokai");
   const [fontSize, setFontSize] = useState(16);
@@ -44,7 +42,6 @@ const CodeArea = () => {
 
   const [divWidth, setDivWidth] = useState<number | null>(null);
 
-  // Function to update div width
   const updateDivWidth = () => {
     const width = document
       .getElementById("myDiv")
@@ -54,9 +51,9 @@ const CodeArea = () => {
     }
   };
 
-  // Update div width on component mount and resize
   useEffect(() => {
     updateDivWidth();
+    setFontSize(16);
 
     const handleResize = () => {
       updateDivWidth();
@@ -142,9 +139,17 @@ const CodeArea = () => {
 
   const handleCopy = () => {
     console.log("copied");
+    loading;
   };
-  const handleClear = () => {
-    console.log("copied");
+  // const handleClear = () => {
+  //   console.log("copied");
+  // };
+
+  const handleFontChange = (val: number) => {
+    const newFontSize = fontSize + val;
+    if (newFontSize >= 14 && newFontSize <= 42) {
+      setFontSize(newFontSize);
+    }
   };
 
   return (
@@ -159,7 +164,7 @@ const CodeArea = () => {
         <Box css={css.InputBtnsContainer}>
           <BtnCustom onClick={handleConvert} disabled={!code}>
             Convert
-            <Image as={ConvertIcon} fontSize={["18px"]} fontWeight={["600"]} />
+            <Image as={ConvertIcon} />
           </BtnCustom>
 
           <BtnCustom onClick={handleConvert} disabled={!code}>
@@ -170,12 +175,22 @@ const CodeArea = () => {
             Check Quality
             <Image as={QualityIcon} />
           </BtnCustom>
-          <BtnCustom onClick={handleClear} disabled={!code}>
+          <Box color="greyA" css={css.FontBtnOuterBox(ContextColors.greyA)}>
             <Image as={FontSizeIcon} />
-            <Image as={DecIcon} />
-            {fontSize}
-            <Image as={IncIcon} />
-          </BtnCustom>
+            <Box>
+              <Image
+                onClick={() => handleFontChange(-1)}
+                as={DecIcon}
+                color={fontSize <= 14 ? "blackB" : "blackA"}
+              />
+              <Text>{fontSize}</Text>
+              <Image
+                onClick={() => handleFontChange(1)}
+                as={IncIcon}
+                color={fontSize >= 42 ? "blackB" : "blackA"}
+              />
+            </Box>
+          </Box>
         </Box>
 
         <AceEditor
@@ -189,7 +204,7 @@ const CodeArea = () => {
           readOnly={false}
           width={`${divWidth}px`}
           // height="480px"
-          showPrintMargin={true}
+          showPrintMargin={false}
           showGutter={true}
           highlightActiveLine={true}
           setOptions={{
@@ -212,10 +227,10 @@ const CodeArea = () => {
                 setLanguage(e.target.value);
               }}
               icon={currImg}
-              focusBorderColor={ContextColors.black}
+              focusBorderColor={ContextColors.blackA}
               css={css.SelectTagCss(
-                ContextColors.black,
-                ContextColors.black,
+                ContextColors.blackA,
+                ContextColors.blackA,
                 500
               )}
             >
@@ -237,10 +252,10 @@ const CodeArea = () => {
                 setTheme(e.target.value);
               }}
               icon={<ThemeIcon />}
-              focusBorderColor={ContextColors.black}
+              focusBorderColor={ContextColors.blackA}
               css={css.SelectTagCss(
-                ContextColors.black,
-                ContextColors.black,
+                ContextColors.blackA,
+                ContextColors.blackA,
                 400
               )}
             >
@@ -263,7 +278,7 @@ const CodeArea = () => {
           name="code-editor"
           width={`${divWidth}px`}
           readOnly={true}
-          showPrintMargin={true}
+          showPrintMargin={false}
           showGutter={true}
           highlightActiveLine={false}
           setOptions={{
