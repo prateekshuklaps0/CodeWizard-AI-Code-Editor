@@ -1,6 +1,5 @@
 import * as css from "../Styles/CodeAreaStyles";
 import BtnCustom from "./BtnCustom";
-import { Languages } from "../Data/Languages";
 
 import axios from "axios";
 import AceEditor from "react-ace";
@@ -27,6 +26,19 @@ import { MdContentCopy as Copy } from "react-icons/md";
 import { MdOutlineImagesearchRoller as ThemeIcon } from "react-icons/md";
 import { BiFontSize as FontSizeIcon } from "react-icons/bi";
 import { BiPlus as IncIcon, BiMinus as DecIcon } from "react-icons/bi";
+import {
+  SiJavascript as JavaScript,
+  SiPython as Python,
+  SiCplusplus as CPlusPlus,
+  SiCplusplus as CSharp,
+  SiSwift as Swift,
+  SiTypescript as TypeScript,
+  SiPhp as PHP,
+  SiKotlin as Kotlin,
+  SiRust as Rust,
+} from "react-icons/si";
+import { FaJava as Java } from "react-icons/fa6";
+import { DiRuby as Ruby } from "react-icons/di";
 
 const CodeArea = () => {
   const theme = useTheme();
@@ -300,6 +312,7 @@ const CodeArea = () => {
 
 export default CodeArea;
 
+// Editor Themes Array
 const EditorThemes = [
   {
     theme: "monokai",
@@ -344,5 +357,53 @@ const EditorThemes = [
   {
     theme: "ambiance",
     name: "Ambiance",
+  },
+];
+
+// Languages Array
+export const Languages = [
+  {
+    img: <JavaScript />,
+    name: "JavaScript",
+  },
+  {
+    img: <Python />,
+    name: "Python",
+  },
+  {
+    img: <Java />,
+    name: "Java",
+  },
+  {
+    img: <CPlusPlus />,
+    name: "C++",
+  },
+  {
+    img: <CSharp />,
+    name: "C#",
+  },
+  {
+    img: <Ruby />,
+    name: "Ruby",
+  },
+  {
+    img: <Swift />,
+    name: "Swift",
+  },
+  {
+    img: <TypeScript />,
+    name: "TypeScript",
+  },
+  {
+    img: <PHP />,
+    name: "PHP",
+  },
+  {
+    img: <Kotlin />,
+    name: "Kotlin",
+  },
+  {
+    img: <Rust />,
+    name: "Rust",
   },
 ];
