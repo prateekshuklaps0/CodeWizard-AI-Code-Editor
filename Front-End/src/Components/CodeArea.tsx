@@ -1,8 +1,6 @@
 import * as css from "../Styles/CodeAreaStyles";
 import BtnCustom from "./BtnCustom";
 
-import axios from "axios";
-import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-xml";
@@ -17,15 +15,28 @@ import "ace-builds/src-noconflict/theme-ambiance";
 import "ace-builds/src-noconflict/theme-chaos";
 import "ace-builds/src-noconflict/theme-cobalt";
 import "ace-builds/src-noconflict/theme-nord_dark";
+
+import axios from "axios";
+import AceEditor from "react-ace";
 import { useEffect, useState } from "react";
 import { Box, Select, useTheme, Image, Text } from "@chakra-ui/react";
-import { LiaExchangeAltSolid as ConvertIcon } from "react-icons/lia";
+
+import { FaJava as Java } from "react-icons/fa6";
+import { DiRuby as Ruby } from "react-icons/di";
 import { VscDebug as DebugIcon } from "react-icons/vsc";
-import { LiaClipboardCheckSolid as QualityIcon } from "react-icons/lia";
-import { MdContentCopy as Copy } from "react-icons/md";
-import { MdOutlineImagesearchRoller as ThemeIcon } from "react-icons/md";
-import { BiFontSize as FontSizeIcon } from "react-icons/bi";
-import { BiPlus as IncIcon, BiMinus as DecIcon } from "react-icons/bi";
+import {
+  LiaExchangeAltSolid as ConvertIcon,
+  LiaClipboardCheckSolid as QualityIcon,
+} from "react-icons/lia";
+import {
+  MdOutlineImagesearchRoller as ThemeIcon,
+  MdContentCopy as Copy,
+} from "react-icons/md";
+import {
+  BiPlus as IncIcon,
+  BiMinus as DecIcon,
+  BiFontSize as FontSizeIcon,
+} from "react-icons/bi";
 import {
   SiJavascript as JavaScript,
   SiPython as Python,
@@ -37,8 +48,6 @@ import {
   SiKotlin as Kotlin,
   SiRust as Rust,
 } from "react-icons/si";
-import { FaJava as Java } from "react-icons/fa6";
-import { DiRuby as Ruby } from "react-icons/di";
 
 const CodeArea = () => {
   const theme = useTheme();
@@ -50,7 +59,6 @@ const CodeArea = () => {
   const [currentTheme, setTheme] = useState("monokai");
   const [fontSize, setFontSize] = useState(16);
   const [output, setOutput] = useState("Your Output Will Come here...");
-  // const [hide, setHide] = useState(false);
 
   const [divWidth, setDivWidth] = useState<number | null>(null);
 
@@ -215,7 +223,6 @@ const CodeArea = () => {
           name="code-editor"
           readOnly={false}
           width={`${divWidth}px`}
-          // height="480px"
           showPrintMargin={false}
           showGutter={true}
           highlightActiveLine={true}
@@ -230,11 +237,7 @@ const CodeArea = () => {
       </Box>
 
       {/* Output */}
-      <Box
-        bg="bgA"
-        // boxShadow="shadowA"
-        css={css.BothEditorContainers}
-      >
+      <Box bg="bgA" boxShadow="shadowA" css={css.BothEditorContainers}>
         <Box css={css.OutputBtnsContainer}>
           <Box>
             <Select
