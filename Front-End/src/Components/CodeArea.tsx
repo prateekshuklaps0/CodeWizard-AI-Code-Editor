@@ -156,7 +156,7 @@ const CodeArea = () => {
     <Box css={css.Outer}>
       {/* Input Editor */}
       <Box
-        bg="bgD"
+        bg="bgA"
         boxShadow="shadowA"
         id="myDiv"
         css={css.BothEditorContainers}
@@ -175,7 +175,7 @@ const CodeArea = () => {
             Check Quality
             <Image as={QualityIcon} />
           </BtnCustom>
-          <Box color="greyA" css={css.FontBtnOuterBox(ContextColors.greyA)}>
+          <Box color="primary" css={css.FontBtnOuterBox(ContextColors.primary)}>
             <Image as={FontSizeIcon} />
             <Box>
               <Image
@@ -218,7 +218,11 @@ const CodeArea = () => {
       </Box>
 
       {/* Output */}
-      <Box bg="bgD" boxShadow="shadowA" css={css.BothEditorContainers}>
+      <Box
+        bg="bgA"
+        // boxShadow="shadowA"
+        css={css.BothEditorContainers}
+      >
         <Box css={css.OutputBtnsContainer}>
           <Box>
             <Select
@@ -227,10 +231,10 @@ const CodeArea = () => {
                 setLanguage(e.target.value);
               }}
               icon={currImg}
-              focusBorderColor={ContextColors.blackA}
+              focusBorderColor={"none"}
               css={css.SelectTagCss(
-                ContextColors.blackA,
-                ContextColors.blackA,
+                ContextColors.primary,
+                ContextColors.primary,
                 500
               )}
             >
@@ -252,10 +256,10 @@ const CodeArea = () => {
                 setTheme(e.target.value);
               }}
               icon={<ThemeIcon />}
-              focusBorderColor={ContextColors.blackA}
+              focusBorderColor={"none"}
               css={css.SelectTagCss(
-                ContextColors.blackA,
-                ContextColors.blackA,
+                ContextColors.primary,
+                ContextColors.primary,
                 400
               )}
             >

@@ -10,7 +10,12 @@ const BtnCustom = ({ children, onClick, disabled = false }: any) => {
     <Button
       onClick={onClick}
       disabled={disabled}
-      css={BtnCss(ContextColors.greyA, ContextColors.greyA, ContextColors.redB)}
+      css={BtnCss(
+        ContextColors.primary,
+        ContextColors.primary,
+        ContextColors.btnHoverBG,
+        ContextColors.bgA
+      )}
     >
       {children}
       <span className="first"></span>
@@ -24,9 +29,10 @@ const BtnCustom = ({ children, onClick, disabled = false }: any) => {
 export default BtnCustom;
 
 export const BtnCss = (
-  color: any,
-  borderColor: any,
-  hoverBackground: any
+  color: string,
+  borderColor: string,
+  hoverBackground: string,
+  hoverColor: string
 ) => css`
   display: inline-flexbox;
   align-items: center;
@@ -42,11 +48,11 @@ export const BtnCss = (
   overflow: hidden;
   background: transparent;
   position: relative;
-  transition: all 0.75s;
+  transition: border-radius 0.75s;
 
   :hover {
     border-radius: 100px;
-    color: #000;
+    color: ${hoverColor};
     background-color: transparent;
   }
   span {

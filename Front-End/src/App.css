@@ -14,7 +14,8 @@
   top: 0;
   z-index: -1;
 
-  background-image: url("https://i.ibb.co/582TKQH/wallpaperflare-com-wallpaper-3.jpg");
+  background: #013dc4;
+  background-image: url("");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 50% 50%;
@@ -22,17 +23,31 @@
 
 .test {
   color: #585858;
+  color: #092635;
+  color: #5c8374;
+  color: #b3a492;
+  color: #0c356a;
+  color: #1d5b79;
+  background: #dce2f0;
+  background: #0063b2;
+  background: #1d5b79;
+  background: #7b66ff;
+  background: #50586c;
+  background: #ed2a55;
+  background: #1a488e;
+  background: #1c13ee;
+  background: #0c356a;
 }
 
 /* Scroll Bar Css */
 /* For Firefox */
 /* width */
 ::-moz-scrollbar {
-  width: 7.5px;
+  width: 10px;
 }
 /* track */
 ::-moz-scrollbar-track {
-  background: linear-gradient(168deg, #2e335a 1.62%, #1c1b33 95.72%);
+  background: #013dc4;
   border-radius: 50px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
@@ -40,7 +55,7 @@
 }
 /* handle */
 ::-moz-scrollbar-thumb {
-  background: linear-gradient(168deg, #2e335a 1.62%, #1c1b33 95.72%);
+  background: #dce2f0;
   border-radius: 50px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
@@ -49,11 +64,11 @@
 /* For Chrome, Safari, and Opera */
 /* width */
 ::-webkit-scrollbar {
-  width: 7.5px;
+  width: 10px;
 }
 /* track */
 ::-webkit-scrollbar-track {
-  background: linear-gradient(168deg, #2e335a 1.62%, #1c1b33 95.72%);
+  background: #013dc4;
   border-radius: 50px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
@@ -61,12 +76,7 @@
 }
 /* handle */
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    270deg,
-    rgba(255, 255, 255, 0) 0.51%,
-    rgba(255, 255, 255, 0.6) 55.62%,
-    rgba(255, 255, 255, 0) 99.68%
-  );
+  background: #dce2f0;
   border-radius: 50px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
@@ -87,88 +97,5 @@
   }
   ::-webkit-scrollbar {
     width: 2px;
-  }
-}
-
-/* NavBar border animation */
-@property --angle {
-  syntax: "<angle>";
-  initial-value: 90deg;
-  inherits: true;
-}
-@property --gradX {
-  syntax: "<percentage>";
-  initial-value: 50%;
-  inherits: true;
-}
-@property --gradY {
-  syntax: "<percentage>";
-  initial-value: 0%;
-  inherits: true;
-}
-:root {
-  --d: 2500ms;
-  --angle: 90deg;
-  --gradX: 100%;
-  --gradY: 50%;
-  --c1: orange;
-  --c2: #120059aa;
-}
-.navAnim {
-  position: absolute;
-  z-index: 1;
-  border: 2px solid;
-  height: 35px;
-  border-image: conic-gradient(
-      from var(--angle),
-      var(--c2),
-      var(--c1) 0.1turn,
-      var(--c1) 0.35turn,
-      var(--c2) 0.35turn
-    )
-    8;
-  animation: borderRotate var(--d) linear infinite forwards;
-
-  @media screen and (max-width: 992px) {
-    border: 2px solid;
-    position: absolute;
-    z-index: 1;
-    height: 32px;
-    border-image: conic-gradient(
-        from var(--angle),
-        var(--c2),
-        var(--c1) 0.1turn,
-        var(--c1) 0.35turn,
-        var(--c2) 0.35turn
-      )
-      8;
-    animation: borderRotate var(--d) linear infinite forwards;
-  }
-}
-@keyframes borderRotate {
-  100% {
-    --angle: 420deg;
-  }
-}
-@keyframes borderRadial {
-  20% {
-    --gradX: 100%;
-    --gradY: 50%;
-  }
-  40% {
-    --gradX: 100%;
-    --gradY: 100%;
-  }
-  60% {
-    --gradX: 50%;
-    --gradY: 100%;
-  }
-  80% {
-    --gradX: 0%;
-    --gradY: 50%;
-  }
-  100% {
-    --gradX: 50%;
-    --gradY: 0%;
   }
 }

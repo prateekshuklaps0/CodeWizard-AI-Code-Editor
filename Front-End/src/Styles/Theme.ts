@@ -2,27 +2,10 @@ import { extendTheme } from "@chakra-ui/react";
 
 const Theme = extendTheme({
   colors: {
-    blackA: "#000",
-    blackB: "#585858",
-    greyA: "#31304d",
-    whiteA: "#b6bbc4",
-    lightPurpleA: "#7b66ff",
-    lightBlueA: "#83A2FF",
-    lightBlueB: "#a2d2ff",
-    orangeA: "#F05941",
-    orangeB: "#FA7070",
-    orangeC: "#FF6C22",
-    orangeD: "#e76f51",
-    redA: "#ff006e",
-    redB: "#ffc8dd",
-    yellowA: "#ccff33",
-    greenA: "#9ef01a",
-    greenB: "#70e000",
+    primary: "#0c356a",
+    btnHoverBG: "#013dc4",
 
-    bgA: "linear-gradient(168deg, #2E335A 1.62%, #1C1B33 95.72%)",
-    bgB: "linear-gradient(135deg, rgba(15, 85, 232, 0.1) 0%, rgba(157, 223, 243, 0.1) 100%)",
-    bgC: "radial-gradient(50% 128.57% at 50% -36.61%, #8015A7 0%, rgba(97, 54, 144, 0.00) 100%)",
-    bgD: "linear-gradient(270deg, rgba(255, 255, 255, 0.00) 0.51%, rgba(255, 255, 255, 0.60) 55.62%, rgba(255, 255, 255, 0.00) 99.68%)",
+    bgA: "#dce2f0",
   },
 
   shadows: {
