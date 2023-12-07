@@ -14,17 +14,6 @@
   top: 0;
   z-index: -1;
 
-  /* background-color: #0d47a1;
-  background-color: #31304d;
-  background-color: #b6bbc4;
-  background-color: #cdb4db;
-  background-color: #ffc8dd;
-  background-color: #bde0fe;
-  background-color: #1d3557;
-  background-color: #a2d2ff;
-  background-color: #ffafcc;
-  background-color: #7b66ff; */
-
   background-image: url("https://i.ibb.co/582TKQH/wallpaperflare-com-wallpaper-3.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -39,13 +28,19 @@
 }
 /* track */
 ::-moz-scrollbar-track {
-  background: #120059ea;
+  background: linear-gradient(168deg, #2e335a 1.62%, #1c1b33 95.72%);
   border-radius: 50px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 /* handle */
 ::-moz-scrollbar-thumb {
-  background: orange;
+  background: linear-gradient(168deg, #2e335a 1.62%, #1c1b33 95.72%);
   border-radius: 50px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 /* For Chrome, Safari, and Opera */
 /* width */
@@ -54,13 +49,24 @@
 }
 /* track */
 ::-webkit-scrollbar-track {
-  background: #120059ea;
+  background: linear-gradient(168deg, #2e335a 1.62%, #1c1b33 95.72%);
   border-radius: 50px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 /* handle */
 ::-webkit-scrollbar-thumb {
-  background: orange;
+  background: linear-gradient(
+    270deg,
+    rgba(255, 255, 255, 0) 0.51%,
+    rgba(255, 255, 255, 0.6) 55.62%,
+    rgba(255, 255, 255, 0) 99.68%
+  );
   border-radius: 50px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
 @media (max-width: 768px) {

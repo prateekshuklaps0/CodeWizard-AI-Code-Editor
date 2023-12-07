@@ -7,7 +7,7 @@ const Navbar = () => {
     <Box css={css.Outer}>
       <Center boxShadow="shadowA" bg="bgD" css={css.TopNavBox}>
         <Text color="greyA" css={css.Title}>
-          AI Code Converter
+          CodeWizard - AI Code Converter
         </Text>
       </Center>
     </Box>

@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 export const Outer = css`
   width: 100%;
   text-align: center;
+  margin-top: 6px;
 
   @media (max-width: 992px) {
   }
@@ -16,7 +17,7 @@ export const TopNavBox = css`
   margin: auto;
   height: 60px;
   border-radius: 40px;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
 
   @media (max-width: 992px) {
   }
