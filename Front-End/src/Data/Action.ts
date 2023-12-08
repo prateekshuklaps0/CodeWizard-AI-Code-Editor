@@ -1,13 +1,5 @@
 import axios from "axios";
 
-// This function updates the editor width whenever there is change in width of div with id="myDiv".
-export const updateDivWidth = (setDivWidth: any) => {
-  let width = document.getElementById("myDiv")?.getBoundingClientRect().width;
-  if (width) {
-    setDivWidth(width);
-  }
-};
-
 // Function for Code Convert Request
 export const handleConvert = (
   dispatch: any,
@@ -17,6 +9,16 @@ export const handleConvert = (
   selectedlanguage: string
 ) => {
   if (!reqActive) {
+    toast.closeAll();
+    if (codeInpVal || codeInpVal.length <= 5) {
+      toast({
+        title: "Attention!",
+        description: "No code detected to convert yet.",
+        status: "warning",
+        isClosable: true,
+      });
+      return;
+    }
     dispatch({ type: "CONVERTLOADING" });
     axios
       .post("https://code-converter-api-jjb2.onrender.com/convert", {
@@ -48,6 +50,16 @@ export const handleDebug = (
   codeInpVal: any
 ) => {
   if (!reqActive) {
+    toast.closeAll();
+    if (codeInpVal || codeInpVal.length <= 5) {
+      toast({
+        title: "Debugging alert!",
+        description: "Code required for debugging.",
+        status: "warning",
+        isClosable: true,
+      });
+      return;
+    }
     dispatch({ type: "DEBUGLOADING" });
     axios
       .post("https://code-converter-api-jjb2.onrender.com/debug", {
@@ -78,14 +90,24 @@ export const handleCheckQuality = (
   codeInpVal: any
 ) => {
   if (!reqActive) {
-    dispatch({ type: "DEBUGLOADING" });
+    toast.closeAll();
+    if (codeInpVal || codeInpVal.length <= 5) {
+      toast({
+        title: "Hold up!",
+        description: "No code detected for quality check.",
+        status: "warning",
+        isClosable: true,
+      });
+      return;
+    }
+    dispatch({ type: "QUALITYCHECKLOADING" });
     axios
-      .post("https://code-converter-api-jjb2.onrender.com/debug", {
+      .post("https://code-converter-api-jjb2.onrender.com/qualityCheck", {
         codeInpVal,
       })
       .then((res) => {
         dispatch({ type: "SUCCESS", payload: res.data.response });
-        console.log("Debug Request Successfull :-", res.data);
+        console.log("Quality Check Request Successfull :-", res.data);
       })
       .catch((err) => {
         dispatch({ type: "ISERROR" });
@@ -95,7 +117,42 @@ export const handleCheckQuality = (
           status: "error",
           isClosable: true,
         });
-        console.log("Debug Request Error :-", err);
+        console.log("Quality Check Request Error :-", err);
       });
   }
+};
+
+// This function updates the editor width whenever there is change in width of div with id="myDiv".
+export const updateDivWidth = (setDivWidth: any) => {
+  let width = document.getElementById("myDiv")?.getBoundingClientRect().width;
+  if (width) {
+    setDivWidth(width);
+  }
+};
+
+// Function for Increasing/Decreasing Font Size
+export const handleFontSize = (
+  setFontSize: any,
+  fontSize: number,
+  val: number
+) => {
+  const newFontSize = fontSize + val;
+  if (newFontSize >= 14 && newFontSize <= 42) {
+    setFontSize(newFontSize);
+  }
+};
+
+// Function for copying output to the clipboard
+export const handleCopy = (valueToCopy: any) => {
+  navigator.clipboard
+    .writeText(valueToCopy)
+    .then(() => {
+      // Clipboard successfully copied
+      alert(`Value copied to clipboard: ${valueToCopy}`);
+      // You can add an alert or notification here
+    })
+    .catch((error) => {
+      console.error("Error copying to clipboard:", error);
+      // Handle any errors here
+    });
 };

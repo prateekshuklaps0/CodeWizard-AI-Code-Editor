@@ -64,7 +64,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         isError: false,
       };
     }
-    case "QUALITYLOADING": {
+    case "QUALITYCHECKLOADING": {
       return {
         ...state,
         ConvertLoading: true,

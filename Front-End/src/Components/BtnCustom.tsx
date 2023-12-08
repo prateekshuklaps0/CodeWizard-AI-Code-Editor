@@ -2,15 +2,14 @@ import { css } from "@emotion/react";
 
 import { Button, useTheme } from "@chakra-ui/react";
 
-const BtnCustom = ({ children, onClick, disabled = false }: any) => {
+const BtnCustom = ({ children, onClick }: any) => {
   const theme = useTheme();
   const ContextColors = theme.colors;
 
   return (
     <Button
       onClick={onClick}
-      disabled={disabled}
-      cursor={disabled ? "not-allowed" : "pointer"}
+      cursor={"pointer"}
       css={BtnCss(
         ContextColors.primary,
         ContextColors.primary,
@@ -55,7 +54,17 @@ export const BtnCss = (
     border-radius: 100px;
     color: ${hoverColor};
     background-color: transparent;
+
+    .chakra-spinner {
+      color: ${hoverColor};
+    }
   }
+  .chakra-spinner {
+    color: ${color};
+    width: 18px;
+    height: 18px;
+  }
+
   span {
     transition: all 0.7s;
     z-index: -1;
@@ -113,18 +122,26 @@ export const BtnCss = (
     left: 0;
   }
 
-  @media (max-width: 992px) {
-  }
   @media (max-width: 768px) {
     padding: 4px 8px;
     gap: 4.5px;
     font-size: 16.5px;
     border-radius: 5.5px;
+
+    .chakra-spinner {
+      width: 16px;
+      height: 16px;
+    }
   }
   @media (max-width: 480px) {
     padding: 3.8px 7.8px;
     gap: 4px;
     font-size: 16px;
     border-radius: 5px;
+
+    .chakra-spinner {
+      width: 15px;
+      height: 15px;
+    }
   }
 `;

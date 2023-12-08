@@ -1,31 +1,26 @@
 import * as css from "../Styles/CodeAreaStyles";
 import BtnCustom from "./BtnCustom";
+import EditorComponent, { EditorThemes } from "./EditorComponent";
 import { Context } from "../Data/Context";
 import {
   updateDivWidth,
+  handleFontSize,
+  handleCopy,
   handleConvert,
   handleDebug,
   handleCheckQuality,
 } from "../Data/Action";
 
 import { useEffect, useState, useContext } from "react";
-import { Box, Select, useTheme, Image, Text, useToast } from "@chakra-ui/react";
-
-import AceEditor from "react-ace";
-import "ace-builds/src-noconflict/ext-language_tools";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/mode-xml";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-github";
-import "ace-builds/src-noconflict/theme-tomorrow";
-import "ace-builds/src-noconflict/theme-kuroir";
-import "ace-builds/src-noconflict/theme-twilight";
-import "ace-builds/src-noconflict/theme-xcode";
-import "ace-builds/src-noconflict/theme-terminal";
-import "ace-builds/src-noconflict/theme-ambiance";
-import "ace-builds/src-noconflict/theme-chaos";
-import "ace-builds/src-noconflict/theme-cobalt";
-import "ace-builds/src-noconflict/theme-nord_dark";
+import {
+  Box,
+  Select,
+  useTheme,
+  Image,
+  Text,
+  useToast,
+  Spinner,
+} from "@chakra-ui/react";
 
 import { FaJava as Java } from "react-icons/fa6";
 import { DiRuby as Ruby } from "react-icons/di";
@@ -64,23 +59,18 @@ const CodeArea = () => {
     ConvertLoading,
     DebugLoading,
     QualityLoading,
-    isError,
     reqActive,
     codeInpVal,
     outputVal,
   } = useContext(Context);
-  // Other States
   const [selectedLanguage, setSelectedLanguage] =
     useState<string>("JavaScript");
-  const [currImg, setCurrImg] = useState(Languages[0].img);
-
-  const [currentTheme, setTheme] = useState<string>("monokai");
   const [fontSize, setFontSize] = useState<number>(16);
-  //const [output, setOutput] = useState("Your Output Will Come here...");
-
+  const [currImg, setCurrImg] = useState(Languages[0].img);
+  const [currentTheme, setTheme] = useState<string>("monokai");
   const [divWidth, setDivWidth] = useState<number | null>(null);
 
-  // This useEffect is responsible for changing the Editor's Width for responsiveness.
+  // useEffect for changing the Editor's Width for responsiveness.
   useEffect(() => {
     updateDivWidth(setDivWidth);
     setFontSize(16);
@@ -93,27 +83,7 @@ const CodeArea = () => {
     };
   }, []);
 
-  // Change Input Code Editor value
-  const handleInpEditorChange = (inpVal: any) => {
-    dispatch({ type: "CODEINPCHANGE", payload: inpVal });
-  };
-
-  // const handleCheckQuality = () => {
-  //   setLoading(true);
-  //   axios
-  //     .post("https://code-converter-api-jjb2.onrender.com/qualityCheck", {
-  //       codeInpVal,
-  //     })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setOutput(res.data.response);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
+  // useEffect for changing current language icon in language select menu.
   useEffect(() => {
     let selectedImg = Languages.filter((item: any) => {
       if (item.name == selectedLanguage) {
@@ -123,20 +93,14 @@ const CodeArea = () => {
     setCurrImg(selectedImg[0].img);
   }, [selectedLanguage]);
 
-  const handleCopy = () => {
-    console.log("copied");
-  };
-
-  const handleFontChange = (val: number) => {
-    const newFontSize = fontSize + val;
-    if (newFontSize >= 14 && newFontSize <= 42) {
-      setFontSize(newFontSize);
-    }
+  // Change Input Code Editor value
+  const handleInpEditorChange = (inpVal: any) => {
+    dispatch({ type: "CODEINPCHANGE", payload: inpVal });
   };
 
   return (
     <Box css={css.Outer}>
-      {/* Input Code Editor */}
+      {/* Input Component */}
       <Box
         bg="bgA"
         boxShadow="shadowA"
@@ -154,39 +118,38 @@ const CodeArea = () => {
                 selectedLanguage
               )
             }
-            disabled={!codeInpVal}
           >
             Convert
-            <Image as={ConvertIcon} />
+            {ConvertLoading ? <Spinner /> : <Image as={ConvertIcon} />}
           </BtnCustom>
 
           <BtnCustom
             onClick={() => handleDebug(dispatch, reqActive, toast, codeInpVal)}
-            disabled={!codeInpVal}
           >
             Debug
-            <Image as={DebugIcon} />
+            {DebugLoading ? <Spinner /> : <Image as={DebugIcon} />}
           </BtnCustom>
+
           <BtnCustom
             onClick={() =>
               handleCheckQuality(dispatch, reqActive, toast, codeInpVal)
             }
-            disabled={!codeInpVal}
           >
             Check Quality
-            <Image as={QualityIcon} />
+            {QualityLoading ? <Spinner /> : <Image as={QualityIcon} />}
           </BtnCustom>
+
           <Box color="primary" css={css.FontBtnOuterBox(ContextColors.primary)}>
             <Image as={FontSizeIcon} />
             <Box>
               <Image
-                onClick={() => handleFontChange(-1)}
+                onClick={() => handleFontSize(setFontSize, fontSize, -1)}
                 as={DecIcon}
                 color={fontSize <= 14 ? "blackB" : "blackA"}
               />
               <Text>{fontSize}</Text>
               <Image
-                onClick={() => handleFontChange(1)}
+                onClick={() => handleFontSize(setFontSize, fontSize, 1)}
                 as={IncIcon}
                 color={fontSize >= 42 ? "blackB" : "blackA"}
               />
@@ -194,30 +157,21 @@ const CodeArea = () => {
           </Box>
         </Box>
 
-        <AceEditor
-          placeholder="Type or Paste your Code here"
-          mode="javascript"
+        {/* Input Editor */}
+        <EditorComponent
+          name={"Input Code Editor"}
           fontSize={fontSize}
-          theme={currentTheme}
-          value={codeInpVal}
-          width={`${divWidth}px`}
-          onChange={handleInpEditorChange}
-          name="Input Code Editor"
+          currentTheme={currentTheme}
+          divWidth={divWidth}
           readOnly={false}
-          showPrintMargin={false}
-          showGutter={true}
-          highlightActiveLine={true}
-          setOptions={{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: true,
-            showLineNumbers: true,
-            tabSize: 2,
-          }}
+          mode="javascript"
+          placeholder="Type or Paste your Code here"
+          value={codeInpVal}
+          handleOnChange={handleInpEditorChange}
         />
       </Box>
 
-      {/* Output Editor */}
+      {/* Output Component */}
       <Box bg="bgA" boxShadow="shadowA" css={css.BothEditorContainers}>
         <Box css={css.OutputBtnsContainer}>
           <Box>
@@ -243,9 +197,10 @@ const CodeArea = () => {
           </Box>
 
           <Box display={["flex"]} gap={["10px"]} alignItems="center">
-            <BtnCustom onClick={handleCopy} disabled={!outputVal}>
+            <BtnCustom onClick={() => handleCopy(outputVal)}>
               <Image as={Copy} />
             </BtnCustom>
+
             <Select
               value={currentTheme}
               onChange={(e) => {
@@ -268,28 +223,15 @@ const CodeArea = () => {
           </Box>
         </Box>
 
-        <AceEditor
-          placeholder="Your Output Will Come here..."
-          // mode="javascript"
-          mode="xml"
-          value={outputVal}
-          // value={"this is output"}
+        <EditorComponent
+          name={"Output Editor"}
           fontSize={fontSize}
-          theme={currentTheme}
-          width={`${divWidth}px`}
-          // onChange={handleOutputChange}
-          name="Output Editor"
+          currentTheme={currentTheme}
+          divWidth={divWidth}
           readOnly={true}
-          showPrintMargin={false}
-          showGutter={true}
-          highlightActiveLine={false}
-          setOptions={{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: true,
-            showLineNumbers: false,
-            tabSize: 2,
-          }}
+          mode="xml"
+          placeholder="Your Output Will Come here..."
+          value={outputVal}
         />
       </Box>
     </Box>
@@ -297,54 +239,6 @@ const CodeArea = () => {
 };
 
 export default CodeArea;
-
-// Editor Themes Array
-const EditorThemes = [
-  {
-    theme: "monokai",
-    name: "Monokai",
-  },
-  {
-    theme: "github",
-    name: "Github",
-  },
-  {
-    theme: "cobalt",
-    name: "Cobalt",
-  },
-  {
-    theme: "kuroir",
-    name: "Kuroir",
-  },
-  {
-    theme: "twilight",
-    name: "Twilight",
-  },
-  {
-    theme: "xcode",
-    name: "Xcode",
-  },
-  {
-    theme: "terminal",
-    name: "Terminal",
-  },
-  {
-    theme: "chaos",
-    name: "Chaos",
-  },
-  {
-    theme: "tomorrow",
-    name: "Tomorrow",
-  },
-  {
-    theme: "nord_dark",
-    name: "Nord Dark",
-  },
-  {
-    theme: "ambiance",
-    name: "Ambiance",
-  },
-];
 
 // Languages Array
 export const Languages = [
