@@ -4,6 +4,7 @@ const Theme = extendTheme({
   colors: {
     primary: "#0c356a",
     btnHoverBG: "#013dc4",
+    whiteA: "#ADADC9",
 
     bgA: "#dce2f0",
   },
