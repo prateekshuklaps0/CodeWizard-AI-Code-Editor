@@ -134,8 +134,7 @@ export const OutputBtnsContainer = css`
     padding: 8px;
   }
   @media (max-width: 480px) {
-    height: 42px;
-    padding: 6.5px;
+    height: 44px;
   }
 `;
 export const SelectTagCss = (
@@ -172,9 +171,6 @@ export const SelectTagCss = (
     border-radius: 5.5px;
   }
   @media (max-width: 480px) {
-    padding-top: 1.5px;
-    padding-bottom: 1.5px;
-    font-size: 16px;
     border-radius: 5px;
   }
 `;
