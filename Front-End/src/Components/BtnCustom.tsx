@@ -10,6 +10,7 @@ const BtnCustom = ({ children, onClick, disabled = false }: any) => {
     <Button
       onClick={onClick}
       disabled={disabled}
+      cursor={disabled ? "not-allowed" : "pointer"}
       css={BtnCss(
         ContextColors.primary,
         ContextColors.primary,

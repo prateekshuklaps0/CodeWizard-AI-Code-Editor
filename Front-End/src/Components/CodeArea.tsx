@@ -1,6 +1,17 @@
 import * as css from "../Styles/CodeAreaStyles";
 import BtnCustom from "./BtnCustom";
+import { Context } from "../Data/Context";
+import {
+  updateDivWidth,
+  handleConvert,
+  handleDebug,
+  handleCheckQuality,
+} from "../Data/Action";
 
+import { useEffect, useState, useContext } from "react";
+import { Box, Select, useTheme, Image, Text, useToast } from "@chakra-ui/react";
+
+import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-xml";
@@ -15,11 +26,6 @@ import "ace-builds/src-noconflict/theme-ambiance";
 import "ace-builds/src-noconflict/theme-chaos";
 import "ace-builds/src-noconflict/theme-cobalt";
 import "ace-builds/src-noconflict/theme-nord_dark";
-
-import axios from "axios";
-import AceEditor from "react-ace";
-import { useEffect, useState } from "react";
-import { Box, Select, useTheme, Image, Text } from "@chakra-ui/react";
 
 import { FaJava as Java } from "react-icons/fa6";
 import { DiRuby as Ruby } from "react-icons/di";
@@ -50,93 +56,53 @@ import {
 } from "react-icons/si";
 
 const CodeArea = () => {
+  const toast = useToast();
   const theme = useTheme();
   const ContextColors = theme.colors;
+  const {
+    dispatch,
+    ConvertLoading,
+    DebugLoading,
+    QualityLoading,
+    isError,
+    reqActive,
+    codeInpVal,
+    outputVal,
+  } = useContext(Context);
+  // Other States
+  const [selectedLanguage, setSelectedLanguage] =
+    useState<string>("JavaScript");
   const [currImg, setCurrImg] = useState(Languages[0].img);
-  const [language, setLanguage] = useState("JavaScript");
-  const [loading, setLoading] = useState(false);
-  const [code, setCode] = useState("");
-  const [currentTheme, setTheme] = useState("monokai");
-  const [fontSize, setFontSize] = useState(16);
-  const [output, setOutput] = useState("Your Output Will Come here...");
+
+  const [currentTheme, setTheme] = useState<string>("monokai");
+  const [fontSize, setFontSize] = useState<number>(16);
+  //const [output, setOutput] = useState("Your Output Will Come here...");
 
   const [divWidth, setDivWidth] = useState<number | null>(null);
 
-  const updateDivWidth = () => {
-    const width = document
-      .getElementById("myDiv")
-      ?.getBoundingClientRect().width;
-    if (width) {
-      setDivWidth(width);
-    }
-  };
-
+  // This useEffect is responsible for changing the Editor's Width for responsiveness.
   useEffect(() => {
-    updateDivWidth();
+    updateDivWidth(setDivWidth);
     setFontSize(16);
-
     const handleResize = () => {
-      updateDivWidth();
+      updateDivWidth(setDivWidth);
     };
-
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  const handleCodeChange = (newCode: any) => {
-    setCode(newCode);
+  // Change Input Code Editor value
+  const handleInpEditorChange = (inpVal: any) => {
+    dispatch({ type: "CODEINPCHANGE", payload: inpVal });
   };
 
-  const handleOutputChange = (newCode: any) => {
-    setOutput(newCode);
-  };
-
-  const handleConvert = () => {
-    setLoading(true);
-    axios
-      .post("https://code-converter-api-jjb2.onrender.com/convert", {
-        code,
-        language,
-      })
-      .then((res) => {
-        console.log(res.data);
-        setOutput(res.data.response);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  // const handleDebug = () => {
-  //   setLoading(true);
-  //   axios
-  //     .post("https://code-converter-api-jjb2.onrender.com/debug", {
-  //       code,
-  //     })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setOutput(res.data.response);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // const handleClear = () => {
-  //   setCode("");
-  //   setOutput("Your Output Will Come here...");
-  // };
-
-  // const handleQualityCheck = () => {
+  // const handleCheckQuality = () => {
   //   setLoading(true);
   //   axios
   //     .post("https://code-converter-api-jjb2.onrender.com/qualityCheck", {
-  //       code,
+  //       codeInpVal,
   //     })
   //     .then((res) => {
   //       console.log(res.data);
@@ -150,20 +116,16 @@ const CodeArea = () => {
 
   useEffect(() => {
     let selectedImg = Languages.filter((item: any) => {
-      if (item.name == language) {
+      if (item.name == selectedLanguage) {
         return item.img;
       }
     });
     setCurrImg(selectedImg[0].img);
-  }, [language]);
+  }, [selectedLanguage]);
 
   const handleCopy = () => {
     console.log("copied");
-    loading;
   };
-  // const handleClear = () => {
-  //   console.log("copied");
-  // };
 
   const handleFontChange = (val: number) => {
     const newFontSize = fontSize + val;
@@ -174,7 +136,7 @@ const CodeArea = () => {
 
   return (
     <Box css={css.Outer}>
-      {/* Input Editor */}
+      {/* Input Code Editor */}
       <Box
         bg="bgA"
         boxShadow="shadowA"
@@ -182,16 +144,35 @@ const CodeArea = () => {
         css={css.BothEditorContainers}
       >
         <Box css={css.InputBtnsContainer}>
-          <BtnCustom onClick={handleConvert} disabled={!code}>
+          <BtnCustom
+            onClick={() =>
+              handleConvert(
+                dispatch,
+                reqActive,
+                toast,
+                codeInpVal,
+                selectedLanguage
+              )
+            }
+            disabled={!codeInpVal}
+          >
             Convert
             <Image as={ConvertIcon} />
           </BtnCustom>
 
-          <BtnCustom onClick={handleConvert} disabled={!code}>
+          <BtnCustom
+            onClick={() => handleDebug(dispatch, reqActive, toast, codeInpVal)}
+            disabled={!codeInpVal}
+          >
             Debug
             <Image as={DebugIcon} />
           </BtnCustom>
-          <BtnCustom onClick={handleConvert} disabled={!code}>
+          <BtnCustom
+            onClick={() =>
+              handleCheckQuality(dispatch, reqActive, toast, codeInpVal)
+            }
+            disabled={!codeInpVal}
+          >
             Check Quality
             <Image as={QualityIcon} />
           </BtnCustom>
@@ -216,13 +197,13 @@ const CodeArea = () => {
         <AceEditor
           placeholder="Type or Paste your Code here"
           mode="javascript"
-          theme={currentTheme}
-          value={code}
-          onChange={handleCodeChange}
           fontSize={fontSize}
-          name="code-editor"
-          readOnly={false}
+          theme={currentTheme}
+          value={codeInpVal}
           width={`${divWidth}px`}
+          onChange={handleInpEditorChange}
+          name="Input Code Editor"
+          readOnly={false}
           showPrintMargin={false}
           showGutter={true}
           highlightActiveLine={true}
@@ -236,14 +217,14 @@ const CodeArea = () => {
         />
       </Box>
 
-      {/* Output */}
+      {/* Output Editor */}
       <Box bg="bgA" boxShadow="shadowA" css={css.BothEditorContainers}>
         <Box css={css.OutputBtnsContainer}>
           <Box>
             <Select
-              value={language}
+              value={selectedLanguage}
               onChange={(e) => {
-                setLanguage(e.target.value);
+                setSelectedLanguage(e.target.value);
               }}
               icon={currImg}
               focusBorderColor={"none"}
@@ -262,7 +243,7 @@ const CodeArea = () => {
           </Box>
 
           <Box display={["flex"]} gap={["10px"]} alignItems="center">
-            <BtnCustom onClick={handleCopy} disabled={!code}>
+            <BtnCustom onClick={handleCopy} disabled={!outputVal}>
               <Image as={Copy} />
             </BtnCustom>
             <Select
@@ -288,14 +269,16 @@ const CodeArea = () => {
         </Box>
 
         <AceEditor
-          placeholder="Type or Paste your Code here"
+          placeholder="Your Output Will Come here..."
+          // mode="javascript"
           mode="xml"
-          theme={currentTheme}
-          value={output}
-          onChange={handleOutputChange}
+          value={outputVal}
+          // value={"this is output"}
           fontSize={fontSize}
-          name="code-editor"
+          theme={currentTheme}
           width={`${divWidth}px`}
+          // onChange={handleOutputChange}
+          name="Output Editor"
           readOnly={true}
           showPrintMargin={false}
           showGutter={true}

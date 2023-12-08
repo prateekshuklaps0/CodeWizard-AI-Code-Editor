@@ -1,20 +1,32 @@
 import { createContext, useReducer } from "react";
 
-const Context = createContext<any>(null);
+export const Context = createContext<any>(null);
 
 const ContextProvider = ({ children }: any) => {
-  const [{ isLoading, isError, reqActive }, dispatch] = useReducer(
-    Reducer,
-    initVal
-  );
+  const [
+    {
+      ConvertLoading,
+      DebugLoading,
+      QualityLoading,
+      isError,
+      reqActive,
+      codeInpVal,
+      outputVal,
+    },
+    dispatch,
+  ] = useReducer(Reducer, initVal);
 
   return (
     <Context.Provider
       value={{
         dispatch,
-        isLoading,
+        ConvertLoading,
+        DebugLoading,
+        QualityLoading,
         isError,
         reqActive,
+        codeInpVal,
+        outputVal,
       }}
     >
       {children}
@@ -25,32 +37,65 @@ const ContextProvider = ({ children }: any) => {
 export default ContextProvider;
 
 const initVal: any = {
-  isLoading: false,
+  ConvertLoading: false,
+  DebugLoading: false,
+  QualityLoading: false,
+  reqActive: false,
   isError: false,
-  outputContent: "",
+  codeInpVal: "",
+  outputVal: "",
 };
 
 const Reducer = (state = initVal, { type, payload }: any) => {
   switch (type) {
-    case "ISLOADING": {
+    case "CONVERTLOADING": {
       return {
         ...state,
-        isLoading: true,
+        ConvertLoading: true,
+        reqActive: true,
+        isError: false,
+      };
+    }
+    case "DEBUGLOADING": {
+      return {
+        ...state,
+        ConvertLoading: true,
+        reqActive: true,
+        isError: false,
+      };
+    }
+    case "QUALITYLOADING": {
+      return {
+        ...state,
+        ConvertLoading: true,
+        reqActive: true,
         isError: false,
       };
     }
     case "ISERROR": {
       return {
         ...state,
-        isLoading: false,
+        ConvertLoading: false,
+        DebugLoading: false,
+        QualityLoading: false,
+        reqActive: false,
         isError: true,
+      };
+    }
+    case "CODEINPCHANGE": {
+      return {
+        ...state,
+        codeInpVal: payload,
       };
     }
     case "SUCCESS": {
       return {
         ...state,
-        isLoading: false,
-        outputContent: payload,
+        ConvertLoading: false,
+        DebugLoading: false,
+        QualityLoading: false,
+        reqActive: false,
+        outputVal: payload,
       };
     }
 
