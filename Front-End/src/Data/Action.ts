@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const API_URL = "https://code-converter-api-jjb2.onrender.com";
+
 // Function for Code Convert Request
 export const handleConvert = (
   dispatch: any,
@@ -21,7 +23,7 @@ export const handleConvert = (
     }
     dispatch({ type: "CONVERTLOADING" });
     axios
-      .post("https://code-converter-api-jjb2.onrender.com/convert", {
+      .post(`${API_URL}/convert`, {
         code: codeInpVal,
         language: selectedlanguage,
       })
@@ -62,7 +64,7 @@ export const handleDebug = (
     }
     dispatch({ type: "DEBUGLOADING" });
     axios
-      .post("https://code-converter-api-jjb2.onrender.com/debug", {
+      .post(`${API_URL}/debug`, {
         code: codeInpVal,
       })
       .then((res) => {
@@ -102,7 +104,7 @@ export const handleCheckQuality = (
     }
     dispatch({ type: "QUALITYCHECKLOADING" });
     axios
-      .post("https://code-converter-api-jjb2.onrender.com/qualityCheck", {
+      .post(`${API_URL}/qualityCheck`, {
         code: codeInpVal,
       })
       .then((res) => {
