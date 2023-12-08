@@ -51,35 +51,39 @@ const Reducer = (state = initVal, { type, payload }: any) => {
     case "CONVERTLOADING": {
       return {
         ...state,
+        reqActive: "convert",
         ConvertLoading: true,
-        reqActive: true,
         isError: false,
+        outputVal: "",
       };
     }
     case "DEBUGLOADING": {
       return {
         ...state,
+        reqActive: "debug",
         ConvertLoading: true,
-        reqActive: true,
         isError: false,
+        outputVal: "",
       };
     }
     case "QUALITYCHECKLOADING": {
       return {
         ...state,
+        reqActive: "quality",
         ConvertLoading: true,
-        reqActive: true,
         isError: false,
+        outputVal: "",
       };
     }
     case "ISERROR": {
       return {
         ...state,
+        reqActive: false,
         ConvertLoading: false,
         DebugLoading: false,
         QualityLoading: false,
-        reqActive: false,
         isError: true,
+        outputVal: "",
       };
     }
     case "CODEINPCHANGE": {
@@ -91,10 +95,16 @@ const Reducer = (state = initVal, { type, payload }: any) => {
     case "SUCCESS": {
       return {
         ...state,
+        reqActive: false,
         ConvertLoading: false,
         DebugLoading: false,
         QualityLoading: false,
-        reqActive: false,
+        outputVal: payload,
+      };
+    }
+    case "SHOWPROCESSINGTEXT": {
+      return {
+        ...state,
         outputVal: payload,
       };
     }

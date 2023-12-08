@@ -98,8 +98,63 @@ const CodeArea = () => {
     dispatch({ type: "CODEINPCHANGE", payload: inpVal });
   };
 
+  // *******************************
+
+  const [messageIndex, setMessageIndex] = useState<number>(0);
+  const [messages, setMessages] = useState<string[]>([]);
+
+  useEffect(() => {
+    let messageTimer: any;
+
+    const startProcessing = async () => {
+      // Simulate different requests for demonstration purposes
+      // Replace these conditions with your actual conditions to choose between convert, debug, or quality check
+      let messageArray: string[] = [];
+      if (false) {
+        messageArray = ConversionMessages;
+        // Simulate conversion request
+      } else if (true) {
+        messageArray = DebuggingMessages;
+        // Simulate debugging request
+      } else if (false) {
+        messageArray = QualityCheckMessages;
+        // Simulate quality check request
+      }
+
+      setMessages(messageArray);
+      setMessageIndex(0);
+
+      // Display messages until isLoading is true
+      messageTimer = setInterval(() => {
+        setMessageIndex((prevIndex) => (prevIndex + 1) % messageArray.length);
+      }, 3000); // Change the delay time as needed
+    };
+
+    if (reqActive) {
+      startProcessing();
+    } else {
+      clearInterval(messageTimer); // Clear the interval when isLoading is false
+    }
+
+    return () => {
+      clearInterval(messageTimer); // Clean up the interval when component unmounts
+    };
+  }, [reqActive]);
+
+  // *******************************
+
+  useEffect(() => {
+    if (reqActive) {
+      dispatch({ type: "SHOWPROCESSINGTEXT", payload: messages[messageIndex] });
+    }
+  }, [messageIndex]);
+
   return (
     <Box css={css.Outer}>
+      <Box w="500px" bg="white" color="black">
+        {reqActive && <Text>{messages[messageIndex]}</Text>}
+      </Box>
+
       {/* Input Component */}
       <Box
         bg="bgA"
@@ -197,7 +252,7 @@ const CodeArea = () => {
           </Box>
 
           <Box display={["flex"]} gap={["10px"]} alignItems="center">
-            <BtnCustom onClick={() => handleCopy(outputVal)}>
+            <BtnCustom onClick={() => handleCopy(toast, outputVal)}>
               <Image as={Copy} />
             </BtnCustom>
 
@@ -240,8 +295,35 @@ const CodeArea = () => {
 
 export default CodeArea;
 
+const ConversionMessages = [
+  "Processing your code for conversion...",
+  "Code magic in progress... Be patient!",
+  "Code conversion in progress... Please wait!",
+  "Hold tight! Code transformation underway.",
+  "Your code is off to the conversion factory!",
+  "Modified code's on its way!",
+];
+
+const DebuggingMessages = [
+  "Debugging mode activated... Stand by!",
+  "Your code is entering debugging phase...",
+  "Analyzing your code for debugging insights...",
+  "Your code is under the debugging microscope.",
+  "Hold tight! Code analysis for debugging ongoing.",
+  "Processing your code for debugging...",
+];
+
+const QualityCheckMessages = [
+  "Processing your code for quality check...",
+  "Quality check initiated for your code...",
+  "Quality check engines at work...",
+  "Code quality assessment in progress...",
+  "Evaluating your code's quality...",
+  "Hold on! Code quality report is underway.",
+];
+
 // Languages Array
-export const Languages = [
+const Languages = [
   {
     img: <JavaScript />,
     name: "JavaScript",

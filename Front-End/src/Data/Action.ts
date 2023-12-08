@@ -143,16 +143,20 @@ export const handleFontSize = (
 };
 
 // Function for copying output to the clipboard
-export const handleCopy = (valueToCopy: any) => {
-  navigator.clipboard
-    .writeText(valueToCopy)
-    .then(() => {
-      // Clipboard successfully copied
-      alert(`Value copied to clipboard: ${valueToCopy}`);
-      // You can add an alert or notification here
-    })
-    .catch((error) => {
-      console.error("Error copying to clipboard:", error);
-      // Handle any errors here
-    });
+export const handleCopy = (toast: any, valueToCopy: any) => {
+  toast.closeAll();
+  if (valueToCopy) {
+    navigator.clipboard
+      .writeText(valueToCopy)
+      .then(() => {
+        toast({
+          title: "Output copied to clipboard.",
+          status: "info",
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        console.error("Error copying to clipboard:-", error);
+      });
+  }
 };
