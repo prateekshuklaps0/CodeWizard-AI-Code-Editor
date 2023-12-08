@@ -10,6 +10,8 @@
 
 - React Ace : npm i react-ace
 
+- React Cookie : npm install react-cookie
+
 https://www.npmjs.com/package/react-ace
 https://securingsincity.github.io/react-ace/
 https://github.com/securingsincity/react-ace/blob/master/docs/Split.md

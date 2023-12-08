@@ -16,7 +16,7 @@ function App() {
   }, []);
 
   return (
-    <Box color="greyA" minH="100dvh">
+    <Box>
       <Particles
         options={ParticleOptions as ParticleOptionsType}
         init={ParticleInit}

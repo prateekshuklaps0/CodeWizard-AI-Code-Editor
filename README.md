@@ -2,7 +2,7 @@
 
 ## Visit : https://codewizard-khaki.vercel.app
 
-### CodeWiard is AI-powered interview prep platform for tech stacks. Choose stack, get relevant questions via open API, answer by typing or speech-to-text, get evaluated results. Track progress, log in, and sign up.
+#### CodeWiard is AI-powered interview prep platform for tech stacks. Choose stack, get relevant questions via open API, answer by typing or speech-to-text, get evaluated results. Track progress, log in, and sign up.
 
 ## Features :-
 

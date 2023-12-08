@@ -10,7 +10,7 @@ export const handleConvert = (
 ) => {
   if (!reqActive) {
     toast.closeAll();
-    if (codeInpVal || codeInpVal.length <= 5) {
+    if (!codeInpVal || codeInpVal.length <= 5) {
       toast({
         title: "Attention!",
         description: "No code detected to convert yet.",
@@ -22,8 +22,8 @@ export const handleConvert = (
     dispatch({ type: "CONVERTLOADING" });
     axios
       .post("https://code-converter-api-jjb2.onrender.com/convert", {
-        codeInpVal,
-        selectedlanguage,
+        code: codeInpVal,
+        language: selectedlanguage,
       })
       .then((res) => {
         dispatch({ type: "SUCCESS", payload: res.data.response });
@@ -51,7 +51,7 @@ export const handleDebug = (
 ) => {
   if (!reqActive) {
     toast.closeAll();
-    if (codeInpVal || codeInpVal.length <= 5) {
+    if (!codeInpVal || codeInpVal.length <= 5) {
       toast({
         title: "Debugging alert!",
         description: "Code required for debugging.",
@@ -63,7 +63,7 @@ export const handleDebug = (
     dispatch({ type: "DEBUGLOADING" });
     axios
       .post("https://code-converter-api-jjb2.onrender.com/debug", {
-        codeInpVal,
+        code: codeInpVal,
       })
       .then((res) => {
         dispatch({ type: "SUCCESS", payload: res.data.response });
@@ -91,7 +91,7 @@ export const handleCheckQuality = (
 ) => {
   if (!reqActive) {
     toast.closeAll();
-    if (codeInpVal || codeInpVal.length <= 5) {
+    if (!codeInpVal || codeInpVal.length <= 5) {
       toast({
         title: "Hold up!",
         description: "No code detected for quality check.",
@@ -103,7 +103,7 @@ export const handleCheckQuality = (
     dispatch({ type: "QUALITYCHECKLOADING" });
     axios
       .post("https://code-converter-api-jjb2.onrender.com/qualityCheck", {
-        codeInpVal,
+        code: codeInpVal,
       })
       .then((res) => {
         dispatch({ type: "SUCCESS", payload: res.data.response });

@@ -2,8 +2,7 @@ import React from "react";
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/ext-language_tools";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/mode-xml";
+import "ace-builds/src-noconflict/mode-markdown";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-tomorrow";
@@ -22,6 +21,7 @@ const EditorComponent: React.FC<{
   currentTheme: string;
   divWidth: number | null;
   readOnly: boolean;
+  showNumberLines: boolean;
   mode: string;
   placeholder: string;
   value: any;
@@ -32,6 +32,7 @@ const EditorComponent: React.FC<{
   currentTheme,
   divWidth,
   readOnly,
+  showNumberLines,
   mode,
   placeholder,
   value,
@@ -48,8 +49,8 @@ const EditorComponent: React.FC<{
       onChange={handleOnChange}
       name={name}
       readOnly={readOnly}
+      showGutter={showNumberLines}
       showPrintMargin={false}
-      showGutter={true}
       highlightActiveLine={true}
       setOptions={{
         enableBasicAutocompletion: true,
@@ -67,16 +68,16 @@ export default EditorComponent;
 // Editor Themes Array
 export const EditorThemes = [
   {
+    theme: "cobalt",
+    name: "Cobalt",
+  },
+  {
     theme: "monokai",
     name: "Monokai",
   },
   {
     theme: "github",
     name: "Github",
-  },
-  {
-    theme: "cobalt",
-    name: "Cobalt",
   },
   {
     theme: "kuroir",

@@ -61,7 +61,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
       return {
         ...state,
         reqActive: "debug",
-        ConvertLoading: true,
+        DebugLoading: true,
         isError: false,
         outputVal: "",
       };
@@ -70,7 +70,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
       return {
         ...state,
         reqActive: "quality",
-        ConvertLoading: true,
+        QualityLoading: true,
         isError: false,
         outputVal: "",
       };
@@ -99,12 +99,6 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         ConvertLoading: false,
         DebugLoading: false,
         QualityLoading: false,
-        outputVal: payload,
-      };
-    }
-    case "SHOWPROCESSINGTEXT": {
-      return {
-        ...state,
         outputVal: payload,
       };
     }

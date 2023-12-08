@@ -67,8 +67,38 @@ const CodeArea = () => {
     useState<string>("JavaScript");
   const [fontSize, setFontSize] = useState<number>(16);
   const [currImg, setCurrImg] = useState(Languages[0].img);
-  const [currentTheme, setTheme] = useState<string>("monokai");
+  const [currentTheme, setTheme] = useState<string>("cobalt");
   const [divWidth, setDivWidth] = useState<number | null>(null);
+  const [messageIndex, setMessageIndex] = useState<number>(0);
+  const [messages, setMessages] = useState<string[]>([]);
+
+  // useEffect for showing processing messages in output editor while a request is made.
+  useEffect(() => {
+    let messageTimer: any;
+    const startProcessing = async () => {
+      let messageArray: string[] = [];
+      if (reqActive == "convert") {
+        messageArray = ConversionMessages;
+      } else if (reqActive == "debug") {
+        messageArray = DebuggingMessages;
+      } else if (reqActive == "quality") {
+        messageArray = QualityCheckMessages;
+      }
+      setMessages(messageArray);
+      setMessageIndex(0);
+      messageTimer = setInterval(() => {
+        setMessageIndex((prevIndex) => (prevIndex + 1) % messageArray.length);
+      }, 3000);
+    };
+    if (reqActive) {
+      startProcessing();
+    } else {
+      clearInterval(messageTimer);
+    }
+    return () => {
+      clearInterval(messageTimer);
+    };
+  }, [reqActive]);
 
   // useEffect for changing the Editor's Width for responsiveness.
   useEffect(() => {
@@ -98,63 +128,8 @@ const CodeArea = () => {
     dispatch({ type: "CODEINPCHANGE", payload: inpVal });
   };
 
-  // *******************************
-
-  const [messageIndex, setMessageIndex] = useState<number>(0);
-  const [messages, setMessages] = useState<string[]>([]);
-
-  useEffect(() => {
-    let messageTimer: any;
-
-    const startProcessing = async () => {
-      // Simulate different requests for demonstration purposes
-      // Replace these conditions with your actual conditions to choose between convert, debug, or quality check
-      let messageArray: string[] = [];
-      if (false) {
-        messageArray = ConversionMessages;
-        // Simulate conversion request
-      } else if (true) {
-        messageArray = DebuggingMessages;
-        // Simulate debugging request
-      } else if (false) {
-        messageArray = QualityCheckMessages;
-        // Simulate quality check request
-      }
-
-      setMessages(messageArray);
-      setMessageIndex(0);
-
-      // Display messages until isLoading is true
-      messageTimer = setInterval(() => {
-        setMessageIndex((prevIndex) => (prevIndex + 1) % messageArray.length);
-      }, 3000); // Change the delay time as needed
-    };
-
-    if (reqActive) {
-      startProcessing();
-    } else {
-      clearInterval(messageTimer); // Clear the interval when isLoading is false
-    }
-
-    return () => {
-      clearInterval(messageTimer); // Clean up the interval when component unmounts
-    };
-  }, [reqActive]);
-
-  // *******************************
-
-  useEffect(() => {
-    if (reqActive) {
-      dispatch({ type: "SHOWPROCESSINGTEXT", payload: messages[messageIndex] });
-    }
-  }, [messageIndex]);
-
   return (
     <Box css={css.Outer}>
-      <Box w="500px" bg="white" color="black">
-        {reqActive && <Text>{messages[messageIndex]}</Text>}
-      </Box>
-
       {/* Input Component */}
       <Box
         bg="bgA"
@@ -219,6 +194,7 @@ const CodeArea = () => {
           currentTheme={currentTheme}
           divWidth={divWidth}
           readOnly={false}
+          showNumberLines={true}
           mode="javascript"
           placeholder="Type or Paste your Code here"
           value={codeInpVal}
@@ -284,9 +260,10 @@ const CodeArea = () => {
           currentTheme={currentTheme}
           divWidth={divWidth}
           readOnly={true}
-          mode="xml"
+          showNumberLines={false}
+          mode="markdown"
           placeholder="Your Output Will Come here..."
-          value={outputVal}
+          value={reqActive ? messages[messageIndex] : outputVal}
         />
       </Box>
     </Box>
