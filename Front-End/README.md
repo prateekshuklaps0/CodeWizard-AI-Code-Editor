@@ -13,8 +13,3 @@
 - React Cookie : npm install react-cookie
 
 - React Loader Spinner : npm i react-loader-spinner
-
-https://www.npmjs.com/package/react-ace
-https://securingsincity.github.io/react-ace/
-https://github.com/securingsincity/react-ace/blob/master/docs/Split.md
-https://github.com/securingsincity/react-ace/blob/master/docs/Modes.md
