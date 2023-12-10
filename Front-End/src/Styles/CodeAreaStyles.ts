@@ -174,6 +174,27 @@ export const SelectTagCss = (
     border-radius: 5px;
   }
 `;
+export const ConnectionOuterBox = css`
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  gap: 20px;
+
+  p {
+    font-size: 18px;
+  }
+
+  .ConnectionSpinner {
+    width: 100px;
+  }
+
+  @media (max-width: 992px) {
+  }
+  @media (max-width: 768px) {
+  }
+  @media (max-width: 480px) {
+  }
+`;
 
 /* 
 

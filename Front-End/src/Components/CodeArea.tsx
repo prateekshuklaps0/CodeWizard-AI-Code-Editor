@@ -3,6 +3,7 @@ import BtnCustom from "./BtnCustom";
 import EditorComponent, { EditorThemes } from "./EditorComponent";
 import { Context } from "../Data/Context";
 import {
+  ConnectServer,
   updateDivWidth,
   handleFontSize,
   handleCopy,
@@ -12,6 +13,7 @@ import {
 } from "../Data/Action";
 
 import { useEffect, useState, useContext } from "react";
+import { BallTriangle } from "react-loader-spinner";
 import {
   Box,
   Select,
@@ -20,6 +22,7 @@ import {
   Text,
   useToast,
   Spinner,
+  Center,
 } from "@chakra-ui/react";
 
 import { FaJava as Java } from "react-icons/fa6";
@@ -59,6 +62,7 @@ const CodeArea = () => {
     ConvertLoading,
     DebugLoading,
     QualityLoading,
+    ConnectingToServer,
     reqActive,
     codeInpVal,
     outputVal,
@@ -83,6 +87,8 @@ const CodeArea = () => {
         messageArray = DebuggingMessages;
       } else if (reqActive == "quality") {
         messageArray = QualityCheckMessages;
+      } else if (reqActive == "ConnectingToServer") {
+        messageArray = ConnectingMessages;
       }
       setMessages(messageArray);
       setMessageIndex(0);
@@ -111,6 +117,11 @@ const CodeArea = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }, []);
+
+  // useEffect for Connecting the server on page mount, this request is made to homeroute on backend to wakeup the server
+  useEffect(() => {
+    ConnectServer(dispatch, reqActive, toast);
   }, []);
 
   // useEffect for changing current language icon in language select menu.
@@ -254,23 +265,42 @@ const CodeArea = () => {
           </Box>
         </Box>
 
-        <EditorComponent
-          name={"Output Editor"}
-          fontSize={fontSize}
-          currentTheme={currentTheme}
-          divWidth={divWidth}
-          readOnly={true}
-          showNumberLines={false}
-          mode="markdown"
-          placeholder="Your Output Will Come here..."
-          value={reqActive ? messages[messageIndex] : outputVal}
-        />
+        {ConnectingToServer ? (
+          <Center bg="bgA" color="primary" css={css.ConnectionOuterBox}>
+            <Text>{messages[messageIndex] && messages[messageIndex]}</Text>
+            <BallTriangle
+              radius={5}
+              color={ContextColors.primary}
+              wrapperClass={"ConnectionSpinner"}
+              ariaLabel="ball-triangle-loading"
+              visible={true}
+            />
+          </Center>
+        ) : (
+          <EditorComponent
+            name={"Output Editor"}
+            fontSize={fontSize}
+            currentTheme={currentTheme}
+            divWidth={divWidth}
+            readOnly={true}
+            showNumberLines={false}
+            mode="markdown"
+            placeholder="Your Output Will Come here..."
+            value={reqActive ? messages[messageIndex] : outputVal}
+          />
+        )}
       </Box>
     </Box>
   );
 };
 
 export default CodeArea;
+
+const ConnectingMessages = [
+  "Installing Dependencies...",
+  "Establishing Connection...",
+  "Connecting to Server...",
+];
 
 const ConversionMessages = [
   "Processing your code for conversion...",

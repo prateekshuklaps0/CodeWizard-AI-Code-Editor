@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://code-converter-api-jjb2.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Function for Code Convert Request
 export const handleConvert = (
@@ -28,8 +28,11 @@ export const handleConvert = (
         language: selectedlanguage,
       })
       .then((res) => {
-        dispatch({ type: "SUCCESS", payload: res.data.response });
-        console.log("Convert Request Successfull :-", res.data);
+        dispatch({
+          type: "SUCCESS",
+          payload: res.data.response + "\n" + "" + "\n",
+        });
+        // console.log("Convert Request Successfull :-", res.data);
       })
       .catch((err: any) => {
         dispatch({ type: "ISERROR" });
@@ -68,8 +71,11 @@ export const handleDebug = (
         code: codeInpVal,
       })
       .then((res) => {
-        dispatch({ type: "SUCCESS", payload: res.data.response });
-        console.log("Debug Request Successfull :-", res.data);
+        dispatch({
+          type: "SUCCESS",
+          payload: res.data.response + "\n" + "" + "\n",
+        });
+        // console.log("Debug Request Successfull :-", res.data);
       })
       .catch((err) => {
         dispatch({ type: "ISERROR" });
@@ -108,8 +114,11 @@ export const handleCheckQuality = (
         code: codeInpVal,
       })
       .then((res) => {
-        dispatch({ type: "SUCCESS", payload: res.data.response });
-        console.log("Quality Check Request Successfull :-", res.data);
+        dispatch({
+          type: "SUCCESS",
+          payload: res.data.response + "\n" + "" + "\n",
+        });
+        //  console.log("Quality Check Request Successfull :-", res.data);
       })
       .catch((err) => {
         dispatch({ type: "ISERROR" });
@@ -120,6 +129,36 @@ export const handleCheckQuality = (
           isClosable: true,
         });
         console.log("Quality Check Request Error :-", err);
+      });
+  }
+};
+
+// Function for Connecting the server on page mount, this request is made to homeroute on backend to wakeup the server
+export const ConnectServer = (
+  dispatch: any,
+  reqActive: boolean,
+  toast: any
+) => {
+  if (!reqActive) {
+    toast.closeAll();
+    dispatch({ type: "CONNECTIONLOADING" });
+    axios
+      .get(`${API_URL}`)
+      .then((res) => {
+        dispatch({
+          type: "CONNECTIONSUCCESS",
+        });
+        console.log("Connected to Server:-", res.data.msg);
+      })
+      .catch((err: any) => {
+        dispatch({ type: "ISERROR" });
+        toast({
+          title: "Server Connection Error!",
+          description: "Please contact the developer.",
+          status: "error",
+          isClosable: true,
+        });
+        console.log("Server Connection Error :-", err);
       });
   }
 };

@@ -8,6 +8,7 @@ const ContextProvider = ({ children }: any) => {
       ConvertLoading,
       DebugLoading,
       QualityLoading,
+      ConnectingToServer,
       isError,
       reqActive,
       codeInpVal,
@@ -23,6 +24,7 @@ const ContextProvider = ({ children }: any) => {
         ConvertLoading,
         DebugLoading,
         QualityLoading,
+        ConnectingToServer,
         isError,
         reqActive,
         codeInpVal,
@@ -40,6 +42,7 @@ const initVal: any = {
   ConvertLoading: false,
   DebugLoading: false,
   QualityLoading: false,
+  ConnectingToServer: false,
   reqActive: false,
   isError: false,
   codeInpVal: "",
@@ -75,6 +78,22 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         outputVal: "",
       };
     }
+    case "CONNECTIONLOADING": {
+      return {
+        ...state,
+        reqActive: "ConnectingToServer",
+        ConnectingToServer: true,
+        isError: false,
+        outputVal: "",
+      };
+    }
+    case "CONNECTIONSUCCESS": {
+      return {
+        ...state,
+        reqActive: false,
+        ConnectingToServer: false,
+      };
+    }
     case "ISERROR": {
       return {
         ...state,
@@ -82,6 +101,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         ConvertLoading: false,
         DebugLoading: false,
         QualityLoading: false,
+        ConnectingToServer: false,
         isError: true,
         outputVal: "",
       };
@@ -99,6 +119,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         ConvertLoading: false,
         DebugLoading: false,
         QualityLoading: false,
+        ConnectingToServer: false,
         outputVal: payload,
       };
     }
