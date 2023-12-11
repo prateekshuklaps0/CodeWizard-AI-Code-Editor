@@ -1,10 +1,10 @@
-# CodeWizard
+# <a href="https://codewizard-khaki.vercel.app" >CodeWizard</a>
 
-<img width="70px" src="./Images/Logo.webp" />
+ <img width="70px" src="./Images/Logo.webp" />
 
 
 
-#### CodeWizard is an AI powered go-to platform for code writing, translation across multiple programming languages, debugging, and quality assessment. Simplify your coding experience and unlock efficiency with CodeWizard's intelligent functionalities.
+#### <h4 align="justify" >CodeWizard is an AI powered go-to platform for code writing, translation across multiple programming languages, debugging, and quality assessment. Simplify your coding experience and unlock efficiency with CodeWizard's intelligent functionalities.</h4>
 
 ## Features :-
 
