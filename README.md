@@ -1,8 +1,10 @@
 # CodeWizard
 
-![](./Images/Logo.webp)
+<img width="75px" src="./Images/Logo.webp" />
 
-#### CodeWiard is AI-powered interview prep platform for tech stacks. Choose stack, get relevant questions via open API, answer by typing or speech-to-text, get evaluated results. Track progress, log in, and sign up.
+
+
+#### CodeWizard is an AI powered go-to platform for code writing, translation across multiple programming languages, debugging, and quality assessment. Simplify your coding experience and unlock efficiency with CodeWizard's intelligent functionalities.
 
 ## Features :-
 
@@ -19,13 +21,23 @@
 
 ## Installation :-
 
-### Start The Front-End Server
 
-- Clone Repo : `git clone https://github.com/prateekshuklaps0/CodeWizard-AI-Code-Converter`
-- Install Dependencies : `cd Front-End`, `npm install`
-- Start the Front-End Server : `npm run dev`
 
-### Debug your Code
+- Clone Repo :
+```
+git clone https://github.com/prateekshuklaps0/CodeWizard-AI-Code-Converter
+```
+- Install Dependencies :
+```
+cd Front-End
+npm install
+```
+- Start the Front-End Server :
+```
+npm run dev
+```
+
+### Convert your Code
 ![Convert your Code](./Images/Converting.png)
 ### Debug your Code
 ![Debug your Code](./Images/Debuging.png)
