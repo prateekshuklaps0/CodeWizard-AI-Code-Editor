@@ -25,8 +25,13 @@
 - Install Dependencies : `cd Front-End`, `npm install`
 - Start the Front-End Server : `npm run dev`
 
+### Debug your Code
 ![Convert your Code](./Images/Converting.png)
+### Debug your Code
 ![Debug your Code](./Images/Debuging.png)
+### Check Quality of your Code
 ![Check Quality of your Code](./Images/Checking_Quality.png)
-![Supports multiple Programming Languages](./Images/Langauges.png)
-![Code in various themes](./Images/Converting.png)
+### Supports multiple Programming Languages
+![Supports multiple Programming Languages](./Images/Languages.png)
+### Code using various themes
+![Code using various themes](./Images/Themes.png)
