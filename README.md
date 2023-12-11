@@ -1,6 +1,6 @@
 # CodeWizard
 
-<img width="75px" src="./Images/Logo.webp" />
+<img width="70px" src="./Images/Logo.webp" />
 
 
 
