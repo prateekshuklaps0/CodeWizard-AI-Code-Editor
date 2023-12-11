@@ -3,17 +3,14 @@ import React from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/mode-markdown";
+import "ace-builds/src-noconflict/theme-cobalt";
 import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-github";
-import "ace-builds/src-noconflict/theme-tomorrow";
-import "ace-builds/src-noconflict/theme-kuroir";
-import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/theme-xcode";
 import "ace-builds/src-noconflict/theme-terminal";
-import "ace-builds/src-noconflict/theme-ambiance";
-import "ace-builds/src-noconflict/theme-chaos";
-import "ace-builds/src-noconflict/theme-cobalt";
 import "ace-builds/src-noconflict/theme-nord_dark";
+import "ace-builds/src-noconflict/theme-dracula";
+import "ace-builds/src-noconflict/theme-gob";
+import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 
 const EditorComponent: React.FC<{
   name: string;
@@ -68,24 +65,24 @@ export default EditorComponent;
 // Editor Themes Array
 export const EditorThemes = [
   {
-    theme: "cobalt",
-    name: "Cobalt",
-  },
-  {
     theme: "monokai",
     name: "Monokai",
   },
   {
-    theme: "github",
-    name: "Github",
+    theme: "cobalt",
+    name: "Cobalt",
   },
   {
-    theme: "kuroir",
-    name: "Kuroir",
+    theme: "tomorrow_night_blue",
+    name: "Night Blue",
   },
   {
-    theme: "twilight",
-    name: "Twilight",
+    theme: "dracula",
+    name: "Dracula",
+  },
+  {
+    theme: "gob",
+    name: "Gob",
   },
   {
     theme: "xcode",
@@ -96,19 +93,7 @@ export const EditorThemes = [
     name: "Terminal",
   },
   {
-    theme: "chaos",
-    name: "Chaos",
-  },
-  {
-    theme: "tomorrow",
-    name: "Tomorrow",
-  },
-  {
     theme: "nord_dark",
     name: "Nord Dark",
-  },
-  {
-    theme: "ambiance",
-    name: "Ambiance",
   },
 ];
