@@ -1,6 +1,6 @@
 # CodeWizard
 
-## Visit : https://codewizard-khaki.vercel.app
+![](./Images/Logo.webp)
 
 #### CodeWiard is AI-powered interview prep platform for tech stacks. Choose stack, get relevant questions via open API, answer by typing or speech-to-text, get evaluated results. Track progress, log in, and sign up.
 
@@ -25,4 +25,8 @@
 - Install Dependencies : `cd Front-End`, `npm install`
 - Start the Front-End Server : `npm run dev`
 
-![Landing Normal](./Images/Converting.png)
+![Convert your Code](./Images/Converting.png)
+![Debug your Code](./Images/Debuging.png)
+![Check Quality of your Code](./Images/Checking_Quality.png)
+![Supports multiple Programming Languages](./Images/Langauges.png)
+![Code in various themes](./Images/Converting.png)
