@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 // Function for Code Convert Request
 export const handleConvert = (
@@ -23,16 +23,44 @@ export const handleConvert = (
     }
     dispatch({ type: "CONVERTLOADING" });
     axios
-      .post(`${API_URL}/convert`, {
-        code: codeInpVal,
-        language: selectedlanguage,
-      })
+      .post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
+        {
+          contents: [
+            {
+              parts: [
+                {
+                  text: `
+    [ Act as a Professional Developer and Code Converter ],
+    You have to convert the given code into the ${selectedlanguage} language as per the Instructions below.
+    Instructions : 
+    - [ ! IMPORTANT ] If the language in which the given code written is same as the language asked to convert the code into, Just simply tell me in a good and soothing language, do not write any code.
+    - Else, convert the code into the language asked.
+    - Do not provide any explanation of the code and do not write anything extra other than the converted code, also you need not to provide any note as well.
+
+    Here is the Code that needs to be converted :- ${codeInpVal}
+    `,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((res) => {
         dispatch({
           type: "SUCCESS",
-          payload: res.data.response + "\n" + "" + "\n",
+          payload:
+            res?.data?.candidates[0]?.content?.parts[0]?.text ||
+            "Something went wrong while converting your code, please contact the developer!" +
+              "\n" +
+              "" +
+              "\n",
         });
-        // console.log("Convert Request Successfull :-", res.data);
       })
       .catch((err: any) => {
         dispatch({ type: "ISERROR" });
@@ -67,13 +95,44 @@ export const handleDebug = (
     }
     dispatch({ type: "DEBUGLOADING" });
     axios
-      .post(`${API_URL}/debug`, {
-        code: codeInpVal,
-      })
+      .post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
+        {
+          contents: [
+            {
+              parts: [
+                {
+                  text: `
+    [ Act as a Professional Developer and Code Debugger ],
+    You have to debug the given code as per the Instructions below.
+    Instructions :
+    - [ ! IMPORTANT ] If there is no errors in the given code or it seems to work fine, Just simply tell me that the code seems to work fine in good and soothing language, do not write any code or explaination for that.
+    - Else Provide a least and precise markdown explaination of the errors detected in the the given code and how it is fixed with explaination heading: "Following Errors detected in the given Code:".
+    - After providing the explaination, give the debugged code and do not write or add without any comments or explaination in between the code lines.
+    - Don't go much deep into the explaination, keep it short and precise.
+
+    Here is the Code that needs to be debugged :- ${codeInpVal}
+    `,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((res) => {
         dispatch({
           type: "SUCCESS",
-          payload: res.data.response + "\n" + "" + "\n",
+          payload:
+            res?.data?.candidates[0]?.content?.parts[0]?.text ||
+            "Something went wrong while debugging your code, please contact the developer!" +
+              "\n" +
+              "" +
+              "\n",
         });
         // console.log("Debug Request Successfull :-", res.data);
       })
@@ -110,13 +169,58 @@ export const handleCheckQuality = (
     }
     dispatch({ type: "QUALITYCHECKLOADING" });
     axios
-      .post(`${API_URL}/qualityCheck`, {
-        code: codeInpVal,
-      })
+      .post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
+        {
+          contents: [
+            {
+              parts: [
+                {
+                  text: `
+    [ Act as a Professional Developer and Code Quality Checker ],
+    Based on the below Criteria and Instructions, you have to check the quality of the given code.
+
+    Criteria:
+    - Consistency: Evaluate the code for consistent coding style, naming conventions, and formatting.
+    - Performance: Assess the code for efficient algorithms, optimized data structures, and overall performance considerations.
+    - Documentation: Review the code for appropriate comments, inline documentation, and clear explanations of complex logic.
+    - Error Handling: Examine the code for proper error handling and graceful error recovery mechanisms.
+    - Testability: Evaluate the code for ease of unit testing, mocking, and overall testability.
+    - Modularity: Assess the code for modular design, separation of concerns, and reusability of components.
+    - Complexity: Analyze the code for excessive complexity, convoluted logic, and potential code smells.
+    - Duplication: Identify any code duplication and assess its impact on maintainability and readability.
+    - Readability: Evaluate the code for readability, clarity, and adherence to coding best practices.
+
+    Instructions :
+    - Provide a summary of code quality in visually appealing points.
+    - Provide quality check report showing the percentage-wise evaluation for each parameter mentioned above in the Criteria section.
+    - In the summary also provide the areas where the code needs to be improved.
+    - Don't go much deep into the explaination, keep it short and precise.
+    - Use simple english language, do not use complex words.
+    - Do not write anything extra other, also you need not to provide any note as well.
+
+    Here is the Code that needs to be quality checked :- ${codeInpVal}
+    `,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((res) => {
         dispatch({
           type: "SUCCESS",
-          payload: res.data.response + "\n" + "" + "\n",
+          payload:
+            res?.data?.candidates[0]?.content?.parts[0]?.text ||
+            "Something went wrong while checking quality of your code, please contact the developer!" +
+              "\n" +
+              "" +
+              "\n",
         });
         //  console.log("Quality Check Request Successfull :-", res.data);
       })
@@ -143,7 +247,7 @@ export const ConnectServer = (
     toast.closeAll();
     dispatch({ type: "CONNECTIONLOADING" });
     axios
-      .get(`${API_URL}`)
+      .get(`${API_KEY}`)
       .then((res) => {
         dispatch({
           type: "CONNECTIONSUCCESS",

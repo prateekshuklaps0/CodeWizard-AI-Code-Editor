@@ -3,7 +3,7 @@ import BtnCustom from "./BtnCustom";
 import EditorComponent, { EditorThemes } from "./EditorComponent";
 import { Context } from "../Data/Context";
 import {
-  ConnectServer,
+  // ConnectServer,
   updateDivWidth,
   handleFontSize,
   handleCopy,
@@ -120,9 +120,9 @@ const CodeArea = () => {
   }, []);
 
   // useEffect for Connecting the server on page mount, this request is made to homeroute on backend to wakeup the server
-  useEffect(() => {
-    ConnectServer(dispatch, reqActive, toast);
-  }, []);
+  // useEffect(() => {
+  //   ConnectServer(dispatch, reqActive, toast);
+  // }, []);
 
   // useEffect for changing current language icon in language select menu.
   useEffect(() => {
