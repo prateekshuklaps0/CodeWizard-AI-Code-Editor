@@ -13,3 +13,12 @@
 - React Cookie : npm install react-cookie
 
 - React Loader Spinner : npm i react-loader-spinner
+
+<!-- glas LINKS -->
+
+https://glass-navigation.webflow.io/
+https://glassmorphism-pricing-table.webflow.io/
+https://tricks-glassmorphism.webflow.io/
+https://glassmorphism-profile-page.webflow.io/
+https://www.rapidclaims.ai/
+https://entor-tech.webflow.io/

@@ -1,4 +1,18 @@
 import axios from "axios";
+import {
+  CONNECTION_LOADING,
+  CONNECTION_SUCCESS,
+  CONVERT_LOADING,
+  DEBUG_LOADING,
+  ERROR_USERNAME,
+  FILE_CLICKED_SUCCESS,
+  GET_REPO_PATH_ERROR,
+  GET_REPO_PATH_LOADING,
+  LOADING_USERNAME,
+  PATH_CHANGE,
+  QUALITY_CHECKLOADING,
+  SUCCESS_USERNAME,
+} from "./Context";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -21,7 +35,7 @@ export const handleConvert = (
       });
       return;
     }
-    dispatch({ type: "CONVERTLOADING" });
+    dispatch({ type: CONVERT_LOADING });
     axios
       .post(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
@@ -31,15 +45,15 @@ export const handleConvert = (
               parts: [
                 {
                   text: `
-    [ Act as a Professional Developer and Code Converter ],
-    You have to convert the given code into the ${selectedlanguage} language as per the Instructions below.
-    Instructions : 
-    - [ ! IMPORTANT ] If the language in which the given code written is same as the language asked to convert the code into, Just simply tell me in a good and soothing language, do not write any code.
-    - Else, convert the code into the language asked.
-    - Do not provide any explanation of the code and do not write anything extra other than the converted code, also you need not to provide any note as well.
+                  [ Act as a Professional Developer and Code Converter ],
+                  You have to convert the given code into the ${selectedlanguage} language as per the Instructions below.
+                  Instructions :
+                  - [ ! IMPORTANT ] If the language in which the given code written is same as the language asked to convert the code into, Just simply tell me in a good and soothing language, do not write any code.
+                  - Else, convert the code into the language asked.
+                  - Do not provide any explanation of the code and do not write anything extra other than the converted code, also you need not to provide any note as well.
 
-    Here is the Code that needs to be converted :- ${codeInpVal}
-    `,
+                  Here is the Code that needs to be converted :- ${codeInpVal}
+                  `,
                 },
               ],
             },
@@ -93,7 +107,7 @@ export const handleDebug = (
       });
       return;
     }
-    dispatch({ type: "DEBUGLOADING" });
+    dispatch({ type: DEBUG_LOADING });
     axios
       .post(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
@@ -167,7 +181,7 @@ export const handleCheckQuality = (
       });
       return;
     }
-    dispatch({ type: "QUALITYCHECKLOADING" });
+    dispatch({ type: QUALITY_CHECKLOADING });
     axios
       .post(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
@@ -237,6 +251,123 @@ export const handleCheckQuality = (
   }
 };
 
+// Search Github User
+export const SearchGithubUser = async (dispatch: any, userNameInp: string) => {
+  // dfgdfgd
+  dispatch({ type: LOADING_USERNAME });
+  try {
+    const userNamesRes = await axios.get(
+      `https://api.github.com/users/${userNameInp}/repos`
+    );
+    const reposList = userNamesRes?.data || [];
+    dispatch({
+      type: SUCCESS_USERNAME,
+      payload: {
+        reposList,
+        importMessage:
+          reposList.length == 0 ? "No Public Repository Found!" : "",
+      },
+    });
+    console.log("Search Github User Response :", userNamesRes?.data);
+  } catch (error: any) {
+    dispatch({
+      type: ERROR_USERNAME,
+      payload: error?.response?.data?.message || "Something Went Wrong",
+    });
+    console.log(
+      "Username Search Error :",
+      error?.response?.data?.message || "Something Went Wrong"
+    );
+  }
+};
+
+// Repo Path Click
+export const GetRepoPaths = async (dispatch: any, repoName: string) => {
+  // dfgdfgd
+  dispatch({ type: GET_REPO_PATH_LOADING });
+  try {
+    const userNamesRes = await axios.get(
+      `https://api.github.com/repos/prateekshuklaps0/${repoName}/contents`
+    );
+    dispatch({
+      type: PATH_CHANGE,
+      payload: { currentPath: repoName, contentsArr: userNamesRes?.data },
+    });
+    console.log("Repo Name Click Response :", userNamesRes?.data || []);
+  } catch (error: any) {
+    dispatch({
+      type: GET_REPO_PATH_ERROR,
+      payload: error?.response?.data?.message || "Something Went Wrong",
+    });
+    console.log(
+      "Repo Name Click Error :",
+      error?.response?.data?.message || "Something Went Wrong"
+    );
+  }
+};
+
+// Folder Click
+export const FolderClickReq = async (
+  dispatch: any,
+  repoName: string = "Repo Name Not Found",
+  folderName: string = "Folder Path Not Found"
+) => {
+  // dfgdfgd
+  dispatch({ type: GET_REPO_PATH_LOADING });
+  try {
+    const userNamesRes = await axios.get(
+      `https://api.github.com/repos/prateekshuklaps0/${repoName}/contents/${folderName}`
+    );
+    dispatch({
+      type: PATH_CHANGE,
+      payload: { currentPath: repoName, contentsArr: userNamesRes?.data },
+    });
+    console.log("Folder Click Response :", userNamesRes?.data || []);
+  } catch (error: any) {
+    dispatch({
+      type: GET_REPO_PATH_ERROR,
+      payload: error?.response?.data?.message || "Something Went Wrong",
+    });
+    console.log(
+      "Folder Click Error :",
+      error?.response?.data?.message || "Something Went Wrong"
+    );
+  }
+};
+
+// File Click
+export const FileClickReq = async (
+  dispatch: any,
+  repoName: string = "Repo Name Not Found",
+  filePath: string = "Folder Path Not Found"
+) => {
+  // dfgdfgd
+  dispatch({ type: GET_REPO_PATH_LOADING });
+  try {
+    const userNamesRes = await axios.get(
+      `https://api.github.com/repos/prateekshuklaps0/${repoName}/contents/${filePath}`
+    );
+    dispatch({
+      type: FILE_CLICKED_SUCCESS,
+      payload: {
+        fetchedCodeData: atob(userNamesRes?.data?.content) || "",
+        downloadFileLink: userNamesRes?.data?.download_url,
+        clikedFileName: userNamesRes?.data?.name,
+      },
+    });
+    console.log("File Click Response :", userNamesRes?.data || []);
+  } catch (error: any) {
+    dispatch({
+      type: GET_REPO_PATH_ERROR,
+      payload: error?.response?.data?.message || "Something Went Wrong",
+    });
+    console.log(
+      "File Click Error :",
+      error?.response?.data?.message || "Something Went Wrong"
+    );
+  }
+};
+
 // Function for Connecting the server on page mount, this request is made to homeroute on backend to wakeup the server
 export const ConnectServer = (
   dispatch: any,
@@ -245,12 +376,12 @@ export const ConnectServer = (
 ) => {
   if (!reqActive) {
     toast.closeAll();
-    dispatch({ type: "CONNECTIONLOADING" });
+    dispatch({ type: CONNECTION_LOADING });
     axios
       .get(`${API_KEY}`)
       .then((res) => {
         dispatch({
-          type: "CONNECTIONSUCCESS",
+          type: CONNECTION_SUCCESS,
         });
         console.log("Connected to Server:-", res.data.msg);
       })

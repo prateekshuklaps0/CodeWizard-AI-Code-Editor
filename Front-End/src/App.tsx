@@ -1,27 +1,18 @@
 import "./App.css";
-import ParticleOptions from "./Styles/ParticleOptions.json";
 import Navbar from "./Components/Navbar";
-import CodeArea from "./Components/CodeArea";
 import Footer from "./Components/Footer";
+import CodeArea from "./Components/CodeArea";
+import Particle from "./Components/Particles";
 
-import Particles from "react-tsparticles";
-import { useCallback } from "react";
-import { loadFull } from "tsparticles";
-import { Box } from "@chakra-ui/react";
+import { Box, useMediaQuery } from "@chakra-ui/react";
 
 function App() {
-  type ParticleOptionsType = Record<string, unknown>;
-  const ParticleInit = useCallback(async (engine: any) => {
-    await loadFull(engine);
-  }, []);
+  const [isBelow480px] = useMediaQuery("(max-width: 480px)");
 
   return (
-    <Box>
-      <Particles
-        options={ParticleOptions as ParticleOptionsType}
-        init={ParticleInit}
-      />
-      <Navbar />
+    <Box id="App">
+      <Particle />
+      <Navbar isBelow480px={isBelow480px} />
       <CodeArea />
       <Footer />
     </Box>
