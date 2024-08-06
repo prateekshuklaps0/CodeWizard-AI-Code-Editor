@@ -17,6 +17,8 @@ import {
   IconButton,
   Progress,
   Button,
+  FormControl,
+  Avatar,
 } from "@chakra-ui/react";
 import { useContext, useRef, useState } from "react";
 import {
@@ -29,8 +31,16 @@ import {
   FaFile as FileIconFilled,
   FaGithub as GithubIconFilled,
 } from "react-icons/fa";
-import { IoIosSearch as SearchIcon } from "react-icons/io";
+// import { IoIosSearch as SearchIcon } from "react-icons/io";
 import { MdClose as CloseIcon } from "react-icons/md";
+import { TfiImport } from "react-icons/tfi";
+import { LuImport } from "react-icons/lu";
+import { CiImport as ImportIcon } from "react-icons/ci";
+import { MdSearch as SearchIcon } from "react-icons/md";
+import {
+  HiUser as UserFilled,
+  HiOutlineUser as UserOutline,
+} from "react-icons/hi2";
 import {
   FileClickReq,
   FolderClickReq,
@@ -61,7 +71,7 @@ const Navbar = ({ isBelow480px }: any) => {
     clikedFileName,
   } = useContext(Context);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const initialRef = useRef(null);
+  const initialRef = useRef<HTMLInputElement>(null);
   const [userNameInp, setInpVal] = useState("");
   const [currRepoName, setCurrRepoName] = useState("");
   const [downloadLoading, setDownloadLoading] = useState(false);
@@ -107,6 +117,11 @@ const Navbar = ({ isBelow480px }: any) => {
     setDownloadLoading(false);
   };
 
+  // Clear Function
+  const handleClear = () => {
+    setInpVal("");
+  };
+
   return (
     <Box css={css.Outer}>
       <Box css={css.TopNavBox}>
@@ -138,14 +153,23 @@ const Navbar = ({ isBelow480px }: any) => {
           <ModalContent css={css.ModalContentCss}>
             <ModalHeader css={css.ModalHeaderCss}>
               <Text>
-                <GithubIconFilled /> Import Code from Github
+                <ImportIcon /> Import Code from Github <GithubIconFilled />
               </Text>
               <CloseIcon onClick={onClose} />
             </ModalHeader>
 
-            <ModalBody>
+            <ModalBody css={css.ModalBodyCss}>
               <form onSubmit={userNameSubmit}>
-                <Input
+                <Avatar
+                  fontSize={["15px", "17.5px", "20px"]}
+                  height={["30px", "32.5px", "35px"]}
+                  width={["30px", "32.5px", "35px"]}
+                  icon={<UserFilled />}
+                  onClick={() =>
+                    initialRef.current && initialRef.current.focus()
+                  }
+                />
+                <input
                   ref={initialRef}
                   value={userNameInp}
                   onChange={(e) => {
@@ -154,14 +178,14 @@ const Navbar = ({ isBelow480px }: any) => {
                   }}
                   placeholder="Enter Github Username"
                   required
+                  type="text"
                 />
-                <IconButton
-                  colorScheme="teal"
-                  fontSize="25px"
-                  aria-label="Search User"
-                  icon={<SearchIcon />}
-                  type="submit"
-                />
+                <Button type="submit">
+                  <SearchIcon />
+                </Button>
+                <Button onClick={handleClear} type="button">
+                  <CloseIcon />
+                </Button>
               </form>
 
               <Box height="200px" overflow="auto">

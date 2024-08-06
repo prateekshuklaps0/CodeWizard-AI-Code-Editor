@@ -10,7 +10,6 @@ export const Outer = css`
   z-index: 100;
   border: none;
   box-shadow: var(--shadowA);
-  background-image: var(--biA);
   backdrop-filter: var(--blurA);
   border-bottom-width: 1px;
   border-bottom-style: solid;
@@ -131,6 +130,7 @@ export const ModalContentCss = css`
   background: var(--bgC);
   background: -webkit-linear-gradient(to top, #24243e, #302b63, var(--bgB));
   background: linear-gradient(to top, #24243e, #302b63, var(--bgB));
+  border-radius: 10px;
 
   @media (max-width: 992px) {
   }
@@ -149,17 +149,121 @@ export const ModalHeaderCss = css`
     padding: 0;
     display: flex;
     align-items: center;
-    gap: 15px;
-  }
+    gap: 7.5px;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    word-spacing: -0.5px;
 
+    > svg {
+      font-size: 20px;
+    }
+  }
   > svg:nth-of-type(1) {
     cursor: pointer;
     background: var(--bgC);
     border-radius: 50%;
-    width: 45px;
-    height: 45px;
+    width: 27.5px;
+    height: 27.5px;
     padding: 5px;
   }
+  @media (max-width: 992px) {
+  }
+  @media (max-width: 768px) {
+  }
+  @media (max-width: 480px) {
+  }
+`;
+export const ModalBodyCss = css`
+  > form:nth-of-type(1) {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    width: 480px;
+    border: 2px solid var(--primary);
+    padding-left: 1px;
+    overflow: hidden;
+    border-radius: 50px;
+    background: var(--bgA);
+  }
+  input:nth-of-type(1) {
+    border: none;
+    background: transparent;
+    height: 35px;
+    flex-grow: 1;
+    outline: none;
+    padding-left: 12.5px;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+  }
+  button {
+    padding: 0;
+    height: 100%;
+    height: 35px;
+    border: none;
+    border-radius: 0;
+    background-image: var(--biC);
+    background: var(--bgB);
+    color: var(--textColorA);
+    background: var(--bgC);
+    width: 45px;
+
+    svg {
+      font-size: 20px;
+    }
+  }
+  button:nth-of-type(2) {
+    border-left: 1px solid var(--bgB);
+  }
+  button:hover {
+    background: var(--bgC);
+  }
+  button:active {
+    background: var(--bgA);
+  }
+
+  @media (max-width: 768px) {
+    > form:nth-of-type(1) {
+      width: 400px;
+    }
+    input:nth-of-type(1) {
+      height: 32.5px;
+      padding-left: 10px;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+    }
+    button {
+      height: 32.5px;
+      width: 45px;
+
+      svg {
+        font-size: 20px;
+      }
+    }
+  }
+  @media (max-width: 480px) {
+    > form:nth-of-type(1) {
+      width: 275px;
+    }
+    input:nth-of-type(1) {
+      width: 100%;
+      height: 30px;
+      padding-left: 7px;
+      font-size: 14px;
+      letter-spacing: 0px;
+    }
+    button {
+      height: 30px;
+      width: 30px;
+
+      svg {
+        font-size: 18px;
+      }
+    }
+  }
+`;
+export const UsernameInpCss = css`
   @media (max-width: 992px) {
   }
   @media (max-width: 768px) {
