@@ -145,6 +145,7 @@ export const ModalHeaderCss = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: default;
 
   .userNameCss {
     margin: 0;
@@ -244,9 +245,13 @@ export const ModalBodyCss = css`
     border-radius: 0;
     background-image: var(--biC);
     background: var(--bgB);
-    color: var(--textColorA);
+    color: var(--textColorC);
     background: var(--bgC);
     width: 45px;
+
+    :hover {
+      color: var(--textColorA);
+    }
 
     svg {
       font-size: 20px;
@@ -316,7 +321,87 @@ export const ModalBodyCss = css`
     }
   }
 `;
-export const UsernameInpCss = css`
+export const Loader1OuterDiv = css`
+  flex-grow: 1;
+  overflow: auto;
+
+  .importCodeProgess {
+    height: 5px;
+    border-radius: 50px;
+    background: var(--bgC);
+  }
+  > div:nth-of-type(2) {
+    display: grid;
+    place-content: center;
+    place-items: center;
+    height: 97.5%;
+  }
+
+  @media (max-width: 992px) {
+  }
+  @media (max-width: 768px) {
+  }
+  @media (max-width: 480px) {
+  }
+`;
+export const Loader1 = css`
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background: var(--bgA);
+  transform: rotateX(65deg) rotate(45deg);
+  color: #fff;
+  animation: layers1 1s linear infinite alternate;
+  transform: perspective(200px) rotateX(65deg) rotate(45deg);
+  :after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.7);
+    animation: layerTr 1s linear infinite alternate;
+  }
+
+  @media (max-width: 992px) {
+  }
+  @media (max-width: 768px) {
+  }
+  @media (max-width: 480px) {
+  }
+`;
+export const ErrorBoxCss = css`
+  flex-grow: 1;
+  overflow: auto;
+  display: grid;
+  place-content: center;
+  place-items: center;
+  height: 95%;
+
+  > div:nth-of-type(1) {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+  }
+  img:nth-of-type(1) {
+    width: 140px;
+    margin: auto;
+  }
+  p:nth-of-type(1) {
+    padding: 0;
+    margin: 0 auto;
+    line-height: 30px;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    color: var(--textColorC);
+
+    span {
+      font-size: 20px;
+      color: var(--textColorA);
+    }
+  }
+
   @media (max-width: 992px) {
   }
   @media (max-width: 768px) {

@@ -100,6 +100,9 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         codeInpVal: payload,
         contentsArr: [],
         toggleToFile: false,
+        errorImport: false,
+        importMessage: "",
+        repoList: [],
       };
     }
     case "SUCCESS": {
@@ -115,7 +118,6 @@ const Reducer = (state = initVal, { type, payload }: any) => {
     }
 
     // Import - OLD
-
     case GET_REPO_PATH_LOADING: {
       return {
         ...state,
@@ -157,6 +159,9 @@ const Reducer = (state = initVal, { type, payload }: any) => {
       return {
         ...state,
         toggleToFile: false,
+        errorImport: false,
+        importMessage: "",
+        repoList: [],
       };
     }
     case SHOW_REPO_TOGGLE: {
@@ -188,7 +193,17 @@ const Reducer = (state = initVal, { type, payload }: any) => {
       return {
         ...state,
         loadingImport: false,
+        errorImport: false,
         reposList: payload,
+      };
+    }
+    case CLEAR_USERNAME_INP: {
+      return {
+        ...state,
+        loadingImport: false,
+        errorImport: false,
+        importMessage: "",
+        reposList: [],
       };
     }
 
@@ -219,3 +234,4 @@ export const TOGGLE_TO_FILE = "TOGGLE_TO_FILE";
 export const HIDE_TOGGLE_TO_FILE = "HIDE_TOGGLE_TO_FILE";
 export const SHOW_REPO_TOGGLE = "SHOW_REPO_TOGGLE";
 export const CODEINPCHANGE = "CODEINPCHANGE";
+export const CLEAR_USERNAME_INP = "CLEAR_USERNAME_INP";

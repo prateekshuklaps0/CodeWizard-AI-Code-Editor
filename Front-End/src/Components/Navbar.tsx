@@ -1,5 +1,7 @@
 import * as css from "../Styles/NavbarStyles";
 import Logo from "../Data/code.webp";
+import NoDataImg from "../Data/NoData.svg";
+import NoUserFoundImg from "../Data/NoUserFound.svg";
 
 import {
   Box,
@@ -19,8 +21,9 @@ import {
   Button,
   FormControl,
   Avatar,
+  Skeleton,
 } from "@chakra-ui/react";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   GoRepoForked as RepoIconOutline,
   GoFile as FileIconOutline,
@@ -50,6 +53,7 @@ import {
   SetLsData,
 } from "../Data/Action";
 import {
+  CLEAR_USERNAME_INP,
   CODEINPCHANGE,
   Context,
   HIDE_TOGGLE_TO_FILE,
@@ -122,9 +126,14 @@ const Navbar = ({ isBelow480px }: any) => {
   // Clear Function
   const handleClear = () => {
     setInpVal("");
+    dispatch({ type: CLEAR_USERNAME_INP });
     const editorTheme = GetLsData()?.editorTheme || "Cobalt";
     SetLsData({ editorTheme });
   };
+
+  useEffect(() => {
+    console.log("importMessage :", importMessage);
+  }, [importMessage]);
 
   return (
     <Box css={css.Outer}>
@@ -148,7 +157,7 @@ const Navbar = ({ isBelow480px }: any) => {
           onClose={onClose}
           blockScrollOnMount={true}
           initialFocusRef={initialRef}
-          size={["xs", "md", "2xl", "4xl", "5xl"]}
+          size={["xs", "md", "2xl", "3xl"]}
         >
           <ModalOverlay
             bg="blackAlpha.300"
@@ -183,7 +192,6 @@ const Navbar = ({ isBelow480px }: any) => {
                     );
                   })()}
                 </Box>
-
                 <input
                   ref={initialRef}
                   value={userNameInp}
@@ -194,110 +202,156 @@ const Navbar = ({ isBelow480px }: any) => {
                   placeholder="Enter Github Username"
                   required
                   type="text"
+                  disabled={loadingImport}
+                  style={{ cursor: loadingImport ? "not-allowed" : "text" }}
                 />
-                <Button type="submit">
+                <Button
+                  isDisabled={loadingImport}
+                  style={{ cursor: loadingImport ? "wait" : "pointer" }}
+                  type="submit"
+                >
                   <SearchIcon />
                 </Button>
-                <Button onClick={handleClear} type="button">
+                <Button
+                  style={{ cursor: loadingImport ? "wait" : "pointer" }}
+                  isDisabled={loadingImport}
+                  onClick={handleClear}
+                  type="button"
+                >
                   <CloseIcon />
                 </Button>
               </form>
 
-              <Box flexGrow={1} overflow="auto">
-                {loadingImport && "Loading Username"}
-                {errorImport && importMessage}
-
-                {toggleToFile ? (
+              {loadingImport && (
+                <Box css={css.Loader1OuterDiv}>
+                  <Progress
+                    colorScheme="var(--bgC)"
+                    isIndeterminate
+                    className="importCodeProgess"
+                  />
                   <Box>
-                    <Text>{clikedFileName}</Text>
-                    <pre
-                      style={{
-                        padding: "16px",
-                        borderRadius: "4px",
-                        backgroundColor: "#313030",
-                        color: "white",
-                        fontFamily: "monospace",
-                        fontSize: "14px",
-                        lineHeight: "1.5",
-                        overflowX: "auto",
-                        whiteSpace: "pre-wrap",
-                      }}
-                    >
-                      {fetchedCodeData}
-                    </pre>
+                    <Box css={css.Loader1}></Box>
                   </Box>
-                ) : (
-                  <Box>
-                    {!loadingImport &&
-                    !errorImport &&
-                    reposList.length == 0 &&
-                    importMessage ? (
-                      "No Public Repo Exists"
-                    ) : (
-                      <Box>
-                        {repoLoading && <Progress size="xs" isIndeterminate />}
+                </Box>
+              )}
 
-                        {!repoLoading && contentsArr.length > 0 ? (
-                          <Box>
-                            {contentsArr?.map(
-                              (
-                                contentsArrItem: any,
-                                contentsArrInd: number
-                              ) => (
-                                <Box
-                                  onClick={() =>
-                                    contentsArrItem?.type == "dir"
-                                      ? folderClickHandler(
-                                          contentsArrItem?.path
-                                        )
-                                      : fileClickHandler(contentsArrItem?.path)
-                                  }
-                                  border="1px solid grey"
-                                  m="15px"
-                                  p="5px 10px"
-                                  display="flex"
-                                  gap="7px"
-                                  key={contentsArrItem?.sha + contentsArrInd}
-                                >
-                                  {contentsArrItem?.type == "dir" ? (
-                                    <FolderIconOutline />
-                                  ) : (
-                                    <FileIconOutline />
-                                  )}
-                                  <Text>{contentsArrItem?.name}</Text>
-                                </Box>
-                              )
-                            )}
-                          </Box>
-                        ) : (
-                          <Box>
-                            {reposList?.map(
-                              (repoListItem: any, repoListInd: number) => (
-                                <Box
-                                  key={repoListItem?.id + repoListInd}
-                                  border="1px solid grey"
-                                  m="15px"
-                                  p="5px 10px"
-                                  display="flex"
-                                  gap="7px"
-                                  onClick={(e: any) => {
-                                    e.stopPropagation();
-                                    setCurrRepoName(repoListItem?.name);
-                                    repoPathClick(repoListItem?.name);
-                                  }}
-                                >
-                                  <RepoIconOutline />
-                                  <Text>{repoListItem?.name}</Text>
-                                </Box>
-                              )
-                            )}
-                          </Box>
-                        )}
-                      </Box>
-                    )}
-                  </Box>
-                )}
-              </Box>
+              {!loadingImport && errorImport && (
+                <Box css={css.ErrorBoxCss}>
+                  {importMessage == "Not Found" ? (
+                    <Box>
+                      <Image src={NoUserFoundImg} alt={importMessage} />
+                      <Text>
+                        No user found with username ' <span>{userNameInp}</span>{" "}
+                        '
+                      </Text>
+                    </Box>
+                  ) : (
+                    <Box>
+                      <Image src={NoDataImg} alt={importMessage} />
+                      <Text>{importMessage}</Text>
+                    </Box>
+                  )}
+                </Box>
+              )}
+
+              {/* <Box flexGrow={1} overflow="auto">
+                <Box>
+                  {toggleToFile ? (
+                    <Box>
+                      <Text>{clikedFileName}</Text>
+                      <pre
+                        style={{
+                          padding: "16px",
+                          borderRadius: "4px",
+                          backgroundColor: "#313030",
+                          color: "white",
+                          fontFamily: "monospace",
+                          fontSize: "14px",
+                          lineHeight: "1.5",
+                          overflowX: "auto",
+                          whiteSpace: "pre-wrap",
+                        }}
+                      >
+                        {fetchedCodeData}
+                      </pre>
+                    </Box>
+                  ) : (
+                    <Box>
+                      {!loadingImport &&
+                      !errorImport &&
+                      reposList.length == 0 &&
+                      importMessage ? (
+                        "No Public Repo Exists"
+                      ) : (
+                        <Box>
+                          {repoLoading && (
+                            <Progress size="xs" isIndeterminate />
+                          )}
+
+                          {!repoLoading && contentsArr.length > 0 ? (
+                            <Box>
+                              {contentsArr?.map(
+                                (
+                                  contentsArrItem: any,
+                                  contentsArrInd: number
+                                ) => (
+                                  <Box
+                                    onClick={() =>
+                                      contentsArrItem?.type == "dir"
+                                        ? folderClickHandler(
+                                            contentsArrItem?.path
+                                          )
+                                        : fileClickHandler(
+                                            contentsArrItem?.path
+                                          )
+                                    }
+                                    border="1px solid grey"
+                                    m="15px"
+                                    p="5px 10px"
+                                    display="flex"
+                                    gap="7px"
+                                    key={contentsArrItem?.sha + contentsArrInd}
+                                  >
+                                    {contentsArrItem?.type == "dir" ? (
+                                      <FolderIconOutline />
+                                    ) : (
+                                      <FileIconOutline />
+                                    )}
+                                    <Text>{contentsArrItem?.name}</Text>
+                                  </Box>
+                                )
+                              )}
+                            </Box>
+                          ) : (
+                            <Box>
+                              {reposList?.map(
+                                (repoListItem: any, repoListInd: number) => (
+                                  <Box
+                                    key={repoListItem?.id + repoListInd}
+                                    border="1px solid grey"
+                                    m="15px"
+                                    p="5px 10px"
+                                    display="flex"
+                                    gap="7px"
+                                    onClick={(e: any) => {
+                                      e.stopPropagation();
+                                      setCurrRepoName(repoListItem?.name);
+                                      repoPathClick(repoListItem?.name);
+                                    }}
+                                  >
+                                    <RepoIconOutline />
+                                    <Text>{repoListItem?.name}</Text>
+                                  </Box>
+                                )
+                              )}
+                            </Box>
+                          )}
+                        </Box>
+                      )}
+                    </Box>
+                  )}
+                </Box>
+              </Box> */}
             </ModalBody>
 
             <ModalFooter>
