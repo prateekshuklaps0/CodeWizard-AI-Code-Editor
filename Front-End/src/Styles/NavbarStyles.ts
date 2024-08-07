@@ -126,6 +126,8 @@ export const ImportBtn = css`
   }
 `;
 export const ModalContentCss = css`
+  min-height: 400px;
+  height: 85%;
   color: var(--textColorA);
   background: var(--bgC);
   background: -webkit-linear-gradient(to top, #24243e, #302b63, var(--bgB));
@@ -144,7 +146,24 @@ export const ModalHeaderCss = css`
   align-items: center;
   justify-content: space-between;
 
-  > p:nth-of-type(1) {
+  .userNameCss {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    word-spacing: -0.5px;
+    color: var(--textColorB);
+
+    span {
+      color: var(--textColorA);
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      word-spacing: -0.5px;
+    }
+  }
+  .importCodeHeader {
     margin: 0;
     padding: 0;
     display: flex;
@@ -175,6 +194,10 @@ export const ModalHeaderCss = css`
   }
 `;
 export const ModalBodyCss = css`
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
   > form:nth-of-type(1) {
     margin: auto;
     display: flex;
@@ -185,14 +208,31 @@ export const ModalBodyCss = css`
     overflow: hidden;
     border-radius: 50px;
     background: var(--bgA);
+    min-height: 35px;
+  }
+  > form > div:nth-of-type(1) {
+    margin: 0;
+    background: var(--greyC);
+    color: var(--textColorA);
+    border-radius: 50px;
+    overflow: hidden;
+    display: grid;
+    place-content: center;
+    place-items: center;
+    width: 32.5px;
+    height: 32.5px;
+
+    svg {
+      font-size: 18px;
+    }
   }
   input:nth-of-type(1) {
     border: none;
     background: transparent;
-    height: 35px;
+    height: 100%;
     flex-grow: 1;
     outline: none;
-    padding-left: 12.5px;
+    padding: 0px 0px 0px 12.5px;
     font-weight: 400;
     font-size: 16px;
     letter-spacing: 0.5px;
@@ -200,7 +240,6 @@ export const ModalBodyCss = css`
   button {
     padding: 0;
     height: 100%;
-    height: 35px;
     border: none;
     border-radius: 0;
     background-image: var(--biC);
@@ -226,15 +265,22 @@ export const ModalBodyCss = css`
   @media (max-width: 768px) {
     > form:nth-of-type(1) {
       width: 400px;
+      min-height: 32.5px;
+    }
+    > form > div:nth-of-type(1) {
+      width: 30px;
+      height: 30px;
+
+      svg {
+        font-size: 16px;
+      }
     }
     input:nth-of-type(1) {
-      height: 32.5px;
       padding-left: 10px;
       font-size: 15px;
       letter-spacing: 0.5px;
     }
     button {
-      height: 32.5px;
       width: 45px;
 
       svg {
@@ -245,16 +291,23 @@ export const ModalBodyCss = css`
   @media (max-width: 480px) {
     > form:nth-of-type(1) {
       width: 275px;
+      min-height: 30px;
+    }
+    > form > div:nth-of-type(1) {
+      width: 42.5px;
+      height: 25px;
+
+      svg {
+        font-size: 14px;
+      }
     }
     input:nth-of-type(1) {
       width: 100%;
-      height: 30px;
       padding-left: 7px;
       font-size: 14px;
       letter-spacing: 0px;
     }
     button {
-      height: 30px;
       width: 30px;
 
       svg {

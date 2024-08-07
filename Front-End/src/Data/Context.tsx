@@ -113,30 +113,9 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         outputVal: payload,
       };
     }
-    case LOADING_USERNAME: {
-      return {
-        ...state,
-        loadingImport: true,
-        errorImport: false,
-        importMessage: "",
-      };
-    }
-    case ERROR_USERNAME: {
-      return {
-        ...state,
-        loadingImport: false,
-        errorImport: true,
-        importMessage: payload,
-      };
-    }
-    case SUCCESS_USERNAME: {
-      return {
-        ...state,
-        loadingImport: false,
-        reposList: payload?.reposList,
-        importMessage: payload?.importMessage,
-      };
-    }
+
+    // Import - OLD
+
     case GET_REPO_PATH_LOADING: {
       return {
         ...state,
@@ -188,6 +167,31 @@ const Reducer = (state = initVal, { type, payload }: any) => {
       };
     }
 
+    // Import - New
+    case IMPORT_LOADING: {
+      return {
+        ...state,
+        loadingImport: true,
+        errorImport: false,
+        importMessage: "",
+      };
+    }
+    case IMPORT_ERROR: {
+      return {
+        ...state,
+        loadingImport: false,
+        errorImport: true,
+        importMessage: payload || "",
+      };
+    }
+    case SUCCESS_USERNAME: {
+      return {
+        ...state,
+        loadingImport: false,
+        reposList: payload,
+      };
+    }
+
     default: {
       return initVal;
     }
@@ -195,8 +199,9 @@ const Reducer = (state = initVal, { type, payload }: any) => {
 };
 
 // Action Types
-export const LOADING_USERNAME = "LOADING_USERNAME";
-export const ERROR_USERNAME = "ERROR_USERNAME";
+export const CODEWIZARD_KEY = "CODEWIZARD_KEY";
+export const IMPORT_LOADING = "IMPORT_LOADING";
+export const IMPORT_ERROR = "IMPORT_ERROR";
 export const SUCCESS_USERNAME = "SUCCESS_USERNAME";
 export const CONVERT_LOADING = "CONVERT_LOADING";
 export const DEBUG_LOADING = "DEBUG_LOADING";

@@ -1,14 +1,15 @@
 import axios from "axios";
 import {
+  CODEWIZARD_KEY,
   CONNECTION_LOADING,
   CONNECTION_SUCCESS,
   CONVERT_LOADING,
   DEBUG_LOADING,
-  ERROR_USERNAME,
+  IMPORT_ERROR,
   FILE_CLICKED_SUCCESS,
   GET_REPO_PATH_ERROR,
   GET_REPO_PATH_LOADING,
-  LOADING_USERNAME,
+  IMPORT_LOADING,
   PATH_CHANGE,
   QUALITY_CHECKLOADING,
   SUCCESS_USERNAME,
@@ -254,28 +255,41 @@ export const handleCheckQuality = (
 // Search Github User
 export const SearchGithubUser = async (dispatch: any, userNameInp: string) => {
   // dfgdfgd
-  dispatch({ type: LOADING_USERNAME });
+  dispatch({ type: IMPORT_LOADING });
+  const editorTheme = GetLsData()?.editorTheme || "Cobalt";
+  let dataToBeStored: any = { editorTheme };
+  SetLsData(dataToBeStored);
   try {
-    const userNamesRes = await axios.get(
-      `https://api.github.com/users/${userNameInp}/repos`
+    const [userNameRes, repoListRes] = await Promise.all([
+      axios.get<any>(`https://api.github.com/users/${userNameInp}`),
+      axios.get<any>(`https://api.github.com/users/${userNameInp}/repos`),
+    ]);
+
+    (dataToBeStored.avatar_url = userNameRes?.data?.avatar_url || ""),
+      (dataToBeStored.githubId = userNameRes?.data?.login || ""),
+      (dataToBeStored.userName = userNameRes?.data?.name || ""),
+      SetLsData(dataToBeStored);
+    const reposList = repoListRes?.data || [];
+    dispatch(
+      reposList.length > 0
+        ? {
+            type: SUCCESS_USERNAME,
+            payload: reposList,
+          }
+        : {
+            type: IMPORT_ERROR,
+            payload: "No Public Repositories Found!",
+          }
     );
-    const reposList = userNamesRes?.data || [];
-    dispatch({
-      type: SUCCESS_USERNAME,
-      payload: {
-        reposList,
-        importMessage:
-          reposList.length == 0 ? "No Public Repository Found!" : "",
-      },
-    });
-    console.log("Search Github User Response :", userNamesRes?.data);
+    //  console.log("Github User Search Response :", repoListRes?.data);
+    //  console.log("User Repos Response :", repoListRes?.data);
   } catch (error: any) {
     dispatch({
-      type: ERROR_USERNAME,
+      type: IMPORT_ERROR,
       payload: error?.response?.data?.message || "Something Went Wrong",
     });
     console.log(
-      "Username Search Error :",
+      "Github Username Search Error :",
       error?.response?.data?.message || "Something Went Wrong"
     );
   }
@@ -435,4 +449,15 @@ export const handleCopy = (toast: any, valueToCopy: any) => {
         console.error("Error copying to clipboard:-", error);
       });
   }
+};
+
+// Set Data in localstorage
+export const SetLsData = (objData: { [key: string]: any }) => {
+  localStorage.setItem(CODEWIZARD_KEY, JSON.stringify(objData));
+};
+
+// Get Data in localstorage
+export const GetLsData = () => {
+  const storedData = localStorage.getItem(CODEWIZARD_KEY);
+  return storedData ? JSON.parse(storedData) : {};
 };

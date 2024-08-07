@@ -44,8 +44,10 @@ import {
 import {
   FileClickReq,
   FolderClickReq,
+  GetLsData,
   GetRepoPaths,
   SearchGithubUser,
+  SetLsData,
 } from "../Data/Action";
 import {
   CODEINPCHANGE,
@@ -72,7 +74,7 @@ const Navbar = ({ isBelow480px }: any) => {
   } = useContext(Context);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef<HTMLInputElement>(null);
-  const [userNameInp, setInpVal] = useState("");
+  const [userNameInp, setInpVal] = useState(GetLsData()?.githubId || "");
   const [currRepoName, setCurrRepoName] = useState("");
   const [downloadLoading, setDownloadLoading] = useState(false);
 
@@ -120,6 +122,8 @@ const Navbar = ({ isBelow480px }: any) => {
   // Clear Function
   const handleClear = () => {
     setInpVal("");
+    const editorTheme = GetLsData()?.editorTheme || "Cobalt";
+    SetLsData({ editorTheme });
   };
 
   return (
@@ -152,7 +156,12 @@ const Navbar = ({ isBelow480px }: any) => {
           />
           <ModalContent css={css.ModalContentCss}>
             <ModalHeader css={css.ModalHeaderCss}>
-              <Text>
+              {GetLsData()?.userName && (
+                <Text className="userNameCss">
+                  Hi, <span>{GetLsData()?.userName || ""}</span>
+                </Text>
+              )}
+              <Text className="importCodeHeader">
                 <ImportIcon /> Import Code from Github <GithubIconFilled />
               </Text>
               <CloseIcon onClick={onClose} />
@@ -160,15 +169,21 @@ const Navbar = ({ isBelow480px }: any) => {
 
             <ModalBody css={css.ModalBodyCss}>
               <form onSubmit={userNameSubmit}>
-                <Avatar
-                  fontSize={["15px", "17.5px", "20px"]}
-                  height={["30px", "32.5px", "35px"]}
-                  width={["30px", "32.5px", "35px"]}
-                  icon={<UserFilled />}
+                <Box
                   onClick={() =>
                     initialRef.current && initialRef.current.focus()
                   }
-                />
+                >
+                  {(function () {
+                    const userAvatar = GetLsData()?.avatar_url || "";
+                    return userAvatar ? (
+                      <Image src={userAvatar} />
+                    ) : (
+                      <UserFilled />
+                    );
+                  })()}
+                </Box>
+
                 <input
                   ref={initialRef}
                   value={userNameInp}
@@ -188,10 +203,10 @@ const Navbar = ({ isBelow480px }: any) => {
                 </Button>
               </form>
 
-              <Box height="200px" overflow="auto">
+              <Box flexGrow={1} overflow="auto">
                 {loadingImport && "Loading Username"}
                 {errorImport && importMessage}
-                {/* Repolist */}
+
                 {toggleToFile ? (
                   <Box>
                     <Text>{clikedFileName}</Text>
