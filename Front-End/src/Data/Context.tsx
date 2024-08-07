@@ -25,7 +25,7 @@ const initVal: any = {
   outputVal: "",
   searchUserReqMade: false,
   loadingImport: false,
-  errorImport: "",
+  errorImport: false,
   reposList: [],
   importMessage: "",
   repoLoading: false,
@@ -161,7 +161,8 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         toggleToFile: false,
         errorImport: false,
         importMessage: "",
-        repoList: [],
+        reposList: [],
+        contentsArr: [],
       };
     }
     case SHOW_REPO_TOGGLE: {

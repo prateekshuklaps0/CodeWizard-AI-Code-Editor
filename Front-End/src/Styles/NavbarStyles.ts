@@ -329,12 +329,13 @@ export const Loader1OuterDiv = css`
     height: 5px;
     border-radius: 50px;
     background: var(--bgC);
+    margin-top: 20px;
   }
   > div:nth-of-type(2) {
     display: grid;
     place-content: center;
     place-items: center;
-    height: 97.5%;
+    height: 87.5%;
   }
 
   @media (max-width: 992px) {
@@ -345,22 +346,35 @@ export const Loader1OuterDiv = css`
   }
 `;
 export const Loader1 = css`
+  width: 64px;
+  height: 64px;
   position: relative;
-  width: 80px;
-  height: 80px;
-  background: var(--bgA);
-  transform: rotateX(65deg) rotate(45deg);
-  color: #fff;
-  animation: layers1 1s linear infinite alternate;
-  transform: perspective(200px) rotateX(65deg) rotate(45deg);
-  :after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.7);
-    animation: layerTr 1s linear infinite alternate;
-  }
+  background-image: linear-gradient(var(--textColorA) 16px, transparent 0),
+    linear-gradient(var(--bgD) 16px, transparent 0),
+    linear-gradient(var(--bgD) 16px, transparent 0),
+    linear-gradient(var(--textColorA) 16px, transparent 0);
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  background-position: left top, left bottom, right top, right bottom;
+  animation: rotate 1s linear infinite;
 
+  @keyframes rotate {
+    0% {
+      width: 64px;
+      height: 64px;
+      transform: rotate(0deg);
+    }
+    50% {
+      width: 30px;
+      height: 30px;
+      transform: rotate(180deg);
+    }
+    100% {
+      width: 64px;
+      height: 64px;
+      transform: rotate(360deg);
+    }
+  }
   @media (max-width: 992px) {
   }
   @media (max-width: 768px) {
@@ -400,6 +414,60 @@ export const ErrorBoxCss = css`
       font-size: 20px;
       color: var(--textColorA);
     }
+  }
+
+  @media (max-width: 992px) {
+  }
+  @media (max-width: 768px) {
+  }
+  @media (max-width: 480px) {
+  }
+`;
+export const ContentDivOuter = css`
+  flex-grow: 1;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  place-items: center;
+
+  img:nth-of-type(1) {
+    width: 240px;
+    margin: auto;
+  }
+
+  @media (max-width: 992px) {
+  }
+  @media (max-width: 768px) {
+  }
+  @media (max-width: 480px) {
+  }
+`;
+export const EmptyContentDivOuter = css`
+  flex-grow: 1;
+  overflow: auto;
+  display: grid;
+  place-content: center;
+  place-items: center;
+  height: 95%;
+
+  @media (max-width: 992px) {
+  }
+  @media (max-width: 768px) {
+  }
+  @media (max-width: 480px) {
+  }
+`;
+export const RepoListOuterDiv = css`
+  height: 100%;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+
+  .containerDiv {
+    overflow: auto;
+    height: 100%;
   }
 
   @media (max-width: 992px) {

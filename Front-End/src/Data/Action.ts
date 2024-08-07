@@ -278,7 +278,7 @@ export const SearchGithubUser = async (dispatch: any, userNameInp: string) => {
           }
         : {
             type: IMPORT_ERROR,
-            payload: "No Public Repositories Found !",
+            payload: "No Public Repository Found !",
           }
     );
     //  console.log("Github User Search Response :", repoListRes?.data);

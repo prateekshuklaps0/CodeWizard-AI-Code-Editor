@@ -2,6 +2,7 @@ import * as css from "../Styles/NavbarStyles";
 import Logo from "../Data/code.webp";
 import NoDataImg from "../Data/NoData.svg";
 import NoUserFoundImg from "../Data/NoUserFound.svg";
+import ImportLogo from "../Data/ImportLogo.svg";
 
 import {
   Box,
@@ -132,8 +133,8 @@ const Navbar = ({ isBelow480px }: any) => {
   };
 
   useEffect(() => {
-    console.log("importMessage :", importMessage);
-  }, [importMessage]);
+    console.log("reposList :", reposList);
+  }, [reposList]);
 
   return (
     <Box css={css.Outer}>
@@ -222,7 +223,7 @@ const Navbar = ({ isBelow480px }: any) => {
                 </Button>
               </form>
 
-              {loadingImport && (
+              {loadingImport && !errorImport && (
                 <Box css={css.Loader1OuterDiv}>
                   <Progress
                     colorScheme="var(--bgC)"
@@ -249,6 +250,45 @@ const Navbar = ({ isBelow480px }: any) => {
                     <Box>
                       <Image src={NoDataImg} alt={importMessage} />
                       <Text>{importMessage}</Text>
+                    </Box>
+                  )}
+                </Box>
+              )}
+
+              {!loadingImport && !errorImport && (
+                <Box flexGrow={1} overflow="hidden">
+                  {reposList.length == 0 && contentsArr.length == 0 && (
+                    <Box css={css.ContentDivOuter}>
+                      <Image src={ImportLogo} alt="Import from Github" />
+                    </Box>
+                  )}
+
+                  {reposList.length > 0 && contentsArr.length == 0 && (
+                    <Box css={css.RepoListOuterDiv}>
+                      <Box>Test</Box>
+                      <Box className="containerDiv">
+                        {reposList?.map(
+                          (repoListItem: any, repoListInd: number) => (
+                            <Box
+                              key={repoListItem?.id + repoListInd}
+                              border="1px solid grey"
+                              m="15px"
+                              p="5px 10px"
+                              display="flex"
+                              gap="7px"
+
+                              // onClick={(e: any) => {
+                              //   e.stopPropagation();
+                              //   setCurrRepoName(repoListItem?.name);
+                              //   repoPathClick(repoListItem?.name);
+                              // }}
+                            >
+                              <RepoIconOutline />
+                              <Text>{repoListItem?.name}</Text>
+                            </Box>
+                          )
+                        )}
+                      </Box>
                     </Box>
                   )}
                 </Box>
