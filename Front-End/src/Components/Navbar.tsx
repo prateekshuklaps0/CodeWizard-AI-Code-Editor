@@ -61,7 +61,7 @@ import {
   HIDE_TOGGLE_TO_FILE,
   SHOW_REPO_TOGGLE,
 } from "../Data/Context";
-import Particle from "./Particles";
+import { PiPath as PathIcon } from "react-icons/pi";
 
 const Navbar = ({ isBelow480px }: any) => {
   const {
@@ -77,12 +77,12 @@ const Navbar = ({ isBelow480px }: any) => {
     fetchedCodeData,
     downloadFileLink,
     clikedFileName,
+    currentRepoName,
   } = useContext(Context);
   const chakraToast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef<HTMLInputElement>(null);
   const [userNameInp, setInpVal] = useState(GetLsData()?.githubId || "");
-  const [currRepoName, setCurrRepoName] = useState("");
   const [downloadLoading, setDownloadLoading] = useState(false);
 
   // Submit Username Search
@@ -96,7 +96,6 @@ const Navbar = ({ isBelow480px }: any) => {
   // Repo Path Click handler
   const repoClick = (repoName: string) => {
     if (!repoLoading) {
-      // repoName
       GetRepoContents(dispatch, chakraToast, repoName);
     }
   };
@@ -104,14 +103,14 @@ const Navbar = ({ isBelow480px }: any) => {
   // Folder Click handler
   const folderClickHandler = (folderName: string) => {
     if (!repoLoading) {
-      FolderClickReq(dispatch, currRepoName, folderName);
+      FolderClickReq(dispatch, currentRepoName, folderName);
     }
   };
 
   // File Click handler
   const fileClickHandler = (fileName: string) => {
     if (!repoLoading) {
-      FileClickReq(dispatch, currRepoName, fileName);
+      FileClickReq(dispatch, currentRepoName, fileName);
     }
   };
 
@@ -268,7 +267,10 @@ const Navbar = ({ isBelow480px }: any) => {
 
                   {reposList.length > 0 && contentsArr.length == 0 && (
                     <Box css={css.RepoListOuterDiv}>
-                      <Box>Select Repo</Box>
+                      <Box className="selectRepoTextDiv">
+                        <RepoIconOutline />
+                        <Text>Select Repository</Text>
+                      </Box>
                       <Box className="containerDiv">
                         {reposList?.map(
                           (repoListItem: any, repoListInd: number) => (
@@ -276,7 +278,34 @@ const Navbar = ({ isBelow480px }: any) => {
                               key={repoListItem?.id + repoListInd}
                               onClick={(e: any) => {
                                 e.stopPropagation();
-                                // setCurrRepoName(repoListItem?.name);
+                                repoClick(repoListItem?.name);
+                              }}
+                            >
+                              <RepoIconOutline />
+                              <Text>{repoListItem?.name}</Text>
+                            </Box>
+                          )
+                        )}
+                      </Box>
+                    </Box>
+                  )}
+
+                  {reposList.length == 0 && contentsArr.length > 0 && (
+                    <Box css={css.RepoListOuterDiv}>
+                      <Box className="selectRepoTextDiv">
+                        <RepoIconOutline />
+                        <Box>
+                          <Text>{currentRepoName}</Text>
+                        </Box>
+                      </Box>
+
+                      <Box className="containerDiv">
+                        {contentsArr?.map(
+                          (repoListItem: any, repoListInd: number) => (
+                            <Box
+                              key={repoListItem?.id + repoListInd}
+                              onClick={(e: any) => {
+                                e.stopPropagation();
                                 repoClick(repoListItem?.name);
                               }}
                             >

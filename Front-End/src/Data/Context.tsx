@@ -35,6 +35,7 @@ const initVal: any = {
   fetchedCodeData: "",
   downloadFileLink: "",
   clikedFileName: "",
+  currentRepoName: "",
 };
 
 const Reducer = (state = initVal, { type, payload }: any) => {
@@ -182,14 +183,16 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         loadingImport: false,
         errorImport: false,
         reposList: payload,
+        contentsArr: [],
       };
     }
     case REPO_CLICK_SUCCESS: {
       return {
         ...state,
         loadingImport: false,
-        currentPath: payload?.currentRepoName,
+        currentRepoName: payload?.currentRepoName,
         contentsArr: payload?.contentsArr,
+        reposList: [],
         // toggleToFile: false,
       };
     }

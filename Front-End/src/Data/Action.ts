@@ -315,7 +315,7 @@ export const GetRepoContents = async (
         contentsArr: repoContentRes?.data || [],
       },
     });
-    console.log("Repo Click Response :", repoContentRes?.data);
+    // console.log("Repo Click Response :", repoContentRes?.data);
   } catch (error: any) {
     chakraToast({
       title: error?.response?.data?.message || "Something Went Wrong",
@@ -326,7 +326,10 @@ export const GetRepoContents = async (
       type: REPO_CLICK_ERROR,
       payload: error?.response?.data?.message || "Something Went Wrong",
     });
-    console.log("Repo Click Error :", error || "Something Went Wrong");
+    console.log(
+      `Repo Click Error - ${repoName} :`,
+      error || "Something Went Wrong"
+    );
   }
 };
 

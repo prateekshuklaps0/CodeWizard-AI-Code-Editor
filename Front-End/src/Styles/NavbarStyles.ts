@@ -465,6 +465,31 @@ export const RepoListOuterDiv = css`
   overflow: hidden;
   width: 100%;
 
+  .selectRepoTextDiv {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7.5px;
+    font-size: 16px;
+    margin-bottom: 12.5px;
+
+    p {
+      text-align: center;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+    > div {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: auto;
+      width: 100%;
+      padding-bottom: 5px;
+      scroll-snap-align: center;
+    }
+  }
   .containerDiv {
     overflow: auto;
     height: 100%;
