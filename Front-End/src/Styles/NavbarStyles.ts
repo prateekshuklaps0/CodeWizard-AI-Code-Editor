@@ -478,7 +478,13 @@ export const RepoListOuterDiv = css`
     p {
       text-align: center;
       font-weight: 400;
+      font-size: 16px;
+      padding: 2.5px 7.5px;
       letter-spacing: 0.5px;
+      background: var(--bgC);
+      border-radius: 5px;
+      cursor: default;
+      white-space: nowrap;
     }
     > div {
       display: flex;

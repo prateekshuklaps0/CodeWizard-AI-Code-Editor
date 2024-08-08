@@ -36,6 +36,7 @@ const initVal: any = {
   downloadFileLink: "",
   clikedFileName: "",
   currentRepoName: "",
+  pathsArr: [],
 };
 
 const Reducer = (state = initVal, { type, payload }: any) => {
@@ -125,7 +126,6 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         repoLoading: true,
       };
     }
-
     case FILE_CLICKED_SUCCESS: {
       return {
         ...state,
@@ -196,6 +196,17 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         // toggleToFile: false,
       };
     }
+    case FOLDER_CLICK_SUCCESS: {
+      return {
+        ...state,
+        loadingImport: false,
+        pathsArr: payload?.pathsArr,
+        contentsArr: payload?.contentsArr,
+        reposList: [],
+        // currentRepoName: payload?.currentRepoName,
+        // toggleToFile: false,
+      };
+    }
     case REPO_CLICK_ERROR: {
       return {
         ...state,
@@ -242,4 +253,5 @@ export const TOGGLE_TO_FILE = "TOGGLE_TO_FILE";
 export const HIDE_TOGGLE_TO_FILE = "HIDE_TOGGLE_TO_FILE";
 export const SHOW_REPO_TOGGLE = "SHOW_REPO_TOGGLE";
 export const CODEINPCHANGE = "CODEINPCHANGE";
+export const FOLDER_CLICK_SUCCESS = "FOLDER_CLICK_SUCCESS";
 export const CLEAR_USERNAME_INP = "CLEAR_USERNAME_INP";

@@ -13,6 +13,7 @@ import {
   REPO_CLICK_SUCCESS,
   QUALITY_CHECKLOADING,
   SUCCESS_USERNAME,
+  FOLDER_CLICK_SUCCESS,
 } from "./Context";
 import { position, useToast } from "@chakra-ui/react";
 
@@ -315,7 +316,7 @@ export const GetRepoContents = async (
         contentsArr: repoContentRes?.data || [],
       },
     });
-    // console.log("Repo Click Response :", repoContentRes?.data);
+    // console.log(`Repo Click Response  - ${repoName} :`, repoContentRes?.data);
   } catch (error: any) {
     chakraToast({
       title: error?.response?.data?.message || "Something Went Wrong",
@@ -336,10 +337,43 @@ export const GetRepoContents = async (
 // Folder Click
 export const FolderClickReq = async (
   dispatch: any,
+  chakraToast: any,
   repoName: string = "Repo Name Not Found",
-  folderName: string = "Folder Path Not Found"
+  folderPath: string = "Folder Path Not Found"
 ) => {
-  // dfgdfgd
+  dispatch({ type: IMPORT_LOADING });
+  try {
+    const folderClickRes = await axios.get(
+      `https://api.github.com/repos/prateekshuklaps0/${repoName}/contents/${folderPath}`
+    );
+    dispatch({
+      type: FOLDER_CLICK_SUCCESS,
+      payload: {
+        pathsArr: GeneratePathObjects(folderPath),
+        contentsArr: folderClickRes?.data || [],
+      },
+    });
+    console.log(
+      `Folder Click Response - ${folderPath}  :`,
+      folderClickRes?.data
+    );
+  } catch (error: any) {
+    chakraToast({
+      title: error?.response?.data?.message || "Something Went Wrong",
+      status: "error",
+      position: "top",
+    });
+    dispatch({
+      type: REPO_CLICK_ERROR,
+      payload: error?.response?.data?.message || "Something Went Wrong",
+    });
+    console.log(
+      `Folder Click Error - ${folderPath} :`,
+      error || "Something Went Wrong"
+    );
+  }
+
+  /*
   dispatch({ type: GET_REPO_PATH_LOADING });
   try {
     const userNamesRes = await axios.get(
@@ -360,6 +394,7 @@ export const FolderClickReq = async (
       error?.response?.data?.message || "Something Went Wrong"
     );
   }
+    */
 };
 
 // File Click
@@ -474,3 +509,13 @@ export const GetLsData = () => {
   const storedData = localStorage.getItem(CODEWIZARD_KEY);
   return storedData ? JSON.parse(storedData) : {};
 };
+
+// This function takes a file/folder path and returns all the paths and name of folders inbetween
+export function GeneratePathObjects(path: string) {
+  const pathArray = path.split("/").filter((name: any) => name !== "");
+  return pathArray.map((name: any, index: number) => ({
+    name,
+    path: pathArray.slice(0, index + 1).join("/"),
+    index,
+  }));
+}

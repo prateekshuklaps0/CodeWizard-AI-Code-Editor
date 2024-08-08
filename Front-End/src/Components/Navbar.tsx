@@ -78,6 +78,7 @@ const Navbar = ({ isBelow480px }: any) => {
     downloadFileLink,
     clikedFileName,
     currentRepoName,
+    pathsArr,
   } = useContext(Context);
   const chakraToast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -95,21 +96,21 @@ const Navbar = ({ isBelow480px }: any) => {
 
   // Repo Path Click handler
   const repoClick = (repoName: string) => {
-    if (!repoLoading) {
+    if (!loadingImport) {
       GetRepoContents(dispatch, chakraToast, repoName);
     }
   };
 
   // Folder Click handler
-  const folderClickHandler = (folderName: string) => {
-    if (!repoLoading) {
-      FolderClickReq(dispatch, currentRepoName, folderName);
+  const folderClickHandler = (folderPath: string) => {
+    if (!loadingImport) {
+      FolderClickReq(dispatch, chakraToast, currentRepoName, folderPath);
     }
   };
 
   // File Click handler
   const fileClickHandler = (fileName: string) => {
-    if (!repoLoading) {
+    if (!loadingImport) {
       FileClickReq(dispatch, currentRepoName, fileName);
     }
   };
@@ -135,8 +136,8 @@ const Navbar = ({ isBelow480px }: any) => {
   };
 
   useEffect(() => {
-    console.log("reposList :", reposList);
-  }, [reposList]);
+    console.log("contentsArr :", contentsArr);
+  }, [contentsArr]);
 
   return (
     <Box css={css.Outer}>
@@ -265,6 +266,7 @@ const Navbar = ({ isBelow480px }: any) => {
                     </Box>
                   )}
 
+                  {/* Repos */}
                   {reposList.length > 0 && contentsArr.length == 0 && (
                     <Box css={css.RepoListOuterDiv}>
                       <Box className="selectRepoTextDiv">
@@ -290,27 +292,63 @@ const Navbar = ({ isBelow480px }: any) => {
                     </Box>
                   )}
 
+                  {/* Folders */}
                   {reposList.length == 0 && contentsArr.length > 0 && (
                     <Box css={css.RepoListOuterDiv}>
                       <Box className="selectRepoTextDiv">
                         <RepoIconOutline />
                         <Box>
-                          <Text>{currentRepoName}</Text>
+                          <Text
+                            onClick={(e: any) => {
+                              e.stopPropagation();
+                              repoClick(currentRepoName);
+                            }}
+                            style={{ cursor: "pointer" }}
+                          >
+                            {currentRepoName}
+                          </Text>
+                          {pathsArr?.map((pathItem: any, pathInd: number) => (
+                            <>
+                              /
+                              <Text
+                                onClick={(e: any) => {
+                                  e.stopPropagation();
+                                  if (pathItem?.index != pathsArr.length - 1) {
+                                    folderClickHandler(pathItem?.path);
+                                  }
+                                }}
+                                style={{
+                                  cursor:
+                                    pathItem?.index != pathsArr.length - 1
+                                      ? "pointer"
+                                      : "not-allowed",
+                                }}
+                                key={pathItem?.name + pathInd}
+                              >
+                                {pathItem?.name || ""}
+                              </Text>
+                            </>
+                          ))}
                         </Box>
                       </Box>
 
                       <Box className="containerDiv">
                         {contentsArr?.map(
-                          (repoListItem: any, repoListInd: number) => (
+                          (contentsArrItem: any, contentsArrInd: number) => (
                             <Box
-                              key={repoListItem?.id + repoListInd}
-                              onClick={(e: any) => {
-                                e.stopPropagation();
-                                repoClick(repoListItem?.name);
-                              }}
+                              onClick={() =>
+                                contentsArrItem?.type == "dir"
+                                  ? folderClickHandler(contentsArrItem?.path)
+                                  : fileClickHandler(contentsArrItem?.path)
+                              }
+                              key={contentsArrItem?.sha + contentsArrInd}
                             >
-                              <RepoIconOutline />
-                              <Text>{repoListItem?.name}</Text>
+                              {contentsArrItem?.type == "dir" ? (
+                                <FolderIconOutline />
+                              ) : (
+                                <FileIconOutline />
+                              )}
+                              <Text>{contentsArrItem?.name}</Text>
                             </Box>
                           )
                         )}
