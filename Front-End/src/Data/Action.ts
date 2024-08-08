@@ -7,13 +7,14 @@ import {
   DEBUG_LOADING,
   IMPORT_ERROR,
   FILE_CLICKED_SUCCESS,
-  GET_REPO_PATH_ERROR,
+  REPO_CLICK_ERROR,
   GET_REPO_PATH_LOADING,
   IMPORT_LOADING,
-  PATH_CHANGE,
+  REPO_CLICK_SUCCESS,
   QUALITY_CHECKLOADING,
   SUCCESS_USERNAME,
 } from "./Context";
+import { position, useToast } from "@chakra-ui/react";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -21,14 +22,14 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 export const handleConvert = (
   dispatch: any,
   reqActive: boolean,
-  toast: any,
+  chakraToast: any,
   codeInpVal: any,
   selectedlanguage: string
 ) => {
   if (!reqActive) {
-    toast.closeAll();
+    chakraToast.closeAll();
     if (!codeInpVal || codeInpVal.length <= 5) {
-      toast({
+      chakraToast({
         title: "Attention!",
         description: "No code detected to convert yet.",
         status: "warning",
@@ -79,7 +80,7 @@ export const handleConvert = (
       })
       .catch((err: any) => {
         dispatch({ type: "ISERROR" });
-        toast({
+        chakraToast({
           title: "Something Went Wrong!",
           description: "Please try again after sometime.",
           status: "error",
@@ -94,13 +95,13 @@ export const handleConvert = (
 export const handleDebug = (
   dispatch: any,
   reqActive: boolean,
-  toast: any,
+  chakraToast: any,
   codeInpVal: any
 ) => {
   if (!reqActive) {
-    toast.closeAll();
+    chakraToast.closeAll();
     if (!codeInpVal || codeInpVal.length <= 5) {
-      toast({
+      chakraToast({
         title: "Debugging alert!",
         description: "Code required for debugging.",
         status: "warning",
@@ -153,7 +154,7 @@ export const handleDebug = (
       })
       .catch((err) => {
         dispatch({ type: "ISERROR" });
-        toast({
+        chakraToast({
           title: "Something Went Wrong!",
           description: "Please try again after sometime.",
           status: "error",
@@ -168,13 +169,13 @@ export const handleDebug = (
 export const handleCheckQuality = (
   dispatch: any,
   reqActive: boolean,
-  toast: any,
+  chakraToast: any,
   codeInpVal: any
 ) => {
   if (!reqActive) {
-    toast.closeAll();
+    chakraToast.closeAll();
     if (!codeInpVal || codeInpVal.length <= 5) {
-      toast({
+      chakraToast({
         title: "Hold up!",
         description: "No code detected for quality check.",
         status: "warning",
@@ -239,9 +240,9 @@ export const handleCheckQuality = (
         });
         //  console.log("Quality Check Request Successfull :-", res.data);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         dispatch({ type: "ISERROR" });
-        toast({
+        chakraToast({
           title: "Something Went Wrong!",
           description: "Please try again after sometime.",
           status: "error",
@@ -290,33 +291,42 @@ export const SearchGithubUser = async (dispatch: any, userNameInp: string) => {
     });
     console.log(
       "Github Username Search Error :",
-      error?.response?.data?.message || "Something Went Wrong"
+      error || "Something Went Wrong"
     );
   }
 };
 
-// Repo Path Click
-export const GetRepoPaths = async (dispatch: any, repoName: string) => {
-  // dfgdfgd
-  dispatch({ type: GET_REPO_PATH_LOADING });
+// Repo Click
+export const GetRepoContents = async (
+  dispatch: any,
+  chakraToast: any,
+  repoName: string
+) => {
+  dispatch({ type: IMPORT_LOADING });
+  chakraToast.closeAll();
   try {
-    const userNamesRes = await axios.get(
+    const repoContentRes = await axios.get(
       `https://api.github.com/repos/prateekshuklaps0/${repoName}/contents`
     );
     dispatch({
-      type: PATH_CHANGE,
-      payload: { currentPath: repoName, contentsArr: userNamesRes?.data },
+      type: REPO_CLICK_SUCCESS,
+      payload: {
+        currentRepoName: repoName,
+        contentsArr: repoContentRes?.data || [],
+      },
     });
-    console.log("Repo Name Click Response :", userNamesRes?.data || []);
+    console.log("Repo Click Response :", repoContentRes?.data);
   } catch (error: any) {
+    chakraToast({
+      title: error?.response?.data?.message || "Something Went Wrong",
+      status: "error",
+      position: "top",
+    });
     dispatch({
-      type: GET_REPO_PATH_ERROR,
+      type: REPO_CLICK_ERROR,
       payload: error?.response?.data?.message || "Something Went Wrong",
     });
-    console.log(
-      "Repo Name Click Error :",
-      error?.response?.data?.message || "Something Went Wrong"
-    );
+    console.log("Repo Click Error :", error || "Something Went Wrong");
   }
 };
 
@@ -333,13 +343,13 @@ export const FolderClickReq = async (
       `https://api.github.com/repos/prateekshuklaps0/${repoName}/contents/${folderName}`
     );
     dispatch({
-      type: PATH_CHANGE,
+      type: REPO_CLICK_SUCCESS,
       payload: { currentPath: repoName, contentsArr: userNamesRes?.data },
     });
     console.log("Folder Click Response :", userNamesRes?.data || []);
   } catch (error: any) {
     dispatch({
-      type: GET_REPO_PATH_ERROR,
+      type: REPO_CLICK_ERROR,
       payload: error?.response?.data?.message || "Something Went Wrong",
     });
     console.log(
@@ -372,7 +382,7 @@ export const FileClickReq = async (
     console.log("File Click Response :", userNamesRes?.data || []);
   } catch (error: any) {
     dispatch({
-      type: GET_REPO_PATH_ERROR,
+      type: REPO_CLICK_ERROR,
       payload: error?.response?.data?.message || "Something Went Wrong",
     });
     console.log(
@@ -386,10 +396,10 @@ export const FileClickReq = async (
 export const ConnectServer = (
   dispatch: any,
   reqActive: boolean,
-  toast: any
+  chakraToast: any
 ) => {
   if (!reqActive) {
-    toast.closeAll();
+    chakraToast.closeAll();
     dispatch({ type: CONNECTION_LOADING });
     axios
       .get(`${API_KEY}`)
@@ -401,7 +411,7 @@ export const ConnectServer = (
       })
       .catch((err: any) => {
         dispatch({ type: "ISERROR" });
-        toast({
+        chakraToast({
           title: "Server Connection Error!",
           description: "Please contact the developer.",
           status: "error",
@@ -433,13 +443,13 @@ export const handleFontSize = (
 };
 
 // Function for copying output to the clipboard
-export const handleCopy = (toast: any, valueToCopy: any) => {
-  toast.closeAll();
+export const handleCopy = (chakraToast: any, valueToCopy: any) => {
+  chakraToast.closeAll();
   if (valueToCopy) {
     navigator.clipboard
       .writeText(valueToCopy)
       .then(() => {
-        toast({
+        chakraToast({
           title: "Output copied to clipboard.",
           status: "info",
           isClosable: true,

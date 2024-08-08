@@ -23,6 +23,7 @@ import {
   FormControl,
   Avatar,
   Skeleton,
+  useToast,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -49,7 +50,7 @@ import {
   FileClickReq,
   FolderClickReq,
   GetLsData,
-  GetRepoPaths,
+  GetRepoContents,
   SearchGithubUser,
   SetLsData,
 } from "../Data/Action";
@@ -77,6 +78,7 @@ const Navbar = ({ isBelow480px }: any) => {
     downloadFileLink,
     clikedFileName,
   } = useContext(Context);
+  const chakraToast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef<HTMLInputElement>(null);
   const [userNameInp, setInpVal] = useState(GetLsData()?.githubId || "");
@@ -92,9 +94,10 @@ const Navbar = ({ isBelow480px }: any) => {
   };
 
   // Repo Path Click handler
-  const repoPathClick = (repoPath: string) => {
+  const repoClick = (repoName: string) => {
     if (!repoLoading) {
-      GetRepoPaths(dispatch, repoPath);
+      // repoName
+      GetRepoContents(dispatch, chakraToast, repoName);
     }
   };
 
@@ -265,23 +268,17 @@ const Navbar = ({ isBelow480px }: any) => {
 
                   {reposList.length > 0 && contentsArr.length == 0 && (
                     <Box css={css.RepoListOuterDiv}>
-                      <Box>Test</Box>
+                      <Box>Select Repo</Box>
                       <Box className="containerDiv">
                         {reposList?.map(
                           (repoListItem: any, repoListInd: number) => (
                             <Box
                               key={repoListItem?.id + repoListInd}
-                              border="1px solid grey"
-                              m="15px"
-                              p="5px 10px"
-                              display="flex"
-                              gap="7px"
-
-                              // onClick={(e: any) => {
-                              //   e.stopPropagation();
-                              //   setCurrRepoName(repoListItem?.name);
-                              //   repoPathClick(repoListItem?.name);
-                              // }}
+                              onClick={(e: any) => {
+                                e.stopPropagation();
+                                // setCurrRepoName(repoListItem?.name);
+                                repoClick(repoListItem?.name);
+                              }}
                             >
                               <RepoIconOutline />
                               <Text>{repoListItem?.name}</Text>
@@ -376,7 +373,7 @@ const Navbar = ({ isBelow480px }: any) => {
                                     onClick={(e: any) => {
                                       e.stopPropagation();
                                       setCurrRepoName(repoListItem?.name);
-                                      repoPathClick(repoListItem?.name);
+                                      repoClick(repoListItem?.name);
                                     }}
                                   >
                                     <RepoIconOutline />

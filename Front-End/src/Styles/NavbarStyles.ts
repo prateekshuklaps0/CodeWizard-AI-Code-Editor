@@ -468,6 +468,38 @@ export const RepoListOuterDiv = css`
   .containerDiv {
     overflow: auto;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 20px;
+    padding-bottom: 35px;
+  }
+  .containerDiv > div {
+    display: flex;
+    align-items: center;
+    gap: 7.5px;
+    padding: 5px 10px;
+    border: 1px solid var(--greyC);
+    cursor: pointer;
+    background-image: var(--biC);
+    border-radius: 5px;
+    transition: all 5s ease;
+
+    svg,
+    p {
+      padding: 0;
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      font-weight: 300;
+    }
+
+    :hover {
+      background-image: var(--biA);
+    }
+    :active {
+      background-image: var(--biB);
+    }
   }
 
   @media (max-width: 992px) {
