@@ -117,28 +117,6 @@ const Reducer = (state = initVal, { type, payload }: any) => {
     }
 
     // Import - OLD
-    case GET_REPO_PATH_LOADING: {
-      return {
-        ...state,
-        repoLoading: true,
-      };
-    }
-    case TOGGLE_TO_FILE: {
-      return {
-        ...state,
-        toggleToFile: state?.toggleToFile,
-      };
-    }
-    case HIDE_TOGGLE_TO_FILE: {
-      return {
-        ...state,
-        toggleToFile: false,
-        errorImport: false,
-        importMessage: "",
-        reposList: [],
-        contentsArr: [],
-      };
-    }
     case SHOW_REPO_TOGGLE: {
       return {
         ...state,
@@ -216,7 +194,16 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         importMessage: "",
       };
     }
-
+    case HIDE_TOGGLE_TO_FILE: {
+      return {
+        ...state,
+        toggleToFile: false,
+        errorImport: false,
+        importMessage: "",
+        reposList: [],
+        contentsArr: [],
+      };
+    }
     case CLEAR_USERNAME_INP: {
       return {
         ...state,

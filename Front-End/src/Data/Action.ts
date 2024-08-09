@@ -8,30 +8,23 @@ import {
   IMPORT_ERROR,
   FILE_CLICKED_SUCCESS,
   REPO_CLICK_ERROR,
-  GET_REPO_PATH_LOADING,
   IMPORT_LOADING,
   REPO_CLICK_SUCCESS,
   QUALITY_CHECKLOADING,
   SUCCESS_USERNAME,
   FOLDER_CLICK_SUCCESS,
 } from "./Context";
-import { position, useToast } from "@chakra-ui/react";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
+const GITHUB_TOKEN =
+  import.meta.env.GITHUB_TOKEN || "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";
+
 const githubConfig = {
   headers: {
-    Authorization: `Bearer ${import.meta.env.GITHUB_TOKEN || ""}`,
+    Authorization: `Bearer ${GITHUB_TOKEN}`,
     "X-GitHub-Api-Version": "2022-11-28",
   },
 };
-
-/*
-https://dev.to/codexam/github-api-rate-limit-exceeded-problem-502f
-https://developer.github.com/v3/auth/
-https://github.blog/news-insights/product-news/personal-api-tokens/
-https://github.com/settings/apps
-https://docs.github.com/en/rest/authentication/keeping-your-api-credentials-secure
-*/
 
 // Function for Code Convert Request
 export const handleConvert = (

@@ -1,58 +1,55 @@
 import * as css from "../Styles/NavbarStyles";
 import Logo from "../Data/code.webp";
 import NoDataImg from "../Data/NoData.svg";
-import NoUserFoundImg from "../Data/NoUserFound.svg";
 import ImportLogo from "../Data/ImportLogo.svg";
+import NoUserFoundImg from "../Data/NoUserFound.svg";
+import {
+  Context,
+  CODEINPCHANGE,
+  SHOW_REPO_TOGGLE,
+  CLEAR_USERNAME_INP,
+  HIDE_TOGGLE_TO_FILE,
+} from "../Data/Context";
+import {
+  GetLsData,
+  SetLsData,
+  FileClickReq,
+  FolderClickReq,
+  GetRepoContents,
+  SearchGithubUser,
+} from "../Data/Action";
 
 import {
   Box,
   Text,
   Image,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  useDisclosure,
-  Progress,
   Button,
   useToast,
+  Progress,
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
+  ModalContent,
+  ModalOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useRef, useState } from "react";
 import {
-  GoRepoForked as RepoIconOutline,
   GoFile as FileIconOutline,
+  GoRepoForked as RepoIconOutline,
 } from "react-icons/go";
-import { HiOutlineCode as ImportCodeIcon } from "react-icons/hi";
-import { TbArrowBack as GoBackIcon } from "react-icons/tb";
 import {
-  FaFolderOpen as FolderIconFilled,
-  FaRegFolderOpen as FolderIconOutline,
-  FaFile as FileIconFilled,
   FaGithub as GithubIconFilled,
+  FaRegFolderOpen as FolderIconOutline,
 } from "react-icons/fa";
-import { MdClose as CloseIcon } from "react-icons/md";
-import { CiImport as ImportIcon } from "react-icons/ci";
-import { MdSearch as SearchIcon } from "react-icons/md";
 import { HiUser as UserFilled } from "react-icons/hi2";
-import { LuDownload as ImportCodeIcon2 } from "react-icons/lu";
 import { FiLoader as LoaderIcon } from "react-icons/fi";
-import {
-  FileClickReq,
-  FolderClickReq,
-  GetLsData,
-  GetRepoContents,
-  SearchGithubUser,
-  SetLsData,
-} from "../Data/Action";
-import {
-  CLEAR_USERNAME_INP,
-  CODEINPCHANGE,
-  Context,
-  HIDE_TOGGLE_TO_FILE,
-  SHOW_REPO_TOGGLE,
-} from "../Data/Context";
+import { CiImport as ImportIcon } from "react-icons/ci";
+import { TbArrowBack as GoBackIcon } from "react-icons/tb";
+import { LuDownload as ImportCodeIcon2 } from "react-icons/lu";
+import { HiOutlineCode as ImportCodeIcon } from "react-icons/hi";
+import { MdClose as CloseIcon, MdSearch as SearchIcon } from "react-icons/md";
 
 const Navbar = ({ isBelow480px }: any) => {
   const {
@@ -123,10 +120,6 @@ const Navbar = ({ isBelow480px }: any) => {
     const editorTheme = GetLsData()?.editorTheme || "Cobalt";
     SetLsData({ editorTheme });
   };
-
-  useEffect(() => {
-    console.log("pathsArr :", pathsArr);
-  }, [pathsArr]);
 
   return (
     <Box css={css.Outer}>
@@ -470,7 +463,7 @@ const Navbar = ({ isBelow480px }: any) => {
                   (contentsArr.length > 0 || toggleToFile) && (
                     <Button
                       onClick={(e: any) => {
-                        dispatch({ type: SHOW_REPO_TOGGLE });
+                        // dispatch({ type: SHOW_REPO_TOGGLE });
                         userNameSubmit(e);
                       }}
                       type="button"
