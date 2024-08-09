@@ -409,6 +409,7 @@ export const ErrorBoxCss = css`
     font-weight: 400;
     letter-spacing: 0.5px;
     color: var(--textColorC);
+    cursor: default;
 
     span {
       font-size: 20px;
@@ -532,7 +533,64 @@ export const RepoListOuterDiv = css`
       background-image: var(--biB);
     }
   }
+  .containerDiv > pre {
+    background: var(--greyD);
+    color: var(--textColorA);
+    white-space: pre-wrap;
+    font-family: monospace;
+    overflow-x: auto;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    min-height: 100%;
+  }
 
+  @media (max-width: 992px) {
+  }
+  @media (max-width: 768px) {
+  }
+  @media (max-width: 480px) {
+  }
+`;
+export const ImportFooterCss = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  button {
+    padding: 7.5px 12.5px;
+    margin: 0;
+    height: fit-content;
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 7.5px;
+    cursor: pointer;
+    border-radius: 4px;
+    background: var(--bgC);
+    color: var(--textColorC);
+    background-image: var(--biA);
+
+    :hover {
+      color: var(--textColorA);
+      background: var(--bgC);
+      background-image: var(--biA);
+    }
+    :active {
+      color: var(--textColorA);
+      background-image: var(--biB);
+    }
+  }
   @media (max-width: 992px) {
   }
   @media (max-width: 768px) {

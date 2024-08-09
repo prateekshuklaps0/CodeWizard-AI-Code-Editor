@@ -14,15 +14,9 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
   useDisclosure,
-  Input,
-  IconButton,
   Progress,
   Button,
-  FormControl,
-  Avatar,
-  Skeleton,
   useToast,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -30,22 +24,20 @@ import {
   GoRepoForked as RepoIconOutline,
   GoFile as FileIconOutline,
 } from "react-icons/go";
+import { HiOutlineCode as ImportCodeIcon } from "react-icons/hi";
+import { TbArrowBack as GoBackIcon } from "react-icons/tb";
 import {
   FaFolderOpen as FolderIconFilled,
   FaRegFolderOpen as FolderIconOutline,
   FaFile as FileIconFilled,
   FaGithub as GithubIconFilled,
 } from "react-icons/fa";
-// import { IoIosSearch as SearchIcon } from "react-icons/io";
 import { MdClose as CloseIcon } from "react-icons/md";
-import { TfiImport } from "react-icons/tfi";
-import { LuImport } from "react-icons/lu";
 import { CiImport as ImportIcon } from "react-icons/ci";
 import { MdSearch as SearchIcon } from "react-icons/md";
-import {
-  HiUser as UserFilled,
-  HiOutlineUser as UserOutline,
-} from "react-icons/hi2";
+import { HiUser as UserFilled } from "react-icons/hi2";
+import { LuDownload as ImportCodeIcon2 } from "react-icons/lu";
+import { FiLoader as LoaderIcon } from "react-icons/fi";
 import {
   FileClickReq,
   FolderClickReq,
@@ -61,7 +53,6 @@ import {
   HIDE_TOGGLE_TO_FILE,
   SHOW_REPO_TOGGLE,
 } from "../Data/Context";
-import { PiPath as PathIcon } from "react-icons/pi";
 
 const Navbar = ({ isBelow480px }: any) => {
   const {
@@ -70,13 +61,11 @@ const Navbar = ({ isBelow480px }: any) => {
     errorImport,
     reposList,
     importMessage,
-    currentPath,
     contentsArr,
-    repoLoading,
     toggleToFile,
-    fetchedCodeData,
+    clickedFileData,
     downloadFileLink,
-    clikedFileName,
+    clickedFileName,
     currentRepoName,
     pathsArr,
   } = useContext(Context);
@@ -109,9 +98,9 @@ const Navbar = ({ isBelow480px }: any) => {
   };
 
   // File Click handler
-  const fileClickHandler = (fileName: string) => {
+  const fileClickHandler = (filePath: string) => {
     if (!loadingImport) {
-      FileClickReq(dispatch, currentRepoName, fileName);
+      FileClickReq(dispatch, chakraToast, currentRepoName, filePath);
     }
   };
 
@@ -122,7 +111,7 @@ const Navbar = ({ isBelow480px }: any) => {
     const blob = await response.blob();
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = clikedFileName;
+    link.download = clickedFileName;
     link.click();
     setDownloadLoading(false);
   };
@@ -136,8 +125,8 @@ const Navbar = ({ isBelow480px }: any) => {
   };
 
   useEffect(() => {
-    console.log("contentsArr :", contentsArr);
-  }, [contentsArr]);
+    console.log("pathsArr :", pathsArr);
+  }, [pathsArr]);
 
   return (
     <Box css={css.Outer}>
@@ -260,233 +249,237 @@ const Navbar = ({ isBelow480px }: any) => {
 
               {!loadingImport && !errorImport && (
                 <Box flexGrow={1} overflow="hidden">
-                  {reposList.length == 0 && contentsArr.length == 0 && (
-                    <Box css={css.ContentDivOuter}>
-                      <Image src={ImportLogo} alt="Import from Github" />
-                    </Box>
-                  )}
+                  {reposList.length == 0 &&
+                    contentsArr.length == 0 &&
+                    !toggleToFile && (
+                      <Box css={css.ContentDivOuter}>
+                        <Image src={ImportLogo} alt="Import from Github" />
+                      </Box>
+                    )}
 
                   {/* Repos */}
-                  {reposList.length > 0 && contentsArr.length == 0 && (
-                    <Box css={css.RepoListOuterDiv}>
-                      <Box className="selectRepoTextDiv">
-                        <RepoIconOutline />
-                        <Text>Select Repository</Text>
-                      </Box>
-                      <Box className="containerDiv">
-                        {reposList?.map(
-                          (repoListItem: any, repoListInd: number) => (
-                            <Box
-                              key={repoListItem?.id + repoListInd}
-                              onClick={(e: any) => {
-                                e.stopPropagation();
-                                repoClick(repoListItem?.name);
-                              }}
-                            >
-                              <RepoIconOutline />
-                              <Text>{repoListItem?.name}</Text>
-                            </Box>
-                          )
-                        )}
-                      </Box>
-                    </Box>
-                  )}
-
-                  {/* Folders */}
-                  {reposList.length == 0 && contentsArr.length > 0 && (
-                    <Box css={css.RepoListOuterDiv}>
-                      <Box className="selectRepoTextDiv">
-                        <RepoIconOutline />
-                        <Box>
-                          <Text
-                            onClick={(e: any) => {
-                              e.stopPropagation();
-                              repoClick(currentRepoName);
-                            }}
-                            style={{ cursor: "pointer" }}
-                          >
-                            {currentRepoName}
-                          </Text>
-                          {pathsArr?.map((pathItem: any, pathInd: number) => (
-                            <>
-                              /
-                              <Text
+                  {reposList.length > 0 &&
+                    contentsArr.length == 0 &&
+                    !toggleToFile && (
+                      <Box css={css.RepoListOuterDiv}>
+                        <Box className="selectRepoTextDiv">
+                          <RepoIconOutline />
+                          <Text>Select Repository</Text>
+                        </Box>
+                        <Box className="containerDiv">
+                          {reposList?.map(
+                            (repoListItem: any, repoListInd: number) => (
+                              <Box
+                                key={repoListItem?.id + repoListInd}
                                 onClick={(e: any) => {
                                   e.stopPropagation();
-                                  if (pathItem?.index != pathsArr.length - 1) {
-                                    folderClickHandler(pathItem?.path);
-                                  }
+                                  repoClick(repoListItem?.name);
                                 }}
-                                style={{
-                                  cursor:
-                                    pathItem?.index != pathsArr.length - 1
-                                      ? "pointer"
-                                      : "not-allowed",
-                                }}
-                                key={pathItem?.name + pathInd}
                               >
-                                {pathItem?.name || ""}
-                              </Text>
-                            </>
-                          ))}
+                                <RepoIconOutline />
+                                <Text>{repoListItem?.name}</Text>
+                              </Box>
+                            )
+                          )}
                         </Box>
                       </Box>
+                    )}
 
-                      <Box className="containerDiv">
-                        {contentsArr?.map(
-                          (contentsArrItem: any, contentsArrInd: number) => (
-                            <Box
-                              onClick={() =>
-                                contentsArrItem?.type == "dir"
-                                  ? folderClickHandler(contentsArrItem?.path)
-                                  : fileClickHandler(contentsArrItem?.path)
-                              }
-                              key={contentsArrItem?.sha + contentsArrInd}
+                  {/* Folders */}
+                  {reposList.length == 0 &&
+                    contentsArr.length > 0 &&
+                    !toggleToFile && (
+                      <Box css={css.RepoListOuterDiv}>
+                        <Box className="selectRepoTextDiv">
+                          <RepoIconOutline />
+                          <Box>
+                            <Text
+                              onClick={(e: any) => {
+                                e.stopPropagation();
+                                if (pathsArr.length > 0) {
+                                  repoClick(currentRepoName);
+                                }
+                              }}
+                              style={{ cursor: "pointer" }}
                             >
-                              {contentsArrItem?.type == "dir" ? (
-                                <FolderIconOutline />
-                              ) : (
-                                <FileIconOutline />
+                              {currentRepoName}
+                            </Text>
+                            {pathsArr.length > 0 &&
+                              pathsArr?.map(
+                                (pathItem: any, pathInd: number) => (
+                                  <>
+                                    /
+                                    <Text
+                                      onClick={(e: any) => {
+                                        e.stopPropagation();
+                                        if (
+                                          pathItem?.index !=
+                                          pathsArr.length - 1
+                                        ) {
+                                          folderClickHandler(pathItem?.path);
+                                        }
+                                      }}
+                                      style={{
+                                        cursor:
+                                          pathItem?.index != pathsArr.length - 1
+                                            ? "pointer"
+                                            : "not-allowed",
+                                      }}
+                                      key={pathItem?.name + pathInd}
+                                    >
+                                      {pathItem?.name || ""}
+                                    </Text>
+                                  </>
+                                )
                               )}
-                              <Text>{contentsArrItem?.name}</Text>
-                            </Box>
-                          )
-                        )}
+                          </Box>
+                        </Box>
+
+                        <Box className="containerDiv">
+                          {contentsArr?.map(
+                            (contentsArrItem: any, contentsArrInd: number) => (
+                              <Box
+                                onClick={() =>
+                                  contentsArrItem?.type == "dir"
+                                    ? folderClickHandler(contentsArrItem?.path)
+                                    : fileClickHandler(contentsArrItem?.path)
+                                }
+                                key={contentsArrItem?.sha + contentsArrInd}
+                              >
+                                {contentsArrItem?.type == "dir" ? (
+                                  <FolderIconOutline />
+                                ) : (
+                                  <FileIconOutline />
+                                )}
+                                <Text>{contentsArrItem?.name}</Text>
+                              </Box>
+                            )
+                          )}
+                        </Box>
                       </Box>
-                    </Box>
-                  )}
+                    )}
+
+                  {/* File */}
+                  {reposList.length == 0 &&
+                    contentsArr.length == 0 &&
+                    toggleToFile && (
+                      <Box css={css.RepoListOuterDiv}>
+                        <Box className="selectRepoTextDiv">
+                          <RepoIconOutline />
+                          <Box>
+                            <Text
+                              onClick={(e: any) => {
+                                e.stopPropagation();
+                                repoClick(currentRepoName);
+                              }}
+                              style={{ cursor: "pointer" }}
+                            >
+                              {currentRepoName}
+                            </Text>
+                            {pathsArr.length > 0 &&
+                              pathsArr?.map(
+                                (pathItem: any, pathInd: number) => (
+                                  <>
+                                    /
+                                    <Text
+                                      onClick={(e: any) => {
+                                        e.stopPropagation();
+                                        if (
+                                          pathItem?.index !=
+                                          pathsArr.length - 1
+                                        ) {
+                                          folderClickHandler(pathItem?.path);
+                                        }
+                                      }}
+                                      style={{
+                                        cursor:
+                                          pathItem?.index != pathsArr.length - 1
+                                            ? "pointer"
+                                            : "not-allowed",
+                                      }}
+                                      key={pathItem?.name + pathInd}
+                                    >
+                                      {pathItem?.name || ""}
+                                    </Text>
+                                  </>
+                                )
+                              )}
+                          </Box>
+                        </Box>
+
+                        <Box className="containerDiv">
+                          <pre>{clickedFileData}</pre>
+                        </Box>
+                      </Box>
+                    )}
                 </Box>
               )}
-
-              {/* <Box flexGrow={1} overflow="auto">
-                <Box>
-                  {toggleToFile ? (
-                    <Box>
-                      <Text>{clikedFileName}</Text>
-                      <pre
-                        style={{
-                          padding: "16px",
-                          borderRadius: "4px",
-                          backgroundColor: "#313030",
-                          color: "white",
-                          fontFamily: "monospace",
-                          fontSize: "14px",
-                          lineHeight: "1.5",
-                          overflowX: "auto",
-                          whiteSpace: "pre-wrap",
-                        }}
-                      >
-                        {fetchedCodeData}
-                      </pre>
-                    </Box>
-                  ) : (
-                    <Box>
-                      {!loadingImport &&
-                      !errorImport &&
-                      reposList.length == 0 &&
-                      importMessage ? (
-                        "No Public Repo Exists"
-                      ) : (
-                        <Box>
-                          {repoLoading && (
-                            <Progress size="xs" isIndeterminate />
-                          )}
-
-                          {!repoLoading && contentsArr.length > 0 ? (
-                            <Box>
-                              {contentsArr?.map(
-                                (
-                                  contentsArrItem: any,
-                                  contentsArrInd: number
-                                ) => (
-                                  <Box
-                                    onClick={() =>
-                                      contentsArrItem?.type == "dir"
-                                        ? folderClickHandler(
-                                            contentsArrItem?.path
-                                          )
-                                        : fileClickHandler(
-                                            contentsArrItem?.path
-                                          )
-                                    }
-                                    border="1px solid grey"
-                                    m="15px"
-                                    p="5px 10px"
-                                    display="flex"
-                                    gap="7px"
-                                    key={contentsArrItem?.sha + contentsArrInd}
-                                  >
-                                    {contentsArrItem?.type == "dir" ? (
-                                      <FolderIconOutline />
-                                    ) : (
-                                      <FileIconOutline />
-                                    )}
-                                    <Text>{contentsArrItem?.name}</Text>
-                                  </Box>
-                                )
-                              )}
-                            </Box>
-                          ) : (
-                            <Box>
-                              {reposList?.map(
-                                (repoListItem: any, repoListInd: number) => (
-                                  <Box
-                                    key={repoListItem?.id + repoListInd}
-                                    border="1px solid grey"
-                                    m="15px"
-                                    p="5px 10px"
-                                    display="flex"
-                                    gap="7px"
-                                    onClick={(e: any) => {
-                                      e.stopPropagation();
-                                      setCurrRepoName(repoListItem?.name);
-                                      repoClick(repoListItem?.name);
-                                    }}
-                                  >
-                                    <RepoIconOutline />
-                                    <Text>{repoListItem?.name}</Text>
-                                  </Box>
-                                )
-                              )}
-                            </Box>
-                          )}
-                        </Box>
-                      )}
-                    </Box>
-                  )}
-                </Box>
-              </Box> */}
             </ModalBody>
 
-            <ModalFooter>
+            <ModalFooter
+              style={{
+                justifyContent: toggleToFile ? "space-between" : "flex-end",
+              }}
+              css={css.ImportFooterCss}
+            >
               {toggleToFile && (
                 <Box>
-                  <button onClick={handleDownloadFile} type="button">
-                    {downloadLoading ? "Downloading" : "Download File"}
-                  </button>
-                  <button
+                  <Button
                     onClick={() => {
                       dispatch({
                         type: CODEINPCHANGE,
-                        payload: fetchedCodeData,
+                        payload: clickedFileData,
                       });
                       onClose();
                     }}
                     type="button"
                   >
+                    <ImportCodeIcon />
                     Import Code
-                  </button>
+                  </Button>
+                  <Button
+                    onClick={handleDownloadFile}
+                    isDisabled={downloadLoading}
+                    type="button"
+                  >
+                    {downloadLoading ? <LoaderIcon /> : <ImportCodeIcon2 />}
+                    {downloadLoading ? "Downloading..." : "Download File"}
+                  </Button>
                 </Box>
               )}
-              <button
-                onClick={(e: any) => {
-                  dispatch({ type: SHOW_REPO_TOGGLE });
-                  userNameSubmit(e);
-                }}
-                type="button"
-              >
-                Home
-              </button>
+
+              <Box>
+                {pathsArr.length > 0 && reposList.length == 0 && (
+                  <Button
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      if (pathsArr.length >= 2) {
+                        folderClickHandler(pathsArr[pathsArr.length - 2]?.path);
+                      } else {
+                        repoClick(currentRepoName);
+                      }
+                    }}
+                    type="button"
+                  >
+                    <GoBackIcon />
+                    Go Back
+                  </Button>
+                )}
+
+                {reposList.length == 0 &&
+                  (contentsArr.length > 0 || toggleToFile) && (
+                    <Button
+                      onClick={(e: any) => {
+                        dispatch({ type: SHOW_REPO_TOGGLE });
+                        userNameSubmit(e);
+                      }}
+                      type="button"
+                    >
+                      <RepoIconOutline />
+                      All Repos
+                    </Button>
+                  )}
+              </Box>
             </ModalFooter>
           </ModalContent>
         </Modal>

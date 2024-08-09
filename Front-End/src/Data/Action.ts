@@ -18,6 +18,22 @@ import {
 import { position, useToast } from "@chakra-ui/react";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
+const githubConfig = {
+  headers: {
+    Authorization: `Bearer ${
+      import.meta.env.GITHUB_TOKEN || "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"
+    }`,
+    "X-GitHub-Api-Version": "2022-11-28",
+  },
+};
+
+/*
+https://dev.to/codexam/github-api-rate-limit-exceeded-problem-502f
+https://developer.github.com/v3/auth/
+https://github.blog/news-insights/product-news/personal-api-tokens/
+https://github.com/settings/apps
+https://docs.github.com/en/rest/authentication/keeping-your-api-credentials-secure
+*/
 
 // Function for Code Convert Request
 export const handleConvert = (
@@ -256,17 +272,20 @@ export const handleCheckQuality = (
 
 // Search Github User
 export const SearchGithubUser = async (dispatch: any, userNameInp: string) => {
-  // dfgdfgd
   dispatch({ type: IMPORT_LOADING });
-  const editorTheme = GetLsData()?.editorTheme || "Cobalt";
-  let dataToBeStored: any = { editorTheme };
-  SetLsData(dataToBeStored);
   try {
     const [userNameRes, repoListRes] = await Promise.all([
-      axios.get<any>(`https://api.github.com/users/${userNameInp}`),
-      axios.get<any>(`https://api.github.com/users/${userNameInp}/repos`),
+      axios.get<any>(
+        `https://api.github.com/users/${userNameInp}`,
+        githubConfig
+      ),
+      axios.get<any>(
+        `https://api.github.com/users/${userNameInp}/repos`,
+        githubConfig
+      ),
     ]);
-
+    const editorTheme = GetLsData()?.editorTheme || "Cobalt";
+    let dataToBeStored: any = { editorTheme };
     (dataToBeStored.avatar_url = userNameRes?.data?.avatar_url || ""),
       (dataToBeStored.githubId = userNameRes?.data?.login || ""),
       (dataToBeStored.userName = userNameRes?.data?.name || ""),
@@ -305,16 +324,19 @@ export const GetRepoContents = async (
 ) => {
   dispatch({ type: IMPORT_LOADING });
   chakraToast.closeAll();
+  const githubId = GetLsData()?.githubId || "";
   try {
     const repoContentRes = await axios.get(
-      `https://api.github.com/repos/prateekshuklaps0/${repoName}/contents`
+      `https://api.github.com/repos/${githubId}/${repoName}/contents`,
+      githubConfig
     );
+    const payload = {
+      currentRepoName: repoName,
+      contentsArr: repoContentRes?.data || [],
+    };
     dispatch({
       type: REPO_CLICK_SUCCESS,
-      payload: {
-        currentRepoName: repoName,
-        contentsArr: repoContentRes?.data || [],
-      },
+      payload,
     });
     // console.log(`Repo Click Response  - ${repoName} :`, repoContentRes?.data);
   } catch (error: any) {
@@ -342,16 +364,19 @@ export const FolderClickReq = async (
   folderPath: string = "Folder Path Not Found"
 ) => {
   dispatch({ type: IMPORT_LOADING });
+  const githubId = GetLsData()?.githubId || "";
   try {
     const folderClickRes = await axios.get(
-      `https://api.github.com/repos/prateekshuklaps0/${repoName}/contents/${folderPath}`
+      `https://api.github.com/repos/${githubId}/${repoName}/contents/${folderPath}`,
+      githubConfig
     );
+    const payload = {
+      pathsArr: GeneratePathObjects(folderPath),
+      contentsArr: folderClickRes?.data || [],
+    };
     dispatch({
       type: FOLDER_CLICK_SUCCESS,
-      payload: {
-        pathsArr: GeneratePathObjects(folderPath),
-        contentsArr: folderClickRes?.data || [],
-      },
+      payload,
     });
     console.log(
       `Folder Click Response - ${folderPath}  :`,
@@ -372,60 +397,46 @@ export const FolderClickReq = async (
       error || "Something Went Wrong"
     );
   }
-
-  /*
-  dispatch({ type: GET_REPO_PATH_LOADING });
-  try {
-    const userNamesRes = await axios.get(
-      `https://api.github.com/repos/prateekshuklaps0/${repoName}/contents/${folderName}`
-    );
-    dispatch({
-      type: REPO_CLICK_SUCCESS,
-      payload: { currentPath: repoName, contentsArr: userNamesRes?.data },
-    });
-    console.log("Folder Click Response :", userNamesRes?.data || []);
-  } catch (error: any) {
-    dispatch({
-      type: REPO_CLICK_ERROR,
-      payload: error?.response?.data?.message || "Something Went Wrong",
-    });
-    console.log(
-      "Folder Click Error :",
-      error?.response?.data?.message || "Something Went Wrong"
-    );
-  }
-    */
 };
 
 // File Click
 export const FileClickReq = async (
   dispatch: any,
+  chakraToast: any,
   repoName: string = "Repo Name Not Found",
   filePath: string = "Folder Path Not Found"
 ) => {
-  // dfgdfgd
-  dispatch({ type: GET_REPO_PATH_LOADING });
+  dispatch({ type: IMPORT_LOADING });
+  const githubId = GetLsData()?.githubId || "";
   try {
-    const userNamesRes = await axios.get(
-      `https://api.github.com/repos/prateekshuklaps0/${repoName}/contents/${filePath}`
+    const fileClickRes = await axios.get(
+      `https://api.github.com/repos/${githubId}/${repoName}/contents/${filePath}`,
+      githubConfig
     );
+    const payload = {
+      pathsArr: GeneratePathObjects(filePath),
+      clickedFileData: atob(fileClickRes?.data?.content) || "",
+      downloadFileLink: fileClickRes?.data?.download_url || "",
+      clickedFileName: fileClickRes?.data?.name || "",
+    };
     dispatch({
       type: FILE_CLICKED_SUCCESS,
-      payload: {
-        fetchedCodeData: atob(userNamesRes?.data?.content) || "",
-        downloadFileLink: userNamesRes?.data?.download_url,
-        clikedFileName: userNamesRes?.data?.name,
-      },
+      payload,
     });
-    console.log("File Click Response :", userNamesRes?.data || []);
+    console.log(`File Click Response - ${filePath}  :`, fileClickRes?.data);
   } catch (error: any) {
+    chakraToast({
+      title: error?.response?.data?.message || "Something Went Wrong",
+      status: "error",
+      position: "top",
+    });
     dispatch({
       type: REPO_CLICK_ERROR,
       payload: error?.response?.data?.message || "Something Went Wrong",
     });
     console.log(
-      "File Click Error :",
-      error?.response?.data?.message || "Something Went Wrong"
+      `File Click Error - ${filePath} :`,
+      error || "Something Went Wrong"
     );
   }
 };

@@ -32,9 +32,9 @@ const initVal: any = {
   currentPath: "",
   contentsArr: [],
   toggleToFile: false,
-  fetchedCodeData: "",
+  clickedFileData: "",
   downloadFileLink: "",
-  clikedFileName: "",
+  clickedFileName: "",
   currentRepoName: "",
   pathsArr: [],
 };
@@ -99,12 +99,9 @@ const Reducer = (state = initVal, { type, payload }: any) => {
     case CODEINPCHANGE: {
       return {
         ...state,
-        codeInpVal: payload,
-        contentsArr: [],
-        toggleToFile: false,
-        errorImport: false,
         importMessage: "",
-        repoList: [],
+        errorImport: false,
+        codeInpVal: payload,
       };
     }
     case "SUCCESS": {
@@ -124,16 +121,6 @@ const Reducer = (state = initVal, { type, payload }: any) => {
       return {
         ...state,
         repoLoading: true,
-      };
-    }
-    case FILE_CLICKED_SUCCESS: {
-      return {
-        ...state,
-        repoLoading: false,
-        toggleToFile: true,
-        fetchedCodeData: payload?.fetchedCodeData,
-        downloadFileLink: payload?.downloadFileLink,
-        clikedFileName: payload?.clikedFileName,
       };
     }
     case TOGGLE_TO_FILE: {
@@ -167,6 +154,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         loadingImport: true,
         errorImport: false,
         importMessage: "",
+        pathsArr: [],
       };
     }
     case IMPORT_ERROR: {
@@ -184,6 +172,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         errorImport: false,
         reposList: payload,
         contentsArr: [],
+        toggleToFile: false,
       };
     }
     case REPO_CLICK_SUCCESS: {
@@ -193,7 +182,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         currentRepoName: payload?.currentRepoName,
         contentsArr: payload?.contentsArr,
         reposList: [],
-        // toggleToFile: false,
+        toggleToFile: false,
       };
     }
     case FOLDER_CLICK_SUCCESS: {
@@ -203,8 +192,20 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         pathsArr: payload?.pathsArr,
         contentsArr: payload?.contentsArr,
         reposList: [],
-        // currentRepoName: payload?.currentRepoName,
-        // toggleToFile: false,
+        toggleToFile: false,
+      };
+    }
+    case FILE_CLICKED_SUCCESS: {
+      return {
+        ...state,
+        loadingImport: false,
+        pathsArr: payload?.pathsArr,
+        clickedFileData: payload?.clickedFileData,
+        downloadFileLink: payload?.downloadFileLink,
+        clickedFileName: payload?.clickedFileName,
+        reposList: [],
+        contentsArr: [],
+        toggleToFile: true,
       };
     }
     case REPO_CLICK_ERROR: {
