@@ -20,9 +20,7 @@ import { position, useToast } from "@chakra-ui/react";
 const API_KEY = import.meta.env.VITE_API_KEY;
 const githubConfig = {
   headers: {
-    Authorization: `Bearer ${
-      import.meta.env.GITHUB_TOKEN || "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"
-    }`,
+    Authorization: `Bearer ${import.meta.env.GITHUB_TOKEN || ""}`,
     "X-GitHub-Api-Version": "2022-11-28",
   },
 };
