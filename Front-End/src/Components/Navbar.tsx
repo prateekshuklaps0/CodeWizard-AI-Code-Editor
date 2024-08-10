@@ -5,7 +5,7 @@ import ImportLogo from "../Data/ImportLogo.svg";
 import NoUserFoundImg from "../Data/NoUserFound.svg";
 import {
   Context,
-  CODEINPCHANGE,
+  CODE_INP_CHANGE,
   CLEAR_USERNAME_INP,
   HIDE_TOGGLE_TO_FILE,
 } from "../Data/Context";
@@ -53,23 +53,23 @@ import { MdClose as CloseIcon, MdSearch as SearchIcon } from "react-icons/md";
 const Navbar = ({ isBelow480px, isBelow768px }: any) => {
   const {
     dispatch,
-    loadingImport,
-    errorImport,
+    pathsArr,
     reposList,
-    importMessage,
     contentsArr,
+    errorImport,
     toggleToFile,
+    loadingImport,
+    importMessage,
+    currentRepoName,
+    clickedFileName,
     clickedFileData,
     downloadFileLink,
-    clickedFileName,
-    currentRepoName,
-    pathsArr,
   } = useContext(Context);
   const chakraToast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef<HTMLInputElement>(null);
-  const [userNameInp, setInpVal] = useState(GetLsData()?.githubId || "");
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [downloadLoading, setDownloadLoading] = useState(false);
+  const [userNameInp, setInpVal] = useState(GetLsData()?.githubId || "");
 
   // Submit Username Search
   const userNameSubmit = async (e: any) => {
@@ -103,19 +103,30 @@ const Navbar = ({ isBelow480px, isBelow768px }: any) => {
   // Download File
   const handleDownloadFile = async () => {
     setDownloadLoading(true);
-    const response = await fetch(downloadFileLink);
-    const blob = await response.blob();
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = clickedFileName;
-    link.click();
-    setDownloadLoading(false);
+    try {
+      const response = await fetch(downloadFileLink);
+      if (!response.ok) {
+        throw new Error("Failed to download file");
+      }
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = clickedFileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+    } catch (error) {
+      console.error(`Error Downloading ${clickedFileName} :`, error);
+    } finally {
+      setDownloadLoading(false);
+    }
   };
 
   // Clear Function
   const handleClear = () => {
-    setInpVal("");
     dispatch({ type: CLEAR_USERNAME_INP });
+    setInpVal("");
     const editorTheme = GetLsData()?.editorTheme || "Cobalt";
     SetLsData({ editorTheme });
   };
@@ -424,7 +435,7 @@ const Navbar = ({ isBelow480px, isBelow768px }: any) => {
                   <Button
                     onClick={() => {
                       dispatch({
-                        type: CODEINPCHANGE,
+                        type: CODE_INP_CHANGE,
                         payload: clickedFileData,
                       });
                       onClose();

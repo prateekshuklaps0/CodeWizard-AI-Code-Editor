@@ -1,21 +1,23 @@
 import axios from "axios";
 import {
+  SUCCESS,
+  IS_ERROR,
+  IMPORT_ERROR,
+  DEBUG_LOADING,
+  IMPORT_LOADING,
   CODEWIZARD_KEY,
+  CONVERT_LOADING,
+  SUCCESS_USERNAME,
+  REPO_CLICK_ERROR,
   CONNECTION_LOADING,
   CONNECTION_SUCCESS,
-  CONVERT_LOADING,
-  DEBUG_LOADING,
-  IMPORT_ERROR,
-  FILE_CLICKED_SUCCESS,
-  REPO_CLICK_ERROR,
-  IMPORT_LOADING,
   REPO_CLICK_SUCCESS,
-  QUALITY_CHECKLOADING,
-  SUCCESS_USERNAME,
+  FILE_CLICKED_SUCCESS,
   FOLDER_CLICK_SUCCESS,
+  QUALITY_CHECK_LOADING,
 } from "./Context";
 
-const API_KEY = import.meta.env.VITE_API_KEY;
+const API_KEY = import.meta.env.VITE_API_KEY || "";
 //const GITHUB_TOKEN =
 //import.meta.env.GITHUB_TOKEN || "";
 
@@ -77,7 +79,7 @@ export const handleConvert = (
       )
       .then((res) => {
         dispatch({
-          type: "SUCCESS",
+          type: SUCCESS,
           payload:
             res?.data?.candidates[0]?.content?.parts[0]?.text ||
             "Something went wrong while converting your code, please contact the developer!" +
@@ -87,7 +89,7 @@ export const handleConvert = (
         });
       })
       .catch((err: any) => {
-        dispatch({ type: "ISERROR" });
+        dispatch({ type: IS_ERROR });
         chakraToast({
           title: "Something Went Wrong!",
           description: "Please try again after sometime.",
@@ -150,7 +152,7 @@ export const handleDebug = (
       )
       .then((res) => {
         dispatch({
-          type: "SUCCESS",
+          type: SUCCESS,
           payload:
             res?.data?.candidates[0]?.content?.parts[0]?.text ||
             "Something went wrong while debugging your code, please contact the developer!" +
@@ -161,7 +163,7 @@ export const handleDebug = (
         // console.log("Debug Request Successfull :-", res.data);
       })
       .catch((err) => {
-        dispatch({ type: "ISERROR" });
+        dispatch({ type: IS_ERROR });
         chakraToast({
           title: "Something Went Wrong!",
           description: "Please try again after sometime.",
@@ -191,7 +193,7 @@ export const handleCheckQuality = (
       });
       return;
     }
-    dispatch({ type: QUALITY_CHECKLOADING });
+    dispatch({ type: QUALITY_CHECK_LOADING });
     axios
       .post(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
@@ -238,7 +240,7 @@ export const handleCheckQuality = (
       )
       .then((res) => {
         dispatch({
-          type: "SUCCESS",
+          type: SUCCESS,
           payload:
             res?.data?.candidates[0]?.content?.parts[0]?.text ||
             "Something went wrong while checking quality of your code, please contact the developer!" +
@@ -249,7 +251,7 @@ export const handleCheckQuality = (
         //  console.log("Quality Check Request Successfull :-", res.data);
       })
       .catch((err: any) => {
-        dispatch({ type: "ISERROR" });
+        dispatch({ type: IS_ERROR });
         chakraToast({
           title: "Something Went Wrong!",
           description: "Please try again after sometime.",
@@ -450,7 +452,7 @@ export const ConnectServer = (
         console.log("Connected to Server:-", res.data.msg);
       })
       .catch((err: any) => {
-        dispatch({ type: "ISERROR" });
+        dispatch({ type: IS_ERROR });
         chakraToast({
           title: "Server Connection Error!",
           description: "Please contact the developer.",
@@ -477,7 +479,7 @@ export const handleFontSize = (
   val: number
 ) => {
   const newFontSize = fontSize + val;
-  if (newFontSize >= 14 && newFontSize <= 42) {
+  if (newFontSize >= 12 && newFontSize <= 42) {
     setFontSize(newFontSize);
   }
 };

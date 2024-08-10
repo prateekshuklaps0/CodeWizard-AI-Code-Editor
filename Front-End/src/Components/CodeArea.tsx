@@ -1,7 +1,7 @@
 import * as css from "../Styles/CodeAreaStyles";
 import BtnCustom from "./BtnCustom";
 import EditorComponent, { EditorThemes } from "./EditorComponent";
-import { Context } from "../Data/Context";
+import { CODE_INP_CHANGE, Context } from "../Data/Context";
 import {
   // ConnectServer,
   updateDivWidth,
@@ -136,7 +136,7 @@ const CodeArea = () => {
 
   // Change Input Code Editor value
   const handleInpEditorChange = (inpVal: any) => {
-    dispatch({ type: "CODEINPCHANGE", payload: inpVal });
+    dispatch({ type: CODE_INP_CHANGE, payload: inpVal });
   };
 
   return (

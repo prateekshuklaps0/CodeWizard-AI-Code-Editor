@@ -15,28 +15,27 @@ const ContextProvider = ({ children }: any) => {
 export default ContextProvider;
 
 const initVal: any = {
-  ConvertLoading: false,
   DebugLoading: false,
   QualityLoading: false,
+  ConvertLoading: false,
   ConnectingToServer: false,
-  reqActive: false,
   isError: false,
-  codeInpVal: "",
+  reqActive: false,
   outputVal: "",
-  searchUserReqMade: false,
-  loadingImport: false,
+  codeInpVal: "",
+
+  // Import Code states
   errorImport: false,
-  reposList: [],
-  importMessage: "",
-  repoLoading: false,
-  currentPath: "",
-  contentsArr: [],
   toggleToFile: false,
-  clickedFileData: "",
-  downloadFileLink: "",
-  clickedFileName: "",
-  currentRepoName: "",
+  loadingImport: false,
   pathsArr: [],
+  reposList: [],
+  contentsArr: [],
+  importMessage: "",
+  currentRepoName: "",
+  clickedFileData: "",
+  clickedFileName: "",
+  downloadFileLink: "",
 };
 
 const Reducer = (state = initVal, { type, payload }: any) => {
@@ -59,7 +58,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         outputVal: "",
       };
     }
-    case QUALITY_CHECKLOADING: {
+    case QUALITY_CHECK_LOADING: {
       return {
         ...state,
         reqActive: "quality",
@@ -84,7 +83,18 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         ConnectingToServer: false,
       };
     }
-    case "ISERROR": {
+    case SUCCESS: {
+      return {
+        ...state,
+        reqActive: false,
+        ConvertLoading: false,
+        DebugLoading: false,
+        QualityLoading: false,
+        ConnectingToServer: false,
+        outputVal: payload,
+      };
+    }
+    case IS_ERROR: {
       return {
         ...state,
         reqActive: false,
@@ -96,7 +106,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         outputVal: "",
       };
     }
-    case CODEINPCHANGE: {
+    case CODE_INP_CHANGE: {
       return {
         ...state,
         importMessage: "",
@@ -104,19 +114,8 @@ const Reducer = (state = initVal, { type, payload }: any) => {
         codeInpVal: payload,
       };
     }
-    case "SUCCESS": {
-      return {
-        ...state,
-        reqActive: false,
-        ConvertLoading: false,
-        DebugLoading: false,
-        QualityLoading: false,
-        ConnectingToServer: false,
-        outputVal: payload,
-      };
-    }
 
-    // Import - New
+    // ************** Import Code **************
     case IMPORT_LOADING: {
       return {
         ...state,
@@ -211,26 +210,24 @@ const Reducer = (state = initVal, { type, payload }: any) => {
   }
 };
 
-// Action Types
+// Local Storage Key
 export const CODEWIZARD_KEY = "CODEWIZARD_KEY";
-export const IMPORT_LOADING = "IMPORT_LOADING";
+
+// Action Types
+export const SUCCESS = "SUCCESS";
+export const IS_ERROR = "IS_ERROR";
 export const IMPORT_ERROR = "IMPORT_ERROR";
-export const SUCCESS_USERNAME = "SUCCESS_USERNAME";
-export const CONVERT_LOADING = "CONVERT_LOADING";
 export const DEBUG_LOADING = "DEBUG_LOADING";
-export const QUALITY_CHECKLOADING = "QUALITY_CHECKLOADING";
+export const IMPORT_LOADING = "IMPORT_LOADING";
+export const CONVERT_LOADING = "CONVERT_LOADING";
+export const CODE_INP_CHANGE = "CODE_INP_CHANGE";
+export const SUCCESS_USERNAME = "SUCCESS_USERNAME";
+export const REPO_CLICK_ERROR = "REPO_CLICK_ERROR";
+export const CLEAR_USERNAME_INP = "CLEAR_USERNAME_INP";
 export const CONNECTION_LOADING = "CONNECTION_LOADING";
 export const CONNECTION_SUCCESS = "CONNECTION_SUCCESS";
-export const IS_ERROR = "IS_ERROR";
-export const SUCCESS = "SUCCESS";
-export const CODE_INP_CHANGE = "CODE_INP_CHANGE";
-export const GET_REPO_PATH_LOADING = "GET_REPO_PATH_LOADING";
-export const REPO_CLICK_ERROR = "REPO_CLICK_ERROR";
 export const REPO_CLICK_SUCCESS = "REPO_CLICK_SUCCESS";
-export const FILE_CLICKED_SUCCESS = "FILE_CLICKED_SUCCESS";
-export const TOGGLE_TO_FILE = "TOGGLE_TO_FILE";
 export const HIDE_TOGGLE_TO_FILE = "HIDE_TOGGLE_TO_FILE";
-export const SHOW_REPO_TOGGLE = "SHOW_REPO_TOGGLE";
-export const CODEINPCHANGE = "CODEINPCHANGE";
+export const FILE_CLICKED_SUCCESS = "FILE_CLICKED_SUCCESS";
 export const FOLDER_CLICK_SUCCESS = "FOLDER_CLICK_SUCCESS";
-export const CLEAR_USERNAME_INP = "CLEAR_USERNAME_INP";
+export const QUALITY_CHECK_LOADING = "QUALITY_CHECK_LOADING";
