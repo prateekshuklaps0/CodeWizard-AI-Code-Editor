@@ -23,10 +23,8 @@ export const InputBtnsContainer = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  backdrop-filter: var(--blurB);
   background-image: var(--biC);
-  box-shadow: var(--shadowA);
-  backdrop-filter: var(--blurA);
-  /* background-image: var(--biB); */
 
   @media (max-width: 992px) {
   }

@@ -10,10 +10,6 @@ const BtnCustom = ({ children, onClick, isDisabled = false }: any) => {
       css={BtnCss}
     >
       {children}
-      <span className="first"></span>
-      <span className="second"></span>
-      <span className="third"></span>
-      <span className="fourth"></span>
     </Button>
   );
 };
@@ -21,114 +17,44 @@ const BtnCustom = ({ children, onClick, isDisabled = false }: any) => {
 export default BtnCustom;
 
 export const BtnCss = css`
-  display: inline-flexbox;
-  align-items: center;
   width: fit-content;
   height: fit-content;
-  padding: 4.2px 8.2px;
-  gap: 5px;
-  border: none;
-  font-size: 18px;
-  border-radius: 6px;
-  border: 1px solid var(--textColorC);
-  color: var(--textColorC);
-  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
   background: transparent;
-  position: relative;
-  transition: border-radius 0.75s;
+  transition: all 0.2s ease-in-out;
+  background: var(--bgC);
+  color: var(--textColorC);
+  border-radius: 4px;
+  padding: 5px 15px;
+  gap: 7.5px;
+
+  svg,
+  .chakra-spinner {
+    margin: 0;
+    padding: 0;
+    width: 16px;
+    height: 16px;
+  }
+  p {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 400;
+  }
 
   :hover {
-    border-radius: 100px;
+    background: var(--bgC);
     color: var(--textColorA);
-    background-color: transparent;
-
-    .chakra-spinner {
-      color: var(--textColorA);
-    }
-  }
-  .chakra-spinner {
-    color: var(--textColorC);
-    width: 18px;
-    height: 18px;
-  }
-
-  span {
-    transition: all 0.7s;
-    z-index: -1;
-  }
-  .first {
-    content: "";
-    position: absolute;
-    right: 100%;
-    top: 0;
-    width: 25%;
-    height: 100%;
-    background: var(--bgA);
-  }
-  :hover .first {
-    top: 0;
-    right: 0;
-  }
-  .second {
-    content: "";
-    position: absolute;
-    left: 25%;
-    top: -100%;
-    height: 100%;
-    width: 25%;
-    background: var(--bgA);
-  }
-  :hover .second {
-    top: 0;
-    left: 50%;
-  }
-  .third {
-    content: "";
-    position: absolute;
-    left: 50%;
-    height: 100%;
-    top: 100%;
-    width: 25%;
-    background: var(--bgA);
-  }
-  :hover .third {
-    top: 0;
-    left: 25%;
-  }
-  .fourth {
-    content: "";
-    position: absolute;
-    left: 100%;
-    top: 0;
-    height: 100%;
-    width: 25%;
-    background: var(--bgA);
-  }
-  :hover .fourth {
-    top: 0;
-    left: 0;
+    box-shadow: 0 0 17.5px 5px var(--bgC_glow);
   }
 
   @media (max-width: 768px) {
-    padding: 4px 8px;
-    gap: 4.5px;
-    font-size: 16.5px;
-    border-radius: 5.5px;
-
-    .chakra-spinner {
-      width: 16px;
-      height: 16px;
-    }
   }
   @media (max-width: 480px) {
-    padding: 3.8px 7.8px;
-    gap: 4px;
-    font-size: 16px;
-    border-radius: 5px;
-
-    .chakra-spinner {
-      width: 15px;
-      height: 15px;
-    }
   }
 `;

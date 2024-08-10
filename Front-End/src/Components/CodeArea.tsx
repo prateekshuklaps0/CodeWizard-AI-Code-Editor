@@ -43,6 +43,8 @@ import {
   SiTypescript as TypeScript,
   SiJavascript as JavaScript,
 } from "react-icons/si";
+import { BsPlay } from "react-icons/bs";
+import { HiOutlinePlay as RunIconOutline } from "react-icons/hi2";
 
 const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
   const toast = useToast();
@@ -172,22 +174,36 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
             )
           }
         >
-          Convert
+          {ConvertLoading ? <Spinner /> : <Image as={RunIconOutline} />}
+          <Text>Run</Text>
+        </BtnCustom>
+        <BtnCustom
+          onClick={() =>
+            handleConvert(
+              dispatch,
+              reqActive,
+              toast,
+              codeInpVal,
+              selectedLanguage
+            )
+          }
+        >
           {ConvertLoading ? <Spinner /> : <Image as={ConvertIcon} />}
+          <Text>Convert</Text>
         </BtnCustom>
         <BtnCustom
           onClick={() => handleDebug(dispatch, reqActive, toast, codeInpVal)}
         >
-          Debug
           {DebugLoading ? <Spinner /> : <Image as={DebugIcon} />}
+          <Text>Debug</Text>
         </BtnCustom>
         <BtnCustom
           onClick={() =>
             handleCheckQuality(dispatch, reqActive, toast, codeInpVal)
           }
         >
-          Check Quality
           {QualityLoading ? <Spinner /> : <Image as={QualityIcon} />}
+          <Text>Check Quality</Text>
         </BtnCustom>
         <Box color="primary" css={css.FontBtnOuterBox}>
           <Image as={FontSizeIcon} />
