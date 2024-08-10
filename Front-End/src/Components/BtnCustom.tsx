@@ -1,21 +1,13 @@
 import { css } from "@emotion/react";
 
-import { Button, useTheme } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 
-const BtnCustom = ({ children, onClick }: any) => {
-  const theme = useTheme();
-  const ContextColors = theme.colors;
-
+const BtnCustom = ({ children, onClick, isDisabled = false }: any) => {
   return (
     <Button
       onClick={onClick}
-      cursor={"pointer"}
-      css={BtnCss(
-        ContextColors.primary,
-        ContextColors.primary,
-        ContextColors.btnHoverBG,
-        ContextColors.bgA
-      )}
+      cursor={isDisabled ? "wait" : "pointer"}
+      css={BtnCss}
     >
       {children}
       <span className="first"></span>
@@ -28,12 +20,7 @@ const BtnCustom = ({ children, onClick }: any) => {
 
 export default BtnCustom;
 
-export const BtnCss = (
-  color: string,
-  borderColor: string,
-  hoverBackground: string,
-  hoverColor: string
-) => css`
+export const BtnCss = css`
   display: inline-flexbox;
   align-items: center;
   width: fit-content;
@@ -43,8 +30,8 @@ export const BtnCss = (
   border: none;
   font-size: 18px;
   border-radius: 6px;
-  border: 1px solid ${borderColor};
-  color: ${color};
+  border: 1px solid var(--textColorC);
+  color: var(--textColorC);
   overflow: hidden;
   background: transparent;
   position: relative;
@@ -52,15 +39,15 @@ export const BtnCss = (
 
   :hover {
     border-radius: 100px;
-    color: ${hoverColor};
+    color: var(--textColorA);
     background-color: transparent;
 
     .chakra-spinner {
-      color: ${hoverColor};
+      color: var(--textColorA);
     }
   }
   .chakra-spinner {
-    color: ${color};
+    color: var(--textColorC);
     width: 18px;
     height: 18px;
   }
@@ -76,7 +63,7 @@ export const BtnCss = (
     top: 0;
     width: 25%;
     height: 100%;
-    background: ${hoverBackground};
+    background: var(--bgA);
   }
   :hover .first {
     top: 0;
@@ -89,7 +76,7 @@ export const BtnCss = (
     top: -100%;
     height: 100%;
     width: 25%;
-    background: ${hoverBackground};
+    background: var(--bgA);
   }
   :hover .second {
     top: 0;
@@ -102,7 +89,7 @@ export const BtnCss = (
     height: 100%;
     top: 100%;
     width: 25%;
-    background: ${hoverBackground};
+    background: var(--bgA);
   }
   :hover .third {
     top: 0;
@@ -115,7 +102,7 @@ export const BtnCss = (
     top: 0;
     height: 100%;
     width: 25%;
-    background: ${hoverBackground};
+    background: var(--bgA);
   }
   :hover .fourth {
     top: 0;

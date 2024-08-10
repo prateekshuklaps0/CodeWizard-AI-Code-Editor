@@ -14,6 +14,8 @@
 
 - React Loader Spinner : npm i react-loader-spinner
 
+- React Resizable Layout : npm i react-resizable-layout
+
 <!-- glas LINKS -->
 
 https://glass-navigation.webflow.io/

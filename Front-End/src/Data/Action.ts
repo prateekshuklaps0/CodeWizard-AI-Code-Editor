@@ -277,12 +277,14 @@ export const SearchGithubUser = async (dispatch: any, userNameInp: string) => {
         // githubConfig
       ),
     ]);
-    const editorTheme = GetLsData()?.editorTheme || "Cobalt";
-    let dataToBeStored: any = { editorTheme };
-    (dataToBeStored.avatar_url = userNameRes?.data?.avatar_url || ""),
-      (dataToBeStored.githubId = userNameRes?.data?.login || ""),
-      (dataToBeStored.userName = userNameRes?.data?.name || ""),
-      SetLsData(dataToBeStored);
+    const LsData = GetLsData() || {};
+    let dataToBeStored: any = {
+      ...LsData,
+      avatar_url: userNameRes?.data?.avatar_url || "",
+      githubId: userNameRes?.data?.login || "",
+      userName: userNameRes?.data?.name || "",
+    };
+    SetLsData(dataToBeStored);
     const reposList = repoListRes?.data || [];
     dispatch(
       reposList.length > 0
@@ -464,26 +466,6 @@ export const ConnectServer = (
   }
 };
 
-// This function updates the editor width whenever there is change in width of div with id="myDiv".
-export const updateDivWidth = (setDivWidth: any) => {
-  let width = document.getElementById("myDiv")?.getBoundingClientRect().width;
-  if (width) {
-    setDivWidth(width);
-  }
-};
-
-// Function for Increasing/Decreasing Font Size
-export const handleFontSize = (
-  setFontSize: any,
-  fontSize: number,
-  val: number
-) => {
-  const newFontSize = fontSize + val;
-  if (newFontSize >= 12 && newFontSize <= 42) {
-    setFontSize(newFontSize);
-  }
-};
-
 // Function for copying output to the clipboard
 export const handleCopy = (chakraToast: any, valueToCopy: any) => {
   chakraToast.closeAll();
@@ -523,3 +505,10 @@ export function GeneratePathObjects(path: string) {
     index,
   }));
 }
+
+// This function takes a number as percentage and returns percentage of window.innerWidth in pixels
+export const CalculateWidthFromPercentage = (percentage: number): number => {
+  const windowWidth = window.innerWidth;
+  const calculatedWidth = (percentage / 100) * windowWidth;
+  return Math.floor(calculatedWidth);
+};

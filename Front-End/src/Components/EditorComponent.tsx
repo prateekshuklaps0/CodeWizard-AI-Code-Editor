@@ -12,22 +12,12 @@ import "ace-builds/src-noconflict/theme-nord_dark";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 
-const EditorComponent: React.FC<{
-  name: string;
-  fontSize: number;
-  currentTheme: string;
-  divWidth: number | null;
-  readOnly: boolean;
-  showNumberLines: boolean;
-  mode: string;
-  placeholder: string;
-  value: any;
-  handleOnChange?: any;
-}> = ({
+const EditorComponent: React.FC<any> = ({
   name,
+  height,
   fontSize,
   currentTheme,
-  divWidth,
+  width,
   readOnly,
   showNumberLines,
   mode,
@@ -42,7 +32,8 @@ const EditorComponent: React.FC<{
       fontSize={fontSize}
       theme={currentTheme}
       value={value}
-      width={`${divWidth}px`}
+      width={width}
+      height={height}
       onChange={handleOnChange}
       name={name}
       readOnly={readOnly}

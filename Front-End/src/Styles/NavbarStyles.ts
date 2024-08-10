@@ -14,7 +14,7 @@ export const Outer = css`
   border-bottom-width: 1px;
   border-bottom-style: solid;
   border-bottom-color: var(--bgC);
-  background-image: var(--biC);
+  background-image: var(--biA);
 
   @media (max-width: 768px) {
     border-bottom-left-radius: 10px;

@@ -10,11 +10,17 @@ function App() {
   const [isBelow480px] = useMediaQuery("(max-width: 480px)");
   const [isBelow768px] = useMediaQuery("(max-width: 768px)");
 
+  /*
+  http://localhost:3000/
+https://chatgpt.com/c/6b9f4ebf-a825-4475-a615-d9b8af0a2cda
+
+  */
+
   return (
     <Box id="App">
       <Particle />
       <Navbar isBelow768px={isBelow768px} isBelow480px={isBelow480px} />
-      <CodeArea />
+      <CodeArea isBelow480px={isBelow480px} isBelow768px={isBelow768px} />
       <Footer />
     </Box>
   );
