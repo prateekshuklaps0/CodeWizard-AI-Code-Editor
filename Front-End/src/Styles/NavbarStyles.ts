@@ -134,19 +134,6 @@ export const ModalContentCss = css`
   background: linear-gradient(to top, #24243e, #302b63, var(--bgB));
   border-radius: 10px;
 
-  @media (max-width: 992px) {
-  }
-  @media (max-width: 768px) {
-  }
-  @media (max-width: 480px) {
-  }
-`;
-export const ModalHeaderCss = css`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: default;
-
   .userNameCss {
     margin: 0;
     padding: 0;
@@ -164,6 +151,28 @@ export const ModalHeaderCss = css`
       word-spacing: -0.5px;
     }
   }
+
+  @media (max-width: 768px) {
+    border-radius: 8.5px;
+
+    .userNameCss {
+      margin: -5px auto 7.5px;
+    }
+  }
+  @media (max-width: 480px) {
+    border-radius: 7.5px;
+
+    .userNameCss {
+      margin: -5px auto 7.5px;
+    }
+  }
+`;
+export const ModalHeaderCss = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: default;
+
   .importCodeHeader {
     margin: 0;
     padding: 0;
@@ -187,11 +196,24 @@ export const ModalHeaderCss = css`
     height: 27.5px;
     padding: 5px;
   }
-  @media (max-width: 992px) {
-  }
+
   @media (max-width: 768px) {
+    > svg:nth-of-type(1) {
+      width: 26.5px;
+      height: 26.5px;
+      padding: 4px;
+    }
   }
   @media (max-width: 480px) {
+    .importCodeHeader {
+      gap: 6.5px;
+      font-size: 14.5px;
+      word-spacing: -0.5px;
+
+      > svg {
+        font-size: 17px;
+      }
+    }
   }
 `;
 export const ModalBodyCss = css`
@@ -338,11 +360,17 @@ export const Loader1OuterDiv = css`
     height: 87.5%;
   }
 
-  @media (max-width: 992px) {
-  }
   @media (max-width: 768px) {
+    .importCodeProgess {
+      height: 5px;
+      margin-top: 17.5px;
+    }
   }
   @media (max-width: 480px) {
+    .importCodeProgess {
+      height: 4px;
+      margin-top: 15px;
+    }
   }
 `;
 export const Loader1 = css`
@@ -417,14 +445,45 @@ export const ErrorBoxCss = css`
     }
   }
 
-  @media (max-width: 992px) {
-  }
   @media (max-width: 768px) {
+    > div:nth-of-type(1) {
+      gap: 17.5px;
+    }
+    img:nth-of-type(1) {
+      width: 120px;
+    }
+    p:nth-of-type(1) {
+      line-height: 28.5px;
+      font-size: 16.5px;
+
+      span {
+        font-size: 18px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
   }
   @media (max-width: 480px) {
+    > div:nth-of-type(1) {
+      gap: 15px;
+    }
+    img:nth-of-type(1) {
+      width: 100px;
+    }
+    p:nth-of-type(1) {
+      line-height: 25px;
+      font-size: 15px;
+      letter-spacing: 0px;
+      display: flex;
+      flex-direction: column;
+
+      span {
+        font-size: 16px;
+      }
+    }
   }
 `;
-export const ContentDivOuter = css`
+export const EmptyContentDivOuter = css`
   flex-grow: 1;
   height: 100%;
   display: grid;
@@ -436,26 +495,15 @@ export const ContentDivOuter = css`
     margin: auto;
   }
 
-  @media (max-width: 992px) {
-  }
   @media (max-width: 768px) {
+    img:nth-of-type(1) {
+      width: 210px;
+    }
   }
   @media (max-width: 480px) {
-  }
-`;
-export const EmptyContentDivOuter = css`
-  flex-grow: 1;
-  overflow: auto;
-  display: grid;
-  place-content: center;
-  place-items: center;
-  height: 95%;
-
-  @media (max-width: 992px) {
-  }
-  @media (max-width: 768px) {
-  }
-  @media (max-width: 480px) {
+    img:nth-of-type(1) {
+      width: 180px;
+    }
   }
 `;
 export const RepoListOuterDiv = css`
@@ -515,7 +563,7 @@ export const RepoListOuterDiv = css`
     cursor: pointer;
     background-image: var(--biC);
     border-radius: 5px;
-    transition: all 5s ease;
+    transition: all 0.25s ease;
 
     svg,
     p {
@@ -547,11 +595,82 @@ export const RepoListOuterDiv = css`
     min-height: 100%;
   }
 
-  @media (max-width: 992px) {
-  }
   @media (max-width: 768px) {
+    margin-top: 27.5px;
+
+    .selectRepoTextDiv {
+      margin-bottom: 12.5px;
+
+      p {
+        font-size: 15px;
+        padding: 2.5px 10px;
+        border-radius: 4px;
+      }
+      > div {
+        gap: 7.5px;
+        padding-bottom: 7.5px;
+      }
+    }
+    .containerDiv {
+      gap: 7.5px;
+      padding-right: 15px;
+      padding-bottom: 32.5px;
+    }
+    .containerDiv > div {
+      padding: 4px 7.5px;
+      border-radius: 4.25px;
+
+      svg,
+      p {
+        font-size: 15px;
+      }
+
+      :hover {
+        background-image: var(--biC);
+      }
+    }
+    .containerDiv > pre {
+      padding: 14px;
+      font-size: 13.5px;
+    }
   }
   @media (max-width: 480px) {
+    margin-top: 20px;
+
+    .selectRepoTextDiv {
+      margin-bottom: 15px;
+
+      p {
+        font-size: 14px;
+        padding: 2.5px 7.5px;
+        border-radius: 3px;
+        font-weight: 300;
+      }
+    }
+    .containerDiv {
+      padding-right: 10px;
+      padding-bottom: 25px;
+    }
+    .containerDiv > div {
+      padding: 4px 7.5px;
+      border-radius: 3.5px;
+      border-width: 0.5px;
+      gap: 5px;
+
+      svg {
+        font-size: 14px;
+        min-width: 17.5px;
+      }
+
+      p {
+        font-size: 14px;
+        line-height: 18px;
+      }
+    }
+    .containerDiv > pre {
+      padding: 12px;
+      font-size: 12px;
+    }
   }
 `;
 export const ImportFooterCss = css`
@@ -559,6 +678,7 @@ export const ImportFooterCss = css`
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  margin-top: -10px;
 
   > div {
     display: flex;
@@ -591,11 +711,40 @@ export const ImportFooterCss = css`
       background-image: var(--biB);
     }
   }
-  @media (max-width: 992px) {
-  }
+
   @media (max-width: 768px) {
+    gap: 17.5px;
+    margin-top: -12.5px;
+    flex-direction: column;
+
+    > div {
+      gap: 17.5px;
+    }
+    button {
+      padding: 7px 11.5px;
+      font-size: 15px;
+      gap: 7.5px;
+      border-radius: 4.25px;
+
+      :hover {
+        color: var(--textColorC);
+      }
+    }
   }
   @media (max-width: 480px) {
+    gap: 15px;
+    margin-top: -15px;
+    flex-direction: column;
+
+    > div {
+      gap: 15px;
+    }
+    button {
+      padding: 6px 10px;
+      font-size: 14px;
+      gap: 5px;
+      border-radius: 3.5px;
+    }
   }
 `;
 

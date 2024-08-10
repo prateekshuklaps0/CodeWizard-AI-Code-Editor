@@ -116,15 +116,6 @@ const Reducer = (state = initVal, { type, payload }: any) => {
       };
     }
 
-    // Import - OLD
-    case SHOW_REPO_TOGGLE: {
-      return {
-        ...state,
-        toggleToFile: false,
-        contentsArr: [],
-      };
-    }
-
     // Import - New
     case IMPORT_LOADING: {
       return {

@@ -6,7 +6,6 @@ import NoUserFoundImg from "../Data/NoUserFound.svg";
 import {
   Context,
   CODEINPCHANGE,
-  SHOW_REPO_TOGGLE,
   CLEAR_USERNAME_INP,
   HIDE_TOGGLE_TO_FILE,
 } from "../Data/Context";
@@ -34,7 +33,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import {
   GoFile as FileIconOutline,
   GoRepoForked as RepoIconOutline,
@@ -51,7 +50,7 @@ import { LuDownload as ImportCodeIcon2 } from "react-icons/lu";
 import { HiOutlineCode as ImportCodeIcon } from "react-icons/hi";
 import { MdClose as CloseIcon, MdSearch as SearchIcon } from "react-icons/md";
 
-const Navbar = ({ isBelow480px }: any) => {
+const Navbar = ({ isBelow480px, isBelow768px }: any) => {
   const {
     dispatch,
     loadingImport,
@@ -151,7 +150,7 @@ const Navbar = ({ isBelow480px }: any) => {
           />
           <ModalContent css={css.ModalContentCss}>
             <ModalHeader css={css.ModalHeaderCss}>
-              {GetLsData()?.userName && (
+              {!isBelow768px && GetLsData()?.userName && (
                 <Text className="userNameCss">
                   Hi, <span>{GetLsData()?.userName || ""}</span>
                 </Text>
@@ -161,6 +160,11 @@ const Navbar = ({ isBelow480px }: any) => {
               </Text>
               <CloseIcon onClick={onClose} />
             </ModalHeader>
+            {isBelow768px && GetLsData()?.userName && (
+              <Text className="userNameCss">
+                Hi, <span>{GetLsData()?.userName || ""}</span>
+              </Text>
+            )}
 
             <ModalBody css={css.ModalBodyCss}>
               <form onSubmit={userNameSubmit}>
@@ -211,8 +215,8 @@ const Navbar = ({ isBelow480px }: any) => {
               {loadingImport && !errorImport && (
                 <Box css={css.Loader1OuterDiv}>
                   <Progress
-                    colorScheme="var(--bgC)"
                     isIndeterminate
+                    colorScheme="var(--bgC)"
                     className="importCodeProgess"
                   />
                   <Box>
@@ -227,8 +231,8 @@ const Navbar = ({ isBelow480px }: any) => {
                     <Box>
                       <Image src={NoUserFoundImg} alt={importMessage} />
                       <Text>
-                        No user found with username ' <span>{userNameInp}</span>{" "}
-                        '
+                        No user found with username{" "}
+                        <span>' {userNameInp} '</span>
                       </Text>
                     </Box>
                   ) : (
@@ -245,7 +249,7 @@ const Navbar = ({ isBelow480px }: any) => {
                   {reposList.length == 0 &&
                     contentsArr.length == 0 &&
                     !toggleToFile && (
-                      <Box css={css.ContentDivOuter}>
+                      <Box css={css.EmptyContentDivOuter}>
                         <Image src={ImportLogo} alt="Import from Github" />
                       </Box>
                     )}
@@ -461,13 +465,7 @@ const Navbar = ({ isBelow480px }: any) => {
 
                 {reposList.length == 0 &&
                   (contentsArr.length > 0 || toggleToFile) && (
-                    <Button
-                      onClick={(e: any) => {
-                        // dispatch({ type: SHOW_REPO_TOGGLE });
-                        userNameSubmit(e);
-                      }}
-                      type="button"
-                    >
+                    <Button onClick={userNameSubmit} type="button">
                       <RepoIconOutline />
                       All Repos
                     </Button>

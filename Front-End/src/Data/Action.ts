@@ -16,15 +16,15 @@ import {
 } from "./Context";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
-const GITHUB_TOKEN =
-  import.meta.env.GITHUB_TOKEN || "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";
+//const GITHUB_TOKEN =
+//import.meta.env.GITHUB_TOKEN || "";
 
-const githubConfig = {
-  headers: {
-    Authorization: `Bearer ${GITHUB_TOKEN}`,
-    "X-GitHub-Api-Version": "2022-11-28",
-  },
-};
+// const githubConfig = {
+//   headers: {
+//     Authorization: `Bearer ${GITHUB_TOKEN}`,
+//     "X-GitHub-Api-Version": "2022-11-28",
+//   },
+// };
 
 // Function for Code Convert Request
 export const handleConvert = (
@@ -267,12 +267,12 @@ export const SearchGithubUser = async (dispatch: any, userNameInp: string) => {
   try {
     const [userNameRes, repoListRes] = await Promise.all([
       axios.get<any>(
-        `https://api.github.com/users/${userNameInp}`,
-        githubConfig
+        `https://api.github.com/users/${userNameInp}`
+        // githubConfig
       ),
       axios.get<any>(
-        `https://api.github.com/users/${userNameInp}/repos`,
-        githubConfig
+        `https://api.github.com/users/${userNameInp}/repos`
+        // githubConfig
       ),
     ]);
     const editorTheme = GetLsData()?.editorTheme || "Cobalt";
@@ -318,8 +318,8 @@ export const GetRepoContents = async (
   const githubId = GetLsData()?.githubId || "";
   try {
     const repoContentRes = await axios.get(
-      `https://api.github.com/repos/${githubId}/${repoName}/contents`,
-      githubConfig
+      `https://api.github.com/repos/${githubId}/${repoName}/contents`
+      // githubConfig
     );
     const payload = {
       currentRepoName: repoName,
@@ -358,8 +358,8 @@ export const FolderClickReq = async (
   const githubId = GetLsData()?.githubId || "";
   try {
     const folderClickRes = await axios.get(
-      `https://api.github.com/repos/${githubId}/${repoName}/contents/${folderPath}`,
-      githubConfig
+      `https://api.github.com/repos/${githubId}/${repoName}/contents/${folderPath}`
+      // githubConfig
     );
     const payload = {
       pathsArr: GeneratePathObjects(folderPath),
@@ -401,8 +401,8 @@ export const FileClickReq = async (
   const githubId = GetLsData()?.githubId || "";
   try {
     const fileClickRes = await axios.get(
-      `https://api.github.com/repos/${githubId}/${repoName}/contents/${filePath}`,
-      githubConfig
+      `https://api.github.com/repos/${githubId}/${repoName}/contents/${filePath}`
+      // githubConfig
     );
     const payload = {
       pathsArr: GeneratePathObjects(filePath),
