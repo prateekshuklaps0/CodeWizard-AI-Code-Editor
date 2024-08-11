@@ -10,10 +10,21 @@ import {
   handleConvert,
   handleCheckQuality,
   CalculateWidthFromPercentage,
+  GetStoredLanguage,
+  GetStoredEditorTheme,
+  GetStoredFontSize,
 } from "../Data/Action";
 
 import { useState, useEffect, useContext } from "react";
-import { Box, Select, Image, Text, useToast, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Text,
+  useToast,
+  Spinner,
+  Center,
+  AbsoluteCenter,
+} from "@chakra-ui/react";
 import { BallTriangle } from "react-loader-spinner";
 import { useResizable } from "react-resizable-layout";
 import { DiRuby as Ruby } from "react-icons/di";
@@ -43,11 +54,10 @@ import {
   SiTypescript as TypeScript,
   SiJavascript as JavaScript,
 } from "react-icons/si";
-import { BsPlay } from "react-icons/bs";
 import { HiOutlinePlay as RunIconOutline } from "react-icons/hi2";
+import SelectCustom from "./SelectCustom";
 
 const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
-  const toast = useToast();
   const {
     dispatch,
     outputVal,
@@ -57,19 +67,20 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
     QualityLoading,
     ConvertLoading,
   } = useContext(Context);
+  const chakraToast = useToast();
   const [currentTheme, setTheme] = useState<string>(
-    GetLsData()?.editorTheme || "cobalt"
+    GetStoredEditorTheme(EditorThemes)
   );
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
-    GetLsData()?.convertLanguage || "JavaScript"
+    GetStoredLanguage(LanguagesArr)
   );
-  const [messages, setMessages] = useState<string[]>([]);
-  const [currImg, setCurrImg] = useState(Languages[0].img);
-  const [messageIndex, setMessageIndex] = useState<number>(0);
-  const [fontSize, setFontSize] = useState<number>(GetLsData()?.fontSize || 16);
-
   let initialDivWidth =
     Math.floor(CalculateWidthFromPercentage(97.5) / 2) - 7.5;
+  const [messages, setMessages] = useState<string[]>([]);
+  const [currImg, setCurrImg] = useState(LanguagesArr[0]?.img);
+  const [messageIndex, setMessageIndex] = useState<number>(0);
+  const [fontSize, setFontSize] = useState<number>(GetStoredFontSize());
+
   const {
     isDragging: HorizontalDragging,
     position: HorizontalPosition,
@@ -119,12 +130,12 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
 
   // useEffect for changing current language icon in language select menu.
   useEffect(() => {
-    let selectedImg = Languages.filter((item: any) => {
-      if (item.name == selectedLanguage) {
-        return item.img;
+    let selectedImg = LanguagesArr.filter((item: any) => {
+      if (item?.name == selectedLanguage) {
+        return item?.img;
       }
     });
-    setCurrImg(selectedImg[0].img);
+    setCurrImg(selectedImg[0]?.img);
   }, [selectedLanguage]);
 
   // Change Input Code Editor value
@@ -150,25 +161,38 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
 
   // Font Size Change
   const handleFontSizeChange = (value: number) => {
-    const LsData = GetLsData() || {};
+    chakraToast.closeAll();
     const newFontSize = fontSize + value;
-    if (newFontSize >= 12 && newFontSize <= 42) {
-      const DataToBeSaved = { ...LsData, fontSize: newFontSize };
-      SetLsData(DataToBeSaved);
-      setFontSize(newFontSize);
+    if (newFontSize < 12) {
+      return chakraToast({
+        title: "Font size can't be under 12.",
+        status: "warning",
+        position: "top",
+      });
     }
+    if (newFontSize > 42) {
+      return chakraToast({
+        title: "Font size can't exceed 42.",
+        status: "warning",
+        position: "top",
+      });
+    }
+    const LsData = GetLsData() || {};
+    const DataToBeSaved = { ...LsData, fontSize: newFontSize };
+    SetLsData(DataToBeSaved);
+    setFontSize(newFontSize);
   };
 
   return (
-    <Box h={["160vh", "130vh", "80vh"]} css={css.Outer}>
+    <Box css={css.Outer}>
       {/* Control Panel */}
       <Box css={css.InputBtnsContainer}>
-        <BtnCustom
+        {/* <BtnCustom
           onClick={() =>
             handleConvert(
               dispatch,
               reqActive,
-              toast,
+              chakraToast,
               codeInpVal,
               selectedLanguage
             )
@@ -176,36 +200,53 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
         >
           {ConvertLoading ? <Spinner /> : <Image as={RunIconOutline} />}
           <Text>Run</Text>
-        </BtnCustom>
+        </BtnCustom> */}
+
         <BtnCustom
           onClick={() =>
-            handleConvert(
-              dispatch,
-              reqActive,
-              toast,
-              codeInpVal,
-              selectedLanguage
-            )
+            handleDebug(dispatch, reqActive, chakraToast, codeInpVal)
           }
-        >
-          {ConvertLoading ? <Spinner /> : <Image as={ConvertIcon} />}
-          <Text>Convert</Text>
-        </BtnCustom>
-        <BtnCustom
-          onClick={() => handleDebug(dispatch, reqActive, toast, codeInpVal)}
         >
           {DebugLoading ? <Spinner /> : <Image as={DebugIcon} />}
           <Text>Debug</Text>
         </BtnCustom>
         <BtnCustom
           onClick={() =>
-            handleCheckQuality(dispatch, reqActive, toast, codeInpVal)
+            handleCheckQuality(dispatch, reqActive, chakraToast, codeInpVal)
           }
         >
           {QualityLoading ? <Spinner /> : <Image as={QualityIcon} />}
           <Text>Check Quality</Text>
         </BtnCustom>
-        <Box color="primary" css={css.FontBtnOuterBox}>
+        <BtnCustom
+          onClick={() =>
+            handleConvert(
+              dispatch,
+              reqActive,
+              chakraToast,
+              codeInpVal,
+              selectedLanguage
+            )
+          }
+        >
+          {ConvertLoading ? <Spinner /> : <ConvertIcon />}
+          <Text>Convert</Text>
+        </BtnCustom>
+        <SelectCustom
+          leftImage={currImg}
+          value={selectedLanguage}
+          array={LanguagesArr}
+          keyName="name"
+          onChange={handleLanguageChange}
+        />
+        <SelectCustom
+          leftImage={<ThemeIcon />}
+          value={currentTheme}
+          array={EditorThemes}
+          keyName="theme"
+          onChange={handleThemeChange}
+        />
+        <Box css={css.FontBtnOuterBox}>
           <Image as={FontSizeIcon} />
           <Box>
             <Image
@@ -221,52 +262,19 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
             />
           </Box>
         </Box>
-        <Box>
-          <Select
-            value={selectedLanguage}
-            onChange={handleLanguageChange}
-            icon={currImg}
-            focusBorderColor={"none"}
-            css={css.SelectTagCss}
-          >
-            {Languages.map((item: any, ind: number) => (
-              <option value={item.name} key={ind}>
-                {item.name}
-              </option>
-            ))}
-          </Select>
-        </Box>
-        <Box display={["flex"]} gap={["10px"]} alignItems="center">
-          <BtnCustom onClick={() => handleCopy(toast, outputVal)}>
-            <Image as={Copy} />
-          </BtnCustom>
-          <Select
-            value={currentTheme}
-            onChange={handleThemeChange}
-            icon={<ThemeIcon />}
-            focusBorderColor={"none"}
-            css={css.SelectTagCss}
-          >
-            {EditorThemes.map((item: any, ind: number) => (
-              <option value={item.theme} key={ind}>
-                {item.name}
-              </option>
-            ))}
-          </Select>
-        </Box>
+        <BtnCustom onClick={() => handleCopy(chakraToast, outputVal)}>
+          <Image as={Copy} />
+        </BtnCustom>
       </Box>
-
       <Box className="wrapper" flexGrow={1} css={css.BothEditorContainers}>
         {/* Input Editor */}
         <Box
           width={isBelow768px ? "100%" : HorizontalPosition}
           h={isBelow768px ? VerticalPosition : "100%"}
-          minW={["100%", "100%", "300px"]}
-          minH={["400px", "500px", "79.5vh"]}
           className="left-block"
         >
           <EditorComponent
-            name={"Input Code Editor"}
+            name="Input Code Editor"
             fontSize={fontSize}
             currentTheme={currentTheme}
             width="100%"
@@ -282,13 +290,15 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
 
         {/* Splitter */}
         <Box
-          h={["7.5px", "79.5vh"]}
-          w={["100%", "7.5px"]}
-          bg={HorizontalDragging || VerticalDragging ? "red" : "green"}
-          cursor="col-resize"
+          bg={
+            HorizontalDragging || VerticalDragging
+              ? "var(--greyC)"
+              : "var(--bgC)"
+          }
           {...(isBelow768px
             ? VerticalSeperatorProps
             : HorizontalSeperatorProps)}
+          className="splitter"
         ></Box>
 
         {/* Output Editor */}
@@ -296,22 +306,35 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
           h={isBelow768px ? VerticalPosition : "100%"}
           w={isBelow768px ? "100%" : VerticalPosition}
           flex={1}
-          minW={["100%", "100%", "300px"]}
-          minH={["400px", "500px", "79.5vh"]}
           className="right-block"
         >
-          <EditorComponent
-            name={"Output Editor"}
-            fontSize={fontSize}
-            currentTheme={currentTheme}
-            width="100%"
-            height="100%"
-            readOnly={true}
-            showNumberLines={false}
-            mode="markdown"
-            placeholder="Your Output Will Come here..."
-            value={reqActive ? messages[messageIndex] : outputVal}
-          />
+          {DebugLoading || ConvertLoading || QualityLoading ? (
+            <Center css={css.ConnectionOuterBox}>
+              <Box>
+                <BallTriangle
+                  radius={5}
+                  visible={true}
+                  color="var(--bgD)"
+                  wrapperClass="ConnectionSpinner"
+                  ariaLabel="ball-triangle-loading"
+                />
+                <Text>{messages[messageIndex]}</Text>
+              </Box>
+            </Center>
+          ) : (
+            <EditorComponent
+              name="Output Editor"
+              fontSize={fontSize}
+              currentTheme={currentTheme}
+              width="100%"
+              height="100%"
+              readOnly={true}
+              showNumberLines={false}
+              mode="markdown"
+              placeholder="Your Output Will Come here..."
+              value={reqActive ? messages[messageIndex] : outputVal}
+            />
+          )}
         </Box>
       </Box>
     </Box>
@@ -353,8 +376,8 @@ const QualityCheckMessages = [
   "Hold on! Code quality report is underway.",
 ];
 
-// Languages Array
-const Languages = [
+// LanguagesArr Array
+const LanguagesArr = [
   {
     img: <JavaScript />,
     name: "JavaScript",

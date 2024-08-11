@@ -6,10 +6,10 @@ export const Outer = css`
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
   position: fixed;
+  background: var(--bgE);
   top: 0;
   z-index: 100;
   border: none;
-  box-shadow: var(--shadowA);
   backdrop-filter: var(--blurA);
   border-bottom-width: 1px;
   border-bottom-style: solid;

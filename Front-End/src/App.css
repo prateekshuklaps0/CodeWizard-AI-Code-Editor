@@ -11,6 +11,7 @@
   /* Backgrounds */
   --bgA: #0d0628;
   --bgB: #0f0c29;
+  --bgE: #0f0c293e;
   --bgC: rgb(12, 53, 106);
   --bgD: #ff3d00;
   --bgC_glow: rgb(12, 53, 106, 0.6);
@@ -18,6 +19,8 @@
   /* Backdrop Filter */
   --blurA: blur(100px);
   --blurB: blur(2px);
+  --blurC: blur(25px);
+  --blurD: blur(12.5px);
 
   /* Background Image */
   --biA: linear-gradient(

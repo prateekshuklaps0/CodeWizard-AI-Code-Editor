@@ -469,20 +469,25 @@ export const ConnectServer = (
 // Function for copying output to the clipboard
 export const handleCopy = (chakraToast: any, valueToCopy: any) => {
   chakraToast.closeAll();
-  if (valueToCopy) {
-    navigator.clipboard
-      .writeText(valueToCopy)
-      .then(() => {
-        chakraToast({
-          title: "Output copied to clipboard.",
-          status: "info",
-          isClosable: true,
-        });
-      })
-      .catch((error) => {
-        console.error("Error copying to clipboard:-", error);
-      });
+  if (!valueToCopy) {
+    return chakraToast({
+      title: "Output is empty.",
+      status: "info",
+      isClosable: true,
+    });
   }
+  navigator.clipboard
+    .writeText(valueToCopy)
+    .then(() => {
+      chakraToast({
+        title: "Output copied to clipboard.",
+        status: "info",
+        isClosable: true,
+      });
+    })
+    .catch((error) => {
+      console.error("Error copying to output :", error);
+    });
 };
 
 // Set Data in localstorage
@@ -511,4 +516,36 @@ export const CalculateWidthFromPercentage = (percentage: number): number => {
   const windowWidth = window.innerWidth;
   const calculatedWidth = (percentage / 100) * windowWidth;
   return Math.floor(calculatedWidth);
+};
+
+// This function returns the stored font-size
+export const GetStoredFontSize = () => {
+  let storedFont = GetLsData()?.fontSize || 16;
+  let numFont = Number(storedFont) || 16;
+  if (numFont < 12) {
+    numFont = 12;
+  } else if (numFont > 42) {
+    numFont = 27;
+  }
+  return numFont;
+};
+
+// This function returns the stored editor theme
+export const GetStoredEditorTheme = (ThemesArr: any) => {
+  const storedEditorTheme = GetLsData()?.editorTheme || "cobalt";
+  const isThemePresent = ThemesArr.some(
+    (obj: any) => obj?.theme === storedEditorTheme
+  );
+  return isThemePresent ? storedEditorTheme : ThemesArr[1]?.theme || "cobalt";
+};
+
+// This function returns name of the stored programming language
+export const GetStoredLanguage = (LanguageArr: any) => {
+  const storedLanguage = GetLsData()?.convertLanguage || "Javascript";
+  const isLanguagePresent = LanguageArr.some(
+    (obj: any) => obj?.name === storedLanguage
+  );
+  return isLanguagePresent
+    ? storedLanguage
+    : LanguageArr[0]?.name || "Javascript";
 };

@@ -13,7 +13,6 @@ function App() {
   /*
   http://localhost:3000/
 https://chatgpt.com/c/6b9f4ebf-a825-4475-a615-d9b8af0a2cda
-
   */
 
   return (
