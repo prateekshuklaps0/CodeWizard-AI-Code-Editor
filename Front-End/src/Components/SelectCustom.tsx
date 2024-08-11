@@ -1,20 +1,20 @@
 import { css } from "@emotion/react";
 import { Box, useMediaQuery } from "@chakra-ui/react";
-import { createRef, useState } from "react";
+import { useRef, useState } from "react";
 
 const SelectCustom = ({ leftImage, array, value, onChange, keyName }: any) => {
-  const selectRef = createRef<HTMLSelectElement>();
+  const selectRef = useRef<any>(null);
   const [isBelow768px] = useMediaQuery("(max-width: 768px)");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  //   Div click handler
+  // Div click handler
   const handleOnDivClick = () => {
     if (selectRef.current) {
       if (!isBelow768px && isDropdownOpen) {
-        selectRef.current.blur();
+        selectRef?.current?.blur();
         setIsDropdownOpen(false);
       } else {
-        selectRef.current.showPicker();
+        selectRef?.current?.showPicker();
         setIsDropdownOpen(true);
       }
     }

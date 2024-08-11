@@ -16,15 +16,7 @@ import {
 } from "../Data/Action";
 
 import { useState, useEffect, useContext } from "react";
-import {
-  Box,
-  Image,
-  Text,
-  useToast,
-  Spinner,
-  Center,
-  AbsoluteCenter,
-} from "@chakra-ui/react";
+import { Box, Image, Text, useToast, Spinner, Center } from "@chakra-ui/react";
 import { BallTriangle } from "react-loader-spinner";
 import { useResizable } from "react-resizable-layout";
 import { DiRuby as Ruby } from "react-icons/di";
@@ -54,7 +46,7 @@ import {
   SiTypescript as TypeScript,
   SiJavascript as JavaScript,
 } from "react-icons/si";
-import { HiOutlinePlay as RunIconOutline } from "react-icons/hi2";
+// import { HiOutlinePlay as RunIconOutline } from "react-icons/hi2";
 import SelectCustom from "./SelectCustom";
 
 const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
@@ -275,16 +267,16 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
         >
           <EditorComponent
             name="Input Code Editor"
-            fontSize={fontSize}
-            currentTheme={currentTheme}
             width="100%"
             height="100%"
             readOnly={false}
-            showNumberLines={true}
             mode="javascript"
-            placeholder="Type or Paste your Code here"
             value={codeInpVal}
+            fontSize={fontSize}
+            showNumberLines={true}
+            currentTheme={currentTheme}
             handleOnChange={handleInputEditorChange}
+            placeholder="Type or Paste your Code here"
           />
         </Box>
 
@@ -324,13 +316,13 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
           ) : (
             <EditorComponent
               name="Output Editor"
-              fontSize={fontSize}
-              currentTheme={currentTheme}
               width="100%"
               height="100%"
-              readOnly={true}
-              showNumberLines={false}
               mode="markdown"
+              readOnly={true}
+              fontSize={fontSize}
+              showNumberLines={false}
+              currentTheme={currentTheme}
               placeholder="Your Output Will Come here..."
               value={reqActive ? messages[messageIndex] : outputVal}
             />

@@ -12,7 +12,7 @@ function App() {
 
   /*
   http://localhost:3000/
-https://chatgpt.com/c/6b9f4ebf-a825-4475-a615-d9b8af0a2cda
+  https://chatgpt.com/c/dc16a189-532e-4877-b057-0608336d03cb
   */
 
   return (
