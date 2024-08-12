@@ -8,16 +8,17 @@ import { GoLinkExternal as ExternalLinkIcon } from "react-icons/go";
 const Footer = () => {
   return (
     <Box css={Outer}>
-      <Text color="bgA" css={TextCss}>
-        <Image color="whiteA" as={LeftIcon} /> Designed and Developed by
-        <Image color="whiteA" as={RightIcon} />
+      <Text color="var(--textColorA)" css={TextCss}>
+        <Image color="var(--textColorC)" as={LeftIcon} /> Designed and Developed
+        by
+        <Image color="var(--textColorC)" as={RightIcon} />
       </Text>
 
       <a href="https://prateekshuklaps0.github.io" target="_blank">
-        <Text color="white" fontFamily="megrim" css={NameCss}>
+        <Text color="var(--textColorA)" fontFamily="megrim" css={NameCss}>
           <Highlight
             styles={{
-              color: "white",
+              color: "var(--bgD)",
               pl: ["3.5px", "4px", "4px"],
             }}
             query="a"
@@ -38,6 +39,8 @@ const Outer = css`
   padding: 25px 0px 25px;
   display: flex;
   flex-direction: column;
+  margin-top: 15px;
+  gap: 7.5px;
 
   a {
     width: fit-content;
@@ -46,17 +49,23 @@ const Outer = css`
 
   @media (max-width: 768px) {
     padding: 15px 0px 15px;
+    margin-top: 15px;
+    gap: 6px;
   }
   @media (max-width: 480px) {
     padding: 10px 0px 10px;
+    margin-top: 12.5px;
+    gap: 5px;
   }
 `;
 const TextCss = css`
   margin: auto;
   display: inline-flex;
   align-items: center;
-  font-size: 24px;
+  font-size: 22px;
   gap: 12px;
+  font-weight: 300;
+  letter-spacing: 1px;
 
   @media (max-width: 768px) {
     font-size: 20px;

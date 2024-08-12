@@ -7,12 +7,12 @@ import {
   SetLsData,
   GetLsData,
   handleCopy,
-  handleDebug,
-  handleConvert,
-  handleRunCode,
+  DebugReq,
+  ConvertReq,
+  RunCodeReq,
   GetStoredLanguage,
   GetStoredFontSize,
-  handleCheckQuality,
+  CheckQualityReq,
   GetStoredEditorTheme,
   CalculateWidthFromPercentage,
 } from "../Data/Action";
@@ -147,7 +147,7 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
     setTheme(e.target.value);
   };
 
-  // Convert Language Change
+  // ConvertReq Language Change
   const handleLanguageChange = (e: any) => {
     const LsData = GetLsData() || {};
     const DataToBeSaved = { ...LsData, convertLanguage: e.target.value };
@@ -185,23 +185,21 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
       <Box css={css.InputBtnsContainer}>
         <BtnCustom
           onClick={() =>
-            handleRunCode(dispatch, reqActive, chakraToast, codeInpVal)
+            RunCodeReq(dispatch, reqActive, chakraToast, codeInpVal)
           }
         >
           {RunCodeLoading ? <Spinner /> : <Image as={RunIconOutline} />}
           <Text>Run Code</Text>
         </BtnCustom>
         <BtnCustom
-          onClick={() =>
-            handleDebug(dispatch, reqActive, chakraToast, codeInpVal)
-          }
+          onClick={() => DebugReq(dispatch, reqActive, chakraToast, codeInpVal)}
         >
           {DebugLoading ? <Spinner /> : <Image as={DebugIcon} />}
           <Text>Debug</Text>
         </BtnCustom>
         <BtnCustom
           onClick={() =>
-            handleCheckQuality(dispatch, reqActive, chakraToast, codeInpVal)
+            CheckQualityReq(dispatch, reqActive, chakraToast, codeInpVal)
           }
         >
           {QualityLoading ? <Spinner /> : <Image as={QualityIcon} />}
@@ -209,7 +207,7 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
         </BtnCustom>
         <BtnCustom
           onClick={() =>
-            handleConvert(
+            ConvertReq(
               dispatch,
               reqActive,
               chakraToast,
@@ -297,7 +295,10 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
           flex={1}
           className="right-block"
         >
-          {DebugLoading || ConvertLoading || QualityLoading ? (
+          {RunCodeLoading ||
+          DebugLoading ||
+          ConvertLoading ||
+          QualityLoading ? (
             <Center css={css.ConnectionOuterBox}>
               <Box>
                 <BallTriangle
@@ -318,7 +319,7 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
               readOnly={true}
               fontSize={fontSize}
               showNumberLines={false}
-              mode={selectedLanguage.toLowerCase() || selectedLanguage}
+              mode="markdown"
               currentTheme={currentTheme}
               placeholder="Your Output Will Come here..."
               value={reqActive ? messages[messageIndex] : outputVal}
