@@ -1,27 +1,26 @@
 import * as css from "../Styles/CodeAreaStyles";
 import BtnCustom from "./BtnCustom";
-import EditorComponent, { EditorThemes } from "./EditorComponent";
+import SelectCustom from "./SelectCustom";
 import { Context, CODE_INP_CHANGE } from "../Data/Context";
+import EditorComponent, { EditorThemes } from "./EditorComponent";
 import {
   SetLsData,
   GetLsData,
   handleCopy,
   handleDebug,
   handleConvert,
-  handleCheckQuality,
-  CalculateWidthFromPercentage,
+  handleRunCode,
   GetStoredLanguage,
-  GetStoredEditorTheme,
   GetStoredFontSize,
+  handleCheckQuality,
+  GetStoredEditorTheme,
+  CalculateWidthFromPercentage,
 } from "../Data/Action";
 
-import { useState, useEffect, useContext } from "react";
-import { Box, Image, Text, useToast, Spinner, Center } from "@chakra-ui/react";
 import { BallTriangle } from "react-loader-spinner";
 import { useResizable } from "react-resizable-layout";
-import { DiRuby as Ruby } from "react-icons/di";
-import { FaJava as Java } from "react-icons/fa6";
-import { VscDebug as DebugIcon } from "react-icons/vsc";
+import { useState, useEffect, useContext } from "react";
+import { Box, Image, Text, useToast, Spinner, Center } from "@chakra-ui/react";
 import {
   BiPlus as IncIcon,
   BiMinus as DecIcon,
@@ -46,8 +45,10 @@ import {
   SiTypescript as TypeScript,
   SiJavascript as JavaScript,
 } from "react-icons/si";
-// import { HiOutlinePlay as RunIconOutline } from "react-icons/hi2";
-import SelectCustom from "./SelectCustom";
+import { DiRuby as Ruby } from "react-icons/di";
+import { FaJava as Java } from "react-icons/fa6";
+import { VscDebug as DebugIcon } from "react-icons/vsc";
+import { HiOutlinePlay as RunIconOutline } from "react-icons/hi2";
 
 const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
   const {
@@ -56,6 +57,7 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
     reqActive,
     codeInpVal,
     DebugLoading,
+    RunCodeLoading,
     QualityLoading,
     ConvertLoading,
   } = useContext(Context);
@@ -97,6 +99,8 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
       let messageArray: string[] = [];
       if (reqActive == "convert") {
         messageArray = ConversionMessages;
+      } else if (reqActive == "run") {
+        messageArray = RunCodeMessages;
       } else if (reqActive == "debug") {
         messageArray = DebuggingMessages;
       } else if (reqActive == "quality") {
@@ -108,7 +112,7 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
       setMessageIndex(0);
       messageTimer = setInterval(() => {
         setMessageIndex((prevIndex) => (prevIndex + 1) % messageArray.length);
-      }, 3000);
+      }, 2500);
     };
     if (reqActive) {
       startProcessing();
@@ -179,21 +183,14 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
     <Box css={css.Outer}>
       {/* Control Panel */}
       <Box css={css.InputBtnsContainer}>
-        {/* <BtnCustom
+        <BtnCustom
           onClick={() =>
-            handleConvert(
-              dispatch,
-              reqActive,
-              chakraToast,
-              codeInpVal,
-              selectedLanguage
-            )
+            handleRunCode(dispatch, reqActive, chakraToast, codeInpVal)
           }
         >
-          {ConvertLoading ? <Spinner /> : <Image as={RunIconOutline} />}
-          <Text>Run</Text>
-        </BtnCustom> */}
-
+          {RunCodeLoading ? <Spinner /> : <Image as={RunIconOutline} />}
+          <Text>Run Code</Text>
+        </BtnCustom>
         <BtnCustom
           onClick={() =>
             handleDebug(dispatch, reqActive, chakraToast, codeInpVal)
@@ -318,10 +315,10 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
               name="Output Editor"
               width="100%"
               height="100%"
-              mode="markdown"
               readOnly={true}
               fontSize={fontSize}
               showNumberLines={false}
+              mode={selectedLanguage.toLowerCase() || selectedLanguage}
               currentTheme={currentTheme}
               placeholder="Your Output Will Come here..."
               value={reqActive ? messages[messageIndex] : outputVal}
@@ -339,6 +336,15 @@ const ConnectingMessages = [
   "Installing Dependencies...",
   "Establishing Connection...",
   "Connecting to Server...",
+];
+
+const RunCodeMessages = [
+  "Just a sec, processing your code...",
+  "Running code, please stand by...",
+  "Please wait, generating results...",
+  "Hang in there, results are coming...",
+  "Your output is on the way...",
+  "Almost done, just finishing up...",
 ];
 
 const ConversionMessages = [

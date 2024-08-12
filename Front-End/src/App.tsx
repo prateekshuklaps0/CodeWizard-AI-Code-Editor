@@ -10,11 +10,6 @@ function App() {
   const [isBelow480px] = useMediaQuery("(max-width: 480px)");
   const [isBelow768px] = useMediaQuery("(max-width: 768px)");
 
-  /*
-  http://localhost:3000/
-  https://chatgpt.com/c/dc16a189-532e-4877-b057-0608336d03cb
-  */
-
   return (
     <Box id="App">
       <Particle />

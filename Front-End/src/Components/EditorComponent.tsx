@@ -9,6 +9,9 @@ import "ace-builds/src-noconflict/mode-markdown";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/theme-terminal";
 import "ace-builds/src-noconflict/theme-nord_dark";
+import "ace-builds/src-noconflict/ext-beautify";
+import "ace-builds/src-noconflict/ext-themelist";
+import "ace-builds/src-noconflict/ext-static_highlight";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 

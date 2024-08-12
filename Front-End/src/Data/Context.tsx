@@ -15,6 +15,7 @@ const ContextProvider = ({ children }: any) => {
 export default ContextProvider;
 
 const initVal: any = {
+  RunCodeLoading: false,
   DebugLoading: false,
   QualityLoading: false,
   ConvertLoading: false,
@@ -40,6 +41,15 @@ const initVal: any = {
 
 const Reducer = (state = initVal, { type, payload }: any) => {
   switch (type) {
+    case RUN_CODE_LOADING: {
+      return {
+        ...state,
+        reqActive: "run",
+        RunCodeLoading: true,
+        isError: false,
+        outputVal: "",
+      };
+    }
     case CONVERT_LOADING: {
       return {
         ...state,
@@ -87,6 +97,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
       return {
         ...state,
         reqActive: false,
+        RunCodeLoading: false,
         ConvertLoading: false,
         DebugLoading: false,
         QualityLoading: false,
@@ -98,6 +109,7 @@ const Reducer = (state = initVal, { type, payload }: any) => {
       return {
         ...state,
         reqActive: false,
+        RunCodeLoading: false,
         ConvertLoading: false,
         DebugLoading: false,
         QualityLoading: false,
@@ -222,6 +234,7 @@ export const IMPORT_LOADING = "IMPORT_LOADING";
 export const CONVERT_LOADING = "CONVERT_LOADING";
 export const CODE_INP_CHANGE = "CODE_INP_CHANGE";
 export const SUCCESS_USERNAME = "SUCCESS_USERNAME";
+export const RUN_CODE_LOADING = "RUN_CODE_LOADING";
 export const REPO_CLICK_ERROR = "REPO_CLICK_ERROR";
 export const CLEAR_USERNAME_INP = "CLEAR_USERNAME_INP";
 export const CONNECTION_LOADING = "CONNECTION_LOADING";

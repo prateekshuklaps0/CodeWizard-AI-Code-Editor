@@ -28,6 +28,87 @@ const API_KEY = import.meta.env.VITE_API_KEY || "";
 //   },
 // };
 
+// Function for Run Code Request
+export const handleRunCode = async (
+  dispatch: any,
+  reqActive: boolean,
+  chakraToast: any,
+  codeInpVal: any
+) => {
+  if (!reqActive) {
+    chakraToast.closeAll();
+    if (!codeInpVal || codeInpVal.length <= 5)
+      return chakraToast({
+        title: "Attention!",
+        description: "No valid code detected to run yet.",
+        status: "warning",
+        isClosable: true,
+      });
+    dispatch({ type: CONVERT_LOADING });
+    axios
+      .post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
+        {
+          contents: [
+            {
+              parts: [
+                {
+                  text: `
+                  [ Act as a Professional Code Compiler ]
+You have to compile and execute the provided code through strictly following the below instructions very carefully:
+
+Instructions:
+- [ ! IMPORTANT ] First, verify if the provided input is a valid code snippet. If it is not, politely inform me that the input does not appear to be valid code.
+- If the code includes imports or dependencies (e.g., CSS files, external libraries, components), and these are not accessible within the current environment, inform me that the code cannot be fully executed as it relies on external resources.
+- You have to very carefully & properly run, calculate, execute & compile the whole code line by line internally, then give the output in response.
+- Compile and execute the code exactly as it is. Do not infer, optimize, or modify the logic, input, or output.
+- If the code contains syntax errors or other issues, highlight the errors in your response.
+- Any difference between the output you generated and the output generated in a real code compiler could cause a very big problem, so make sure so study the code line by line and after a very thourogh examination of the output you generated will give it as a response.
+- If the code is valid, compile and execute it. Return the output of the code.
+- Return the output exactly as the code would produce in a standard code runtime environment.
+- If the code includes language-specific or environment-specific requirements (e.g., a specific runtime or library), make assumptions based on common defaults unless specified otherwise.
+- In cases where the code is incomplete or ambiguous, suggest potential corrections or ask for clarification.
+- Do not provide any explanations or additional commentary beyond what is requested (i.e., the result of the compilation and execution, error messages, or validation feedback).
+- Do not wrap the response or output in any markdown brackets, code blocks, backticks, or grave accents.
+
+Here is the code to be compiled and executed: 
+${codeInpVal}
+                  `,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        dispatch({
+          type: SUCCESS,
+          payload:
+            res?.data?.candidates[0]?.content?.parts[0]?.text ||
+            "Something went wrong while converting your code, please contact the developer!" +
+              "\n" +
+              "" +
+              "\n",
+        });
+      })
+      .catch((err: any) => {
+        dispatch({ type: IS_ERROR });
+        chakraToast({
+          title: "Something Went Wrong!",
+          description: "Please try again after sometime.",
+          status: "error",
+          isClosable: true,
+        });
+        console.log("Convert Request Error :-", err);
+      });
+  }
+};
+
 // Function for Code Convert Request
 export const handleConvert = (
   dispatch: any,
@@ -63,6 +144,7 @@ export const handleConvert = (
                   - [ ! IMPORTANT ] If the language in which the given code written is same as the language asked to convert the code into, Just simply tell me in a good and soothing language, do not write any code.
                   - Else, convert the code into the language asked.
                   - Do not provide any explanation of the code and do not write anything extra other than the converted code, also you need not to provide any note as well.
+                  - [ ! IMPORTANT ] Do not wrap the response or code in any markdown brackets, code block, backticks or grave accent.
 
                   Here is the Code that needs to be converted :- ${codeInpVal}
                   `,
