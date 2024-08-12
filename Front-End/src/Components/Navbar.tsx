@@ -102,24 +102,26 @@ const Navbar = ({ isBelow480px, isBelow768px }: any) => {
 
   // Download File
   const handleDownloadFile = async () => {
-    setDownloadLoading(true);
-    try {
-      const response = await fetch(downloadFileLink);
-      if (!response.ok) {
-        throw new Error("Failed to download file");
+    if (!downloadLoading) {
+      setDownloadLoading(true);
+      try {
+        const response = await fetch(downloadFileLink);
+        if (!response.ok) {
+          throw new Error("Failed to download file");
+        }
+        const blob = await response.blob();
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = clickedFileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      } catch (error) {
+        console.error(`Error Downloading ${clickedFileName} :`, error);
+      } finally {
+        setDownloadLoading(false);
       }
-      const blob = await response.blob();
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = clickedFileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(link.href);
-    } catch (error) {
-      console.error(`Error Downloading ${clickedFileName} :`, error);
-    } finally {
-      setDownloadLoading(false);
     }
   };
 
@@ -445,11 +447,7 @@ const Navbar = ({ isBelow480px, isBelow768px }: any) => {
                     <ImportCodeIcon />
                     Import Code
                   </Button>
-                  <Button
-                    onClick={handleDownloadFile}
-                    isDisabled={downloadLoading}
-                    type="button"
-                  >
+                  <Button onClick={handleDownloadFile} type="button">
                     {downloadLoading ? <LoaderIcon /> : <ImportCodeIcon2 />}
                     {downloadLoading ? "Downloading..." : "Download File"}
                   </Button>
