@@ -14,6 +14,13 @@
 - **Customizable User Interface :** Tailor the editor's appearance with multiple themes and adjustable font sizes.
 - **Responsive Design :** Fully responsive and compatible with all devices.
 
+## Tech Stacks Used :
+
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![Chakra](https://img.shields.io/badge/chakra-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
 ## **Key Entities** :
 
 - **User Input Editor :** The main area where users write or import their code.
@@ -22,30 +29,32 @@
 - **GitHub Integration :** Allows users to import code directly from their GitHub repositories and download files.
 - **Customization Options :** Offers theme selection, font size adjustment, and clipboard copying.
 
-## Tech Stacks Used :
-
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![Chakra](https://img.shields.io/badge/chakra-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white)
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-
 ## **Installation & Getting Started** :
 
 1. Clone repository: **`git clone https://github.com/prateekshuklaps0/CodeWizard-AI-Code-Converter`**
 1. Install dependencies: **`cd Front-End`**, **`npm install`**
 1. Start the front-end server: **`npm run dev`**
 
-<h3 align="center">Effortless Code Translation</h3>
+<h3 align="center">Dynamic Code Execution</h3>
 
-![Effortless Code Translation](./Images/Converting.png)
+![Dynamic Code Execution](./Images/Run_Code.png)
 
-<h3 align="center">AI-Powered Debugging Insights</h3>
+<h3 align="center">Effortless GitHub Code Integration</h3>
 
-![AI-Powered Debugging Insights](./Images/Debuging.png)
+![Effortless GitHub Code Integration](./Images/Import.png)
 
-<h3 align="center">Code Quality Check Metrics</h3>
+<h3 align="center">Seamless Debugging Insights</h3>
 
-![Code Quality Check Metrics](./Images/Checking_Quality.png)
+![Seamless Debugging Insights](./Images/Debug.png)
+
+<h3 align="center">AI-Powered Code Evaluation</h3>
+
+![AI-Powered Code Evaluation](./Images/Checking_Quality_1.png)
+![AI-Powered Code Evaluation](./Images/Checking_Quality_2.png)
+
+<h3 align="center">Instant Code Language Translation</h3>
+
+![Instant Code Language Translation](./Images/Convert.png)
 
 <h3 align="center">Multi-Programming Language Support</h3>
 
