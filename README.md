@@ -32,34 +32,50 @@
 ## **Installation & Getting Started** :
 
 1. Clone repository: **`git clone https://github.com/prateekshuklaps0/CodeWizard-AI-Code-Converter`**
-1. Install dependencies: **`cd Front-End`**, **`npm install`**
-1. Start the front-end server: **`npm run dev`**
+2. Install dependencies: **`cd Front-End`**, **`npm install`**
+3. Start the front-end server: **`npm run dev`**
+
+<hr/>
 
 <h3 align="center">Dynamic Code Execution</h3>
 
 ![Dynamic Code Execution](./Images/Run_Code.png)
 
+<hr/>
+
 <h3 align="center">Effortless GitHub Code Integration</h3>
 
 ![Effortless GitHub Code Integration](./Images/Import.png)
 
+<hr/>
+
 <h3 align="center">Seamless Debugging Insights</h3>
 
 ![Seamless Debugging Insights](./Images/Debug.png)
+
+<hr/>
 
 <h3 align="center">AI-Powered Code Evaluation</h3>
 
 ![AI-Powered Code Evaluation](./Images/Checking_Quality_1.png)
 ![AI-Powered Code Evaluation](./Images/Checking_Quality_2.png)
 
+<hr/>
+
 <h3 align="center">Instant Code Language Translation</h3>
 
 ![Instant Code Language Translation](./Images/Convert.png)
+
+<hr/>
 
 <h3 align="center">Multi-Programming Language Support</h3>
 
 ![Multi-Programming Language Support](./Images/Languages.png)
 
+<hr/>
+
 <h3 align="center">Various Themes Selection Options</h3>
 
 ![Various Themes Selection Options](./Images/Themes.png)
+
+<hr/>
