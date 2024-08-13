@@ -226,7 +226,7 @@ export const CheckQualityReq = async (
                  - Then, generate a code quality summary based each of the criteria mentioned above.
                  - Then generate a percentage-wise evaluations of the provided code for each criterion mentioned above (the some decorative table method to present the report).
                  - Then highlight areas where the code excels and areas for improvement (must).
-                 - Finally a closing remark about the provided code with a good heading.
+                 - Finally a closing remark about the provided code with a nice and decent heading.
                  - Keep explanations short, precise, and in simple English. Avoid using complex terminology.
                  - Do not include any additional commentary, notes, or irrelevant information.
                  - The quality report you generate will be shown in a markdown file so you are expected to decorate the the report as you want like a github repo ReadMe file.
