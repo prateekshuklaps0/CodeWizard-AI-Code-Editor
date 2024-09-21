@@ -369,7 +369,6 @@ export const SearchGithubUser = async (dispatch: any, userNameInp: string) => {
           }
     );
     //  console.log("Github User Search Response :", repoListRes?.data);
-    //  console.log("User Repos Response :", repoListRes?.data);
   } catch (error: any) {
     dispatch({
       type: IMPORT_ERROR,
@@ -444,10 +443,10 @@ export const FolderClickReq = async (
       type: FOLDER_CLICK_SUCCESS,
       payload,
     });
-    console.log(
-      `Folder Click Response - ${folderPath}  :`,
-      folderClickRes?.data
-    );
+    // console.log(
+    //   `Folder Click Response - ${folderPath}  :`,
+    //   folderClickRes?.data
+    // );
   } catch (error: any) {
     chakraToast({
       title: error?.response?.data?.message || "Something Went Wrong",
@@ -489,7 +488,7 @@ export const FileClickReq = async (
       type: FILE_CLICKED_SUCCESS,
       payload,
     });
-    console.log(`File Click Response - ${filePath}  :`, fileClickRes?.data);
+    // console.log(`File Click Response - ${filePath}  :`, fileClickRes?.data);
   } catch (error: any) {
     chakraToast({
       title: error?.response?.data?.message || "Something Went Wrong",
