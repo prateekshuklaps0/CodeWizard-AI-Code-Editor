@@ -1,4 +1,6 @@
-import axios from "axios";
+const API_KEY = import.meta.env.VITE_API_KEY || "http://localhost:8080";
+// const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || "Token_Not_Found";
+
 import {
   SUCCESS,
   IS_ERROR,
@@ -8,6 +10,7 @@ import {
   CODEWIZARD_KEY,
   CONVERT_LOADING,
   SUCCESS_USERNAME,
+  RUN_CODE_LOADING,
   REPO_CLICK_ERROR,
   CONNECTION_LOADING,
   CONNECTION_SUCCESS,
@@ -15,12 +18,9 @@ import {
   FILE_CLICKED_SUCCESS,
   FOLDER_CLICK_SUCCESS,
   QUALITY_CHECK_LOADING,
-  RUN_CODE_LOADING,
 } from "./Context";
 
-const API_KEY = import.meta.env.VITE_API_KEY || "";
-//const GITHUB_TOKEN =
-//import.meta.env.GITHUB_TOKEN || "";
+import axios from "axios";
 
 // const githubConfig = {
 //   headers: {
