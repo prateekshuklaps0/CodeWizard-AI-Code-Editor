@@ -1,4 +1,4 @@
-const API_KEY = import.meta.env.VITE_API_KEY || "http://localhost:8080";
+const API_KEY = import.meta.env.VITE_API_KEY || "API_KEY not found.";
 // const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || "Token_Not_Found";
 
 import {
@@ -41,7 +41,7 @@ export const RunCodeReq = async (
   if (!codeInpVal || codeInpVal.length <= 5)
     return chakraToast({
       title: "Attention!",
-      description: "No valid code detected to run yet.",
+      description: "No valid code snippet detected to run yet.",
       status: "warning",
       isClosable: true,
     });
@@ -55,25 +55,26 @@ export const RunCodeReq = async (
             parts: [
               {
                 text: `
-                [ Act as a Professional Code Compiler ]
-                 You need to compile and execute the provided code by strictly following the instructions below
-                 Instructions:
-                 - If the provided input is not a valid code snippet, politely inform me about the input and why it cannot be executed or compiled. Remember, all the responses you generate will be shown directly to the user, so it should be calm, soothing, and descriptive.
-                 - If your descriptive response is more than one sentence, ensure each sentence is on a new line.
-                 - If the code includes imports or dependencies (e.g., CSS files, external libraries, components), and these are not accessible within the current environment, inform me of this as mentioned in the above instruction.
-                 - Carefully and thoroughly run, calculate, execute, and compile the entire code line by line internally, then provide the output in your response.
-                 - Compile and execute the code exactly as it is. Do not infer, optimize, or modify the logic, input, or output.
-                 - If the code contains syntax errors or other issues, highlight these errors in your response.
-                 - Any difference between the output you generate and the output from a real code compiler could cause significant problems, so make sure to study the code line by line. After a thorough examination, provide the output you generated as your response.
-                 - If the code is valid, compile and execute it. Return the output of the code.
-                 - Return the output exactly as the code would produce in a standard runtime environment.
-                 - If the code includes language-specific or environment-specific requirements (e.g., a specific runtime or library), make assumptions based on common defaults unless specified otherwise.
-                 - If the code is incomplete or ambiguous, provide a response alerting me to this, as instructed above.
-                 - Do not provide any explanations or additional commentary beyond what is requested (i.e., the result of the compilation and execution, error messages, or validation feedback).
-                 - Do not wrap the response or output in any markdown brackets, code blocks, backticks, or grave accents.
-                 
-                 Here is the input:
-                 ${codeInpVal}
+                Consider you are code runtime environment, you have to compile and run the provided code by carefully and concisely following the instructions below :
+                
+                * If the provided input is not a valid code snippet, politely inform me about the input and why it cannot be compiled.
+                * Remember, all the responses you generate will be shown directly to the user, so it should be calm, soothing, and descriptive.
+                * If your descriptive response is more than one sentence, ensure each sentence is on a new line.
+                * If the code includes imports or dependencies (e.g., CSS files, external libraries, components), and these are not accessible within the current environment, inform me of this as mentioned in the above instruction.
+                * Carefully and thoroughly run, calculate, and compile the entire code line by line internally, then provide the output in your response.
+                * Compile the code exactly as it is. Do not infer, optimize, or modify the input logic or code.
+                * If the code contains syntax errors or other issues, highlight these errors in your response.
+                * Any difference between the output you generate and the output from a real code runtime environment could compromise the reliablity of my project, so make sure to study the code line by line, only after a thorough examination provide the output you generated.
+                * If the code is valid, compile it like a real runtime environment would do and return nothing else but the output of the code.
+                * If the code is incomplete or ambiguous, provide a text alerting me to this, as instructed above.
+                * If the code includes language-specific or environment-specific requirements (e.g., a specific runtime or library), make assumptions based on common defaults unless specified otherwise.
+                * Do not provide any explanations or additional commentary beyond what is requested (i.e., the result of the compilation, error messages, or validation feedback).
+                
+                Here is the input code sample:
+                
+                '''
+                ${codeInpVal}
+                '''
                  `,
               },
             ],
@@ -82,6 +83,7 @@ export const RunCodeReq = async (
       },
       { headers: { "Content-Type": "application/json" } }
     );
+
     dispatch({
       type: SUCCESS,
       payload:

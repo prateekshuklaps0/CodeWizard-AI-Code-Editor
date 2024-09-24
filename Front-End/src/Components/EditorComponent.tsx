@@ -1,6 +1,8 @@
 import React from "react";
 
-import AceEditor from "react-ace";
+import ace from "ace-builds/src-noconflict/ace";
+ace.config.set("basePath", "/node_modules/ace-builds/src-min-noconflict");
+
 import "ace-builds/src-noconflict/theme-gob";
 import "ace-builds/src-noconflict/theme-xcode";
 import "ace-builds/src-noconflict/theme-cobalt";
@@ -14,6 +16,8 @@ import "ace-builds/src-noconflict/ext-themelist";
 import "ace-builds/src-noconflict/ext-static_highlight";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
+
+import AceEditor from "react-ace";
 
 const EditorComponent: React.FC<any> = ({
   name,

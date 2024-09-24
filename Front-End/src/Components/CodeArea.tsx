@@ -10,9 +10,9 @@ import {
   DebugReq,
   ConvertReq,
   RunCodeReq,
+  CheckQualityReq,
   GetStoredLanguage,
   GetStoredFontSize,
-  CheckQualityReq,
   GetStoredEditorTheme,
   CalculateWidthFromPercentage,
 } from "../Data/Action";
@@ -159,20 +159,18 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
   const handleFontSizeChange = (value: number) => {
     chakraToast.closeAll();
     const newFontSize = fontSize + value;
-    if (newFontSize < 12) {
+    if (newFontSize < 12)
       return chakraToast({
         title: "Font size can't be under 12.",
         status: "warning",
         position: "top",
       });
-    }
-    if (newFontSize > 42) {
+    if (newFontSize > 42)
       return chakraToast({
         title: "Font size can't exceed 42.",
         status: "warning",
         position: "top",
       });
-    }
     const LsData = GetLsData() || {};
     const DataToBeSaved = { ...LsData, fontSize: newFontSize };
     SetLsData(DataToBeSaved);
