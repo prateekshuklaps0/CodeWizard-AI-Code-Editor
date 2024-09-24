@@ -32,8 +32,16 @@
 ## **Installation & Getting Started** :
 
 1. Clone repository: **`git clone https://github.com/prateekshuklaps0/CodeWizard-AI-Code-Converter`**
-2. Install dependencies: **`cd Front-End`**, **`npm install`**
-3. Start the front-end server: **`npm run dev`**
+2. Navigate to the Front-End directory: **`cd Front-End`**
+3. Create `.env` file in the root directory and add :
+
+```
+VITE_API_KEY = 𝘠𝘰𝘶𝘳_𝘎𝘰𝘰𝘨𝘭𝘦_𝘎𝘦𝘮𝘪𝘯𝘪_𝘈𝘱𝘪_𝘒𝘦𝘺
+GITHUB_TOKEN = 𝘠𝘰𝘶𝘳_𝘎𝘪𝘵𝘩𝘶𝘣_𝘈𝘤𝘤𝘦𝘴𝘴_𝘛𝘰𝘬𝘦𝘯
+```
+
+4. Install dependencies: **`npm install`**
+5. Start the front-end server: **`npm run dev`**
 
 <hr/>
 
