@@ -3,15 +3,7 @@ import { css } from "@emotion/react";
 import { Button } from "@chakra-ui/react";
 
 const BtnCustom = ({ children, onClick, isDisabled = false }: any) => {
-  return (
-    <Button
-      onClick={onClick}
-      cursor={isDisabled ? "wait" : "pointer"}
-      css={BtnCss}
-    >
-      {children}
-    </Button>
-  );
+  return <Button css={BtnCss} onClick={onClick} cursor={isDisabled ? "wait" : "pointer"} >{children}</Button>
 };
 
 export default BtnCustom;

@@ -24,11 +24,7 @@ const SelectCustom = ({ leftImage, array, value, onChange, keyName }: any) => {
     <Box css={SelectTagCss} onClick={handleOnDivClick}>
       {leftImage}
       <select ref={selectRef} value={value} onChange={onChange}>
-        {array.map((item: any, ind: number) => (
-          <option value={item[keyName] || item} key={ind}>
-            {item.name || item}
-          </option>
-        ))}
+        {array.map((item: any, ind: number) => <option value={item[keyName] || item} key={ind}>{item.name || item}</option>)}
       </select>
     </Box>
   );

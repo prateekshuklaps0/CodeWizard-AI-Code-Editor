@@ -9,22 +9,14 @@ const Footer = () => {
   return (
     <Box css={Outer}>
       <Text color="var(--textColorA)" css={TextCss}>
-        <Image color="var(--textColorC)" as={LeftIcon} /> Designed and Developed
-        by
+        <Image color="var(--textColorC)" as={LeftIcon} />
+        Designed and Developed by
         <Image color="var(--textColorC)" as={RightIcon} />
       </Text>
 
       <a href="https://prateekshuklaps0.github.io" target="_blank">
         <Text color="var(--textColorA)" fontFamily="megrim" css={NameCss}>
-          <Highlight
-            styles={{
-              color: "var(--bgD)",
-              pl: ["3.5px", "4px", "4px"],
-            }}
-            query="a"
-          >
-            Prateek
-          </Highlight>
+          <Highlight query="a" styles={{ color: "var(--bgD)", pl: ["3.5px", "4px", "4px"] }}>Prateek</Highlight>
           <Image as={ExternalLinkIcon} />
         </Text>
       </a>

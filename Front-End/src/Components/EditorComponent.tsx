@@ -32,66 +32,40 @@ const EditorComponent: React.FC<any> = ({
   value,
   handleOnChange,
 }) => {
-  return (
-    <AceEditor
-      mode={mode}
-      placeholder={placeholder}
-      fontSize={fontSize}
-      theme={currentTheme}
-      value={value}
-      width={width}
-      height={height}
-      onChange={handleOnChange}
-      name={name}
-      readOnly={readOnly}
-      showGutter={showNumberLines}
-      showPrintMargin={false}
-      highlightActiveLine={true}
-      setOptions={{
-        enableBasicAutocompletion: true,
-        enableLiveAutocompletion: true,
-        enableSnippets: true,
-        showLineNumbers: true,
-        tabSize: 2,
-      }}
-    />
-  );
+  return <AceEditor
+    mode={mode}
+    placeholder={placeholder}
+    fontSize={fontSize}
+    theme={currentTheme}
+    value={value}
+    width={width}
+    height={height}
+    onChange={handleOnChange}
+    name={name}
+    readOnly={readOnly}
+    showGutter={showNumberLines}
+    showPrintMargin={false}
+    highlightActiveLine={true}
+    setOptions={{
+      enableBasicAutocompletion: true,
+      enableLiveAutocompletion: true,
+      enableSnippets: true,
+      showLineNumbers: true,
+      tabSize: 2,
+    }}
+  />;
 };
 
 export default EditorComponent;
 
 // Editor Themes Array
 export const EditorThemes = [
-  {
-    theme: "monokai",
-    name: "Monokai",
-  },
-  {
-    theme: "cobalt",
-    name: "Cobalt",
-  },
-  {
-    theme: "tomorrow_night_blue",
-    name: "Night Blue",
-  },
-  {
-    theme: "dracula",
-    name: "Dracula",
-  },
-  {
-    theme: "gob",
-    name: "Gob",
-  },
-  {
-    theme: "xcode",
-    name: "Xcode",
-  },
-  {
-    theme: "terminal",
-    name: "Terminal",
-  },
-  {
-    theme: "nord_dark",
-    name: "Nord Dark",
-  },
+  { theme: "monokai", name: "Monokai", },
+  { theme: "cobalt", name: "Cobalt", },
+  { theme: "tomorrow_night_blue", name: "Night Blue", },
+  { theme: "dracula", name: "Dracula", },
+  { theme: "gob", name: "Gob", },
+  { theme: "xcode", name: "Xcode", },
+  { theme: "terminal", name: "Terminal", },
+  { theme: "nord_dark", name: "Nord Dark", },
 ];

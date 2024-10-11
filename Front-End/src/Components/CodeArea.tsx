@@ -4,6 +4,17 @@ import SelectCustom from "./SelectCustom";
 import { Context, CODE_INP_CHANGE } from "../Data/Context";
 import EditorComponent, { EditorThemes } from "./EditorComponent";
 import {
+  SiPhp as PHP,
+  SiRust as Rust,
+  SiSwift as Swift,
+  SiKotlin as Kotlin,
+  SiPython as Python,
+  SiCplusplus as CSharp,
+  SiCplusplus as CPlusPlus,
+  SiTypescript as TypeScript,
+  SiJavascript as JavaScript,
+} from "react-icons/si";
+import {
   SetLsData,
   GetLsData,
   handleCopy,
@@ -17,80 +28,31 @@ import {
   CalculateWidthFromPercentage,
 } from "../Data/Action";
 
-import { BallTriangle } from "react-loader-spinner";
-import { useResizable } from "react-resizable-layout";
-import { useState, useEffect, useContext } from "react";
-import { Box, Image, Text, useToast, Spinner, Center } from "@chakra-ui/react";
-import {
-  BiPlus as IncIcon,
-  BiMinus as DecIcon,
-  BiFontSize as FontSizeIcon,
-} from "react-icons/bi";
-import {
-  MdOutlineImagesearchRoller as ThemeIcon,
-  MdContentCopy as Copy,
-} from "react-icons/md";
-import {
-  LiaExchangeAltSolid as ConvertIcon,
-  LiaClipboardCheckSolid as QualityIcon,
-} from "react-icons/lia";
-import {
-  SiPhp as PHP,
-  SiRust as Rust,
-  SiSwift as Swift,
-  SiKotlin as Kotlin,
-  SiPython as Python,
-  SiCplusplus as CSharp,
-  SiCplusplus as CPlusPlus,
-  SiTypescript as TypeScript,
-  SiJavascript as JavaScript,
-} from "react-icons/si";
 import { DiRuby as Ruby } from "react-icons/di";
 import { FaJava as Java } from "react-icons/fa6";
+import { BallTriangle } from "react-loader-spinner";
+import { useResizable } from "react-resizable-layout";
 import { VscDebug as DebugIcon } from "react-icons/vsc";
+import { useState, useEffect, useContext } from "react";
 import { HiOutlinePlay as RunIconOutline } from "react-icons/hi2";
+import { Box, Image, Text, useToast, Spinner, Center } from "@chakra-ui/react";
+import { MdContentCopy as Copy, MdOutlineImagesearchRoller as ThemeIcon, } from "react-icons/md";
+import { BiPlus as IncIcon, BiMinus as DecIcon, BiFontSize as FontSizeIcon, } from "react-icons/bi";
+import { LiaExchangeAltSolid as ConvertIcon, LiaClipboardCheckSolid as QualityIcon, } from "react-icons/lia";
 
 const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
-  const {
-    dispatch,
-    outputVal,
-    reqActive,
-    codeInpVal,
-    DebugLoading,
-    RunCodeLoading,
-    QualityLoading,
-    ConvertLoading,
-  } = useContext(Context);
+  const { dispatch, outputVal, reqActive, codeInpVal, DebugLoading, RunCodeLoading, QualityLoading, ConvertLoading, } = useContext(Context);
   const chakraToast = useToast();
-  const [currentTheme, setTheme] = useState<string>(
-    GetStoredEditorTheme(EditorThemes)
-  );
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(
-    GetStoredLanguage(LanguagesArr)
-  );
-  let initialDivWidth =
-    Math.floor(CalculateWidthFromPercentage(97.5) / 2) - 7.5;
+  const [currentTheme, setTheme] = useState<string>(GetStoredEditorTheme(EditorThemes));
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(GetStoredLanguage(LanguagesArr));
+  let initialDivWidth = Math.floor(CalculateWidthFromPercentage(97.5) / 2) - 7.5;
   const [messages, setMessages] = useState<string[]>([]);
   const [currImg, setCurrImg] = useState(LanguagesArr[0]?.img);
   const [messageIndex, setMessageIndex] = useState<number>(0);
   const [fontSize, setFontSize] = useState<number>(GetStoredFontSize());
 
-  const {
-    isDragging: HorizontalDragging,
-    position: HorizontalPosition,
-    separatorProps: HorizontalSeperatorProps,
-  } = useResizable({
-    axis: "x",
-    initial: initialDivWidth,
-  });
-  const {
-    isDragging: VerticalDragging,
-    position: VerticalPosition,
-    separatorProps: VerticalSeperatorProps,
-  } = useResizable({
-    axis: "y",
-    initial: isBelow480px ? 400 : 500,
-  });
+  const { position: VerticalPosition, isDragging: VerticalDragging, separatorProps: VerticalSeperatorProps, } = useResizable({ axis: "y", initial: isBelow480px ? 400 : 500, });
+  const { position: HorizontalPosition, isDragging: HorizontalDragging, separatorProps: HorizontalSeperatorProps, } = useResizable({ axis: "x", initial: initialDivWidth, });
 
   // useEffect for showing processing messages in output editor while a request is made.
   useEffect(() => {
@@ -126,10 +88,8 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
 
   // useEffect for changing current language icon in language select menu.
   useEffect(() => {
-    let selectedImg = LanguagesArr.filter((item: any) => {
-      if (item?.name == selectedLanguage) {
-        return item?.img;
-      }
+    const selectedImg = LanguagesArr.filter((item: any) => {
+      if (item?.name == selectedLanguage) return item?.img;
     });
     setCurrImg(selectedImg[0]?.img);
   }, [selectedLanguage]);
@@ -160,17 +120,9 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
     chakraToast.closeAll();
     const newFontSize = fontSize + value;
     if (newFontSize < 12)
-      return chakraToast({
-        title: "Font size can't be under 12.",
-        status: "warning",
-        position: "top",
-      });
+      return chakraToast({ title: "Font size can't be under 12.", status: "warning", position: "top", });
     if (newFontSize > 42)
-      return chakraToast({
-        title: "Font size can't exceed 42.",
-        status: "warning",
-        position: "top",
-      });
+      return chakraToast({ title: "Font size can't exceed 42.", status: "warning", position: "top", });
     const LsData = GetLsData() || {};
     const DataToBeSaved = { ...LsData, fontSize: newFontSize };
     SetLsData(DataToBeSaved);
@@ -181,70 +133,30 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
     <Box css={css.Outer}>
       {/* Control Panel */}
       <Box css={css.InputBtnsContainer}>
-        <BtnCustom
-          onClick={() =>
-            RunCodeReq(dispatch, reqActive, chakraToast, codeInpVal)
-          }
-        >
+        <BtnCustom onClick={() => RunCodeReq(dispatch, reqActive, chakraToast, codeInpVal)} >
           {RunCodeLoading ? <Spinner /> : <Image as={RunIconOutline} />}
           <Text>Run Code</Text>
         </BtnCustom>
-        <BtnCustom
-          onClick={() => DebugReq(dispatch, reqActive, chakraToast, codeInpVal)}
-        >
+        <BtnCustom onClick={() => DebugReq(dispatch, reqActive, chakraToast, codeInpVal)} >
           {DebugLoading ? <Spinner /> : <Image as={DebugIcon} />}
           <Text>Debug</Text>
         </BtnCustom>
-        <BtnCustom
-          onClick={() =>
-            CheckQualityReq(dispatch, reqActive, chakraToast, codeInpVal)
-          }
-        >
+        <BtnCustom onClick={() => CheckQualityReq(dispatch, reqActive, chakraToast, codeInpVal)} >
           {QualityLoading ? <Spinner /> : <Image as={QualityIcon} />}
           <Text>Check Quality</Text>
         </BtnCustom>
-        <BtnCustom
-          onClick={() =>
-            ConvertReq(
-              dispatch,
-              reqActive,
-              chakraToast,
-              codeInpVal,
-              selectedLanguage
-            )
-          }
-        >
+        <BtnCustom onClick={() => ConvertReq(dispatch, reqActive, chakraToast, codeInpVal, selectedLanguage)} >
           {ConvertLoading ? <Spinner /> : <ConvertIcon />}
           <Text>Convert</Text>
         </BtnCustom>
-        <SelectCustom
-          leftImage={currImg}
-          value={selectedLanguage}
-          array={LanguagesArr}
-          keyName="name"
-          onChange={handleLanguageChange}
-        />
-        <SelectCustom
-          leftImage={<ThemeIcon />}
-          value={currentTheme}
-          array={EditorThemes}
-          keyName="theme"
-          onChange={handleThemeChange}
-        />
+        <SelectCustom keyName="name" leftImage={currImg} array={LanguagesArr} value={selectedLanguage} onChange={handleLanguageChange} />
+        <SelectCustom keyName="theme" leftImage={<ThemeIcon />} value={currentTheme} array={EditorThemes} onChange={handleThemeChange} />
         <Box css={css.FontBtnOuterBox}>
           <Image as={FontSizeIcon} />
           <Box>
-            <Image
-              onClick={() => handleFontSizeChange(-1)}
-              as={DecIcon}
-              color={fontSize <= 14 ? "blackB" : "blackA"}
-            />
+            <Image as={DecIcon} onClick={() => handleFontSizeChange(-1)} color={fontSize <= 14 ? "blackB" : "blackA"} />
             <Text>{fontSize}</Text>
-            <Image
-              onClick={() => handleFontSizeChange(1)}
-              as={IncIcon}
-              color={fontSize >= 42 ? "blackB" : "blackA"}
-            />
+            <Image as={IncIcon} onClick={() => handleFontSizeChange(1)} color={fontSize >= 42 ? "blackB" : "blackA"} />
           </Box>
         </Box>
         <BtnCustom onClick={() => handleCopy(chakraToast, outputVal)}>
@@ -253,11 +165,7 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
       </Box>
       <Box className="wrapper" flexGrow={1} css={css.BothEditorContainers}>
         {/* Input Editor */}
-        <Box
-          width={isBelow768px ? "100%" : HorizontalPosition}
-          h={isBelow768px ? VerticalPosition : "100%"}
-          className="left-block"
-        >
+        <Box className="left-block" h={isBelow768px ? VerticalPosition : "100%"} width={isBelow768px ? "100%" : HorizontalPosition}          >
           <EditorComponent
             name="Input Code Editor"
             width="100%"
@@ -274,38 +182,14 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
         </Box>
 
         {/* Splitter */}
-        <Box
-          bg={
-            HorizontalDragging || VerticalDragging
-              ? "var(--greyC)"
-              : "var(--bgC)"
-          }
-          {...(isBelow768px
-            ? VerticalSeperatorProps
-            : HorizontalSeperatorProps)}
-          className="splitter"
-        ></Box>
+        <Box bg={HorizontalDragging || VerticalDragging ? "var(--greyC)" : "var(--bgC)"} {...(isBelow768px ? VerticalSeperatorProps : HorizontalSeperatorProps)} className="splitter" ></Box>
 
         {/* Output Editor */}
-        <Box
-          h={isBelow768px ? VerticalPosition : "100%"}
-          w={isBelow768px ? "100%" : VerticalPosition}
-          flex={1}
-          className="right-block"
-        >
-          {RunCodeLoading ||
-          DebugLoading ||
-          ConvertLoading ||
-          QualityLoading ? (
+        <Box flex={1} className="right-block" h={isBelow768px ? VerticalPosition : "100%"} w={isBelow768px ? "100%" : VerticalPosition} >
+          {RunCodeLoading || DebugLoading || ConvertLoading || QualityLoading ? (
             <Center css={css.ConnectionOuterBox}>
               <Box>
-                <BallTriangle
-                  radius={5}
-                  visible={true}
-                  color="var(--bgD)"
-                  wrapperClass="ConnectionSpinner"
-                  ariaLabel="ball-triangle-loading"
-                />
+                <BallTriangle radius={5} visible={true} color="var(--bgD)" wrapperClass="ConnectionSpinner" ariaLabel="ball-triangle-loading" />
                 <Text>{messages[messageIndex]}</Text>
               </Box>
             </Center>
@@ -375,48 +259,15 @@ const QualityCheckMessages = [
 
 // LanguagesArr Array
 const LanguagesArr = [
-  {
-    img: <JavaScript />,
-    name: "JavaScript",
-  },
-  {
-    img: <Python />,
-    name: "Python",
-  },
-  {
-    img: <Java />,
-    name: "Java",
-  },
-  {
-    img: <CPlusPlus />,
-    name: "C++",
-  },
-  {
-    img: <CSharp />,
-    name: "C#",
-  },
-  {
-    img: <Ruby />,
-    name: "Ruby",
-  },
-  {
-    img: <Swift />,
-    name: "Swift",
-  },
-  {
-    img: <TypeScript />,
-    name: "TypeScript",
-  },
-  {
-    img: <PHP />,
-    name: "PHP",
-  },
-  {
-    img: <Kotlin />,
-    name: "Kotlin",
-  },
-  {
-    img: <Rust />,
-    name: "Rust",
-  },
+  { img: <JavaScript />, name: "JavaScript", },
+  { img: <Python />, name: "Python", },
+  { img: <Java />, name: "Java", },
+  { img: <CPlusPlus />, name: "C++", },
+  { img: <CSharp />, name: "C#", },
+  { img: <Ruby />, name: "Ruby", },
+  { img: <Swift />, name: "Swift", },
+  { img: <TypeScript />, name: "TypeScript", },
+  { img: <PHP />, name: "PHP", },
+  { img: <Kotlin />, name: "Kotlin", },
+  { img: <Rust />, name: "Rust", },
 ];

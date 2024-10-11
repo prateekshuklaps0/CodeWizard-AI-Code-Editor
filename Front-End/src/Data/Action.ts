@@ -30,31 +30,19 @@ import axios from "axios";
 // };
 
 // Function for Run Code Request
-export const RunCodeReq = async (
-  dispatch: any,
-  reqActive: boolean,
-  chakraToast: any,
-  codeInpVal: any
-) => {
+export const RunCodeReq = async (dispatch: any, reqActive: boolean, chakraToast: any, codeInpVal: any) => {
   if (reqActive) return;
   chakraToast.closeAll();
   if (!codeInpVal || codeInpVal.length <= 5)
-    return chakraToast({
-      title: "Attention!",
-      description: "No valid code snippet detected to run yet.",
-      status: "warning",
-      isClosable: true,
-    });
+    return chakraToast({ title: "Attention!", description: "No valid code snippet detected to run yet.", status: "warning", isClosable: true, });
   dispatch({ type: RUN_CODE_LOADING });
   try {
     const RunCodeRes = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
       {
-        contents: [
-          {
-            parts: [
-              {
-                text: `
+        contents: [{
+          parts: [{
+            text: `
                 Consider you are code runtime environment, you have to compile and run the provided code by carefully and concisely following the instructions below :
                 
                 * If the provided input is not a valid code snippet, politely inform me about the input and why it cannot be compiled.
@@ -76,61 +64,37 @@ export const RunCodeReq = async (
                 ${codeInpVal}
                 '''
                  `,
-              },
-            ],
-          },
-        ],
-      },
-      { headers: { "Content-Type": "application/json" } }
+          }],
+        }],
+      }, { headers: { "Content-Type": "application/json" } }
     );
 
     dispatch({
       type: SUCCESS,
-      payload:
-        RunCodeRes?.data?.candidates[0]?.content?.parts[0]?.text ||
-        "Something went wrong while running your code, please contact the developer!" +
-          "\n" +
-          "\n",
+      payload: RunCodeRes?.data?.candidates[0]?.content?.parts[0]?.text || "Something went wrong while running your code, please contact the developer!" + "\n" + "\n",
     });
     // console.log("Run Code Response :-", RunCodeRes?.data);
   } catch (error) {
     dispatch({ type: IS_ERROR });
-    chakraToast({
-      title: "Something Went Wrong!",
-      description: "Please try again after sometime.",
-      status: "error",
-      isClosable: true,
-    });
+    chakraToast({ title: "Something Went Wrong!", description: "Please try again after sometime.", status: "error", isClosable: true, });
     console.log("Run Code Request Error :-", error);
   }
 };
 
 // Function for Debug Request
-export const DebugReq = async (
-  dispatch: any,
-  reqActive: boolean,
-  chakraToast: any,
-  codeInpVal: any
-) => {
+export const DebugReq = async (dispatch: any, reqActive: boolean, chakraToast: any, codeInpVal: any) => {
   if (reqActive) return;
   chakraToast.closeAll();
   if (!codeInpVal || codeInpVal.length <= 5)
-    return chakraToast({
-      title: "Attention!",
-      description: "A valid code is required for debugging.",
-      status: "warning",
-      isClosable: true,
-    });
+    return chakraToast({ title: "Attention!", description: "A valid code is required for debugging.", status: "warning", isClosable: true, });
   dispatch({ type: DEBUG_LOADING });
   try {
     const DebugRes = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
       {
-        contents: [
-          {
-            parts: [
-              {
-                text: `
+        contents: [{
+          parts: [{
+            text: `
                 [ Act as a Professional Developer and Code Debugger ]
                  You have to debug the provided code by strictly following the below instructions very carefully:
                  
@@ -151,60 +115,36 @@ export const DebugReq = async (
                  Here is the code input from user that needs to be debugged: 
                  ${codeInpVal}
                  `,
-              },
-            ],
-          },
-        ],
-      },
-      { headers: { "Content-Type": "application/json" } }
+          }],
+        }],
+      }, { headers: { "Content-Type": "application/json" } }
     );
     dispatch({
       type: SUCCESS,
-      payload:
-        DebugRes?.data?.candidates[0]?.content?.parts[0]?.text ||
-        "Something went wrong while debugging your code, please contact the developer!" +
-          "\n" +
-          "\n",
+      payload: DebugRes?.data?.candidates[0]?.content?.parts[0]?.text || "Something went wrong while debugging your code, please contact the developer!" + "\n" + "\n",
     });
     // console.log("Debug Response :-", DebugRes?.data);
   } catch (error) {
     dispatch({ type: IS_ERROR });
-    chakraToast({
-      title: "Something Went Wrong!",
-      description: "Please try again after sometime.",
-      status: "error",
-      isClosable: true,
-    });
+    chakraToast({ title: "Something Went Wrong!", description: "Please try again after sometime.", status: "error", isClosable: true, });
     console.log("Debug Request Error :-", error);
   }
 };
 
 // Function for Code Quality Check Request
-export const CheckQualityReq = async (
-  dispatch: any,
-  reqActive: boolean,
-  chakraToast: any,
-  codeInpVal: any
-) => {
+export const CheckQualityReq = async (dispatch: any, reqActive: boolean, chakraToast: any, codeInpVal: any) => {
   if (reqActive) return;
   chakraToast.closeAll();
   if (!codeInpVal || codeInpVal.length <= 5)
-    return chakraToast({
-      title: "Attention!",
-      description: "No valid code detected for quality check.",
-      status: "warning",
-      isClosable: true,
-    });
+    return chakraToast({ title: "Attention!", description: "No valid code detected for quality check.", status: "warning", isClosable: true, });
   dispatch({ type: QUALITY_CHECK_LOADING });
   try {
     const QualityCheckRes = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
       {
-        contents: [
-          {
-            parts: [
-              {
-                text: `
+        contents: [{
+          parts: [{
+            text: `
                 [ Act as a Professional Code Quality Checker & Developer ]
                  You have to assess the quality of the provided code based on the criteria and instructions below.
                  
@@ -236,61 +176,36 @@ export const CheckQualityReq = async (
                  Here is the code that needs to be quality checked:
                  ${codeInpVal}
                  `,
-              },
-            ],
-          },
-        ],
-      },
-      { headers: { "Content-Type": "application/json" } }
+          }],
+        }],
+      }, { headers: { "Content-Type": "application/json" } }
     );
     dispatch({
       type: SUCCESS,
-      payload:
-        QualityCheckRes?.data?.candidates[0]?.content?.parts[0]?.text ||
-        "Something went wrong while debugging your code, please contact the developer!" +
-          "\n" +
-          "\n",
+      payload: QualityCheckRes?.data?.candidates[0]?.content?.parts[0]?.text || "Something went wrong while debugging your code, please contact the developer!" + "\n" + "\n",
     });
     // console.log("Quality Check Response :-", QualityCheckRes?.data);
   } catch (error) {
     dispatch({ type: IS_ERROR });
-    chakraToast({
-      title: "Something Went Wrong!",
-      description: "Please try again after sometime.",
-      status: "error",
-      isClosable: true,
-    });
+    chakraToast({ title: "Something Went Wrong!", description: "Please try again after sometime.", status: "error", isClosable: true, });
     console.log("Quality Check Request Error :-", error);
   }
 };
 
 // Function for Convert Request
-export const ConvertReq = async (
-  dispatch: any,
-  reqActive: boolean,
-  chakraToast: any,
-  codeInpVal: any,
-  selectedlanguage: string
-) => {
+export const ConvertReq = async (dispatch: any, reqActive: boolean, chakraToast: any, codeInpVal: any, selectedlanguage: string) => {
   if (reqActive) return;
   chakraToast.closeAll();
   if (!codeInpVal || codeInpVal.length <= 5)
-    return chakraToast({
-      title: "Attention!",
-      description: `Please provide a valid code to convert it to ${selectedlanguage}`,
-      status: "warning",
-      isClosable: true,
-    });
+    return chakraToast({ title: "Attention!", description: `Please provide a valid code to convert it to ${selectedlanguage}`, status: "warning", isClosable: true, });
   dispatch({ type: CONVERT_LOADING });
   try {
     const ConvertRes = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
       {
-        contents: [
-          {
-            parts: [
-              {
-                text: `
+        contents: [{
+          parts: [{
+            text: `
                 [ Act as a Professional Code Converter ]
                  You need to convert the provided code into the ${selectedlanguage} language by strictly following the instructions below:
                  Instructions:
@@ -308,30 +223,18 @@ export const ConvertReq = async (
                  Here is the code input from user that needs to be converted:
                  ${codeInpVal}
                  `,
-              },
-            ],
-          },
-        ],
-      },
-      { headers: { "Content-Type": "application/json" } }
+          }],
+        }],
+      }, { headers: { "Content-Type": "application/json" } }
     );
     dispatch({
       type: SUCCESS,
-      payload:
-        ConvertRes?.data?.candidates[0]?.content?.parts[0]?.text ||
-        "Something went wrong while converting your code, please contact the developer!" +
-          "\n" +
-          "\n",
+      payload: ConvertRes?.data?.candidates[0]?.content?.parts[0]?.text || "Something went wrong while converting your code, please contact the developer!" + "\n" + "\n",
     });
     // console.log("Convert Response :-", ConvertRes?.data);
   } catch (error) {
     dispatch({ type: IS_ERROR });
-    chakraToast({
-      title: "Something Went Wrong!",
-      description: "Please try again after sometime.",
-      status: "error",
-      isClosable: true,
-    });
+    chakraToast({ title: "Something Went Wrong!", description: "Please try again after sometime.", status: "error", isClosable: true, });
     console.log("Convert Request Error :-", error);
   }
 };
@@ -341,14 +244,8 @@ export const SearchGithubUser = async (dispatch: any, userNameInp: string) => {
   dispatch({ type: IMPORT_LOADING });
   try {
     const [userNameRes, repoListRes] = await Promise.all([
-      axios.get<any>(
-        `https://api.github.com/users/${userNameInp}`
-        // githubConfig
-      ),
-      axios.get<any>(
-        `https://api.github.com/users/${userNameInp}/repos`
-        // githubConfig
-      ),
+      axios.get<any>(`https://api.github.com/users/${userNameInp}`),
+      axios.get<any>(`https://api.github.com/users/${userNameInp}/repos`),
     ]);
     const LsData = GetLsData() || {};
     let dataToBeStored: any = {
@@ -359,180 +256,80 @@ export const SearchGithubUser = async (dispatch: any, userNameInp: string) => {
     };
     SetLsData(dataToBeStored);
     const reposList = repoListRes?.data || [];
-    dispatch(
-      reposList.length > 0
-        ? {
-            type: SUCCESS_USERNAME,
-            payload: reposList,
-          }
-        : {
-            type: IMPORT_ERROR,
-            payload: "No Public Repository Found !",
-          }
-    );
+    dispatch(reposList.length > 0 ? { type: SUCCESS_USERNAME, payload: reposList, } : { type: IMPORT_ERROR, payload: "No Public Repository Found !", });
     //  console.log("Github User Search Response :", repoListRes?.data);
   } catch (error: any) {
-    dispatch({
-      type: IMPORT_ERROR,
-      payload: error?.response?.data?.message || "Something Went Wrong",
-    });
-    console.log(
-      "Github Username Search Error :",
-      error || "Something Went Wrong"
-    );
+    dispatch({ type: IMPORT_ERROR, payload: error?.response?.data?.message || "Something Went Wrong", });
+    console.log("Github Username Search Error :", error || "Something Went Wrong");
   }
 };
 
 // Repo Click
-export const GetRepoContents = async (
-  dispatch: any,
-  chakraToast: any,
-  repoName: string
-) => {
+export const GetRepoContents = async (dispatch: any, chakraToast: any, repoName: string) => {
   dispatch({ type: IMPORT_LOADING });
   chakraToast.closeAll();
   const githubId = GetLsData()?.githubId || "";
   try {
-    const repoContentRes = await axios.get(
-      `https://api.github.com/repos/${githubId}/${repoName}/contents`
-      // githubConfig
-    );
+    const repoContentRes = await axios.get(`https://api.github.com/repos/${githubId}/${repoName}/contents`);
     const payload = {
       currentRepoName: repoName,
       contentsArr: repoContentRes?.data || [],
     };
-    dispatch({
-      type: REPO_CLICK_SUCCESS,
-      payload,
-    });
+    dispatch({ type: REPO_CLICK_SUCCESS, payload, });
     // console.log(`Repo Click Response  - ${repoName} :`, repoContentRes?.data);
   } catch (error: any) {
-    chakraToast({
-      title: error?.response?.data?.message || "Something Went Wrong",
-      status: "error",
-      position: "top",
-    });
-    dispatch({
-      type: REPO_CLICK_ERROR,
-      payload: error?.response?.data?.message || "Something Went Wrong",
-    });
-    console.log(
-      `Repo Click Error - ${repoName} :`,
-      error || "Something Went Wrong"
-    );
+    chakraToast({ title: error?.response?.data?.message || "Something Went Wrong", status: "error", position: "top", });
+    dispatch({ type: REPO_CLICK_ERROR, payload: error?.response?.data?.message || "Something Went Wrong", });
+    console.log(`Repo Click Error - ${repoName} :`, error || "Something Went Wrong");
   }
 };
 
 // Folder Click
-export const FolderClickReq = async (
-  dispatch: any,
-  chakraToast: any,
-  repoName: string = "Repo Name Not Found",
-  folderPath: string = "Folder Path Not Found"
-) => {
+export const FolderClickReq = async (dispatch: any, chakraToast: any, repoName: string = "Repo Name Not Found", folderPath: string = "Folder Path Not Found") => {
   dispatch({ type: IMPORT_LOADING });
   const githubId = GetLsData()?.githubId || "";
   try {
-    const folderClickRes = await axios.get(
-      `https://api.github.com/repos/${githubId}/${repoName}/contents/${folderPath}`
-      // githubConfig
-    );
-    const payload = {
-      pathsArr: GeneratePathObjects(folderPath),
-      contentsArr: folderClickRes?.data || [],
-    };
-    dispatch({
-      type: FOLDER_CLICK_SUCCESS,
-      payload,
-    });
-    // console.log(
-    //   `Folder Click Response - ${folderPath}  :`,
-    //   folderClickRes?.data
-    // );
+    const folderClickRes = await axios.get(`https://api.github.com/repos/${githubId}/${repoName}/contents/${folderPath}`);
+    const payload = { pathsArr: GeneratePathObjects(folderPath), contentsArr: folderClickRes?.data || [], };
+    dispatch({ type: FOLDER_CLICK_SUCCESS, payload, });
+    // console.log(`Folder Click Response - ${folderPath}  :`, folderClickRes?.data);
   } catch (error: any) {
-    chakraToast({
-      title: error?.response?.data?.message || "Something Went Wrong",
-      status: "error",
-      position: "top",
-    });
-    dispatch({
-      type: REPO_CLICK_ERROR,
-      payload: error?.response?.data?.message || "Something Went Wrong",
-    });
-    console.log(
-      `Folder Click Error - ${folderPath} :`,
-      error || "Something Went Wrong"
-    );
+    chakraToast({ title: error?.response?.data?.message || "Something Went Wrong", status: "error", position: "top", });
+    dispatch({ type: REPO_CLICK_ERROR, payload: error?.response?.data?.message || "Something Went Wrong", });
+    console.log(`Folder Click Error - ${folderPath} :`, error || "Something Went Wrong");
   }
 };
 
 // File Click
-export const FileClickReq = async (
-  dispatch: any,
-  chakraToast: any,
-  repoName: string = "Repo Name Not Found",
-  filePath: string = "Folder Path Not Found"
-) => {
+export const FileClickReq = async (dispatch: any, chakraToast: any, repoName: string = "Repo Name Not Found", filePath: string = "Folder Path Not Found") => {
   dispatch({ type: IMPORT_LOADING });
   const githubId = GetLsData()?.githubId || "";
   try {
-    const fileClickRes = await axios.get(
-      `https://api.github.com/repos/${githubId}/${repoName}/contents/${filePath}`
-      // githubConfig
-    );
+    const fileClickRes = await axios.get(`https://api.github.com/repos/${githubId}/${repoName}/contents/${filePath}`);
     const payload = {
       pathsArr: GeneratePathObjects(filePath),
       clickedFileData: atob(fileClickRes?.data?.content) || "",
       downloadFileLink: fileClickRes?.data?.download_url || "",
       clickedFileName: fileClickRes?.data?.name || "",
     };
-    dispatch({
-      type: FILE_CLICKED_SUCCESS,
-      payload,
-    });
+    dispatch({ type: FILE_CLICKED_SUCCESS, payload, });
     // console.log(`File Click Response - ${filePath}  :`, fileClickRes?.data);
   } catch (error: any) {
-    chakraToast({
-      title: error?.response?.data?.message || "Something Went Wrong",
-      status: "error",
-      position: "top",
-    });
-    dispatch({
-      type: REPO_CLICK_ERROR,
-      payload: error?.response?.data?.message || "Something Went Wrong",
-    });
-    console.log(
-      `File Click Error - ${filePath} :`,
-      error || "Something Went Wrong"
-    );
+    chakraToast({ title: error?.response?.data?.message || "Something Went Wrong", status: "error", position: "top", });
+    dispatch({ type: REPO_CLICK_ERROR, payload: error?.response?.data?.message || "Something Went Wrong", });
+    console.log(`File Click Error - ${filePath} :`, error || "Something Went Wrong");
   }
 };
 
 // Function for Connecting the server on page mount, this request is made to homeroute on backend to wakeup the server
-export const ConnectServer = (
-  dispatch: any,
-  reqActive: boolean,
-  chakraToast: any
-) => {
+export const ConnectServer = (dispatch: any, reqActive: boolean, chakraToast: any) => {
   if (!reqActive) {
     chakraToast.closeAll();
     dispatch({ type: CONNECTION_LOADING });
-    axios
-      .get(`${API_KEY}`)
-      .then((res) => {
-        dispatch({
-          type: CONNECTION_SUCCESS,
-        });
-        console.log("Connected to Server:-", res.data.msg);
-      })
+    axios.get(`${API_KEY}`).then((res) => { dispatch({ type: CONNECTION_SUCCESS, }); console.log("Connected to Server:-", res.data.msg) })
       .catch((err: any) => {
         dispatch({ type: IS_ERROR });
-        chakraToast({
-          title: "Server Connection Error!",
-          description: "Please contact the developer.",
-          status: "error",
-          isClosable: true,
-        });
+        chakraToast({ title: "Server Connection Error!", description: "Please contact the developer.", status: "error", isClosable: true, });
         console.log("Server Connection Error :-", err);
       });
   }
@@ -542,24 +339,13 @@ export const ConnectServer = (
 export const handleCopy = (chakraToast: any, valueToCopy: any) => {
   chakraToast.closeAll();
   if (!valueToCopy) {
-    return chakraToast({
-      title: "Output is empty.",
-      status: "info",
-      isClosable: true,
-    });
+    return chakraToast({ title: "Output is empty.", status: "info", isClosable: true, });
   }
-  navigator.clipboard
-    .writeText(valueToCopy)
-    .then(() => {
-      chakraToast({
-        title: "Output copied to clipboard.",
-        status: "info",
-        isClosable: true,
-      });
-    })
-    .catch((error) => {
-      console.error("Error copying to output :", error);
-    });
+  navigator.clipboard.writeText(valueToCopy).then(() => {
+    chakraToast({ title: "Output copied to clipboard.", status: "info", isClosable: true, });
+  }).catch((error) => {
+    console.error("Error copying to output :", error);
+  });
 };
 
 // Set Data in localstorage
@@ -576,11 +362,7 @@ export const GetLsData = () => {
 // This function takes a file/folder path and returns all the paths and name of folders inbetween
 export function GeneratePathObjects(path: string) {
   const pathArray = path.split("/").filter((name: any) => name !== "");
-  return pathArray.map((name: any, index: number) => ({
-    name,
-    path: pathArray.slice(0, index + 1).join("/"),
-    index,
-  }));
+  return pathArray.map((name: any, index: number) => ({ name, path: pathArray.slice(0, index + 1).join("/"), index, }));
 }
 
 // This function takes a number as percentage and returns percentage of window.innerWidth in pixels
@@ -605,19 +387,13 @@ export const GetStoredFontSize = () => {
 // This function returns the stored editor theme
 export const GetStoredEditorTheme = (ThemesArr: any) => {
   const storedEditorTheme = GetLsData()?.editorTheme || "cobalt";
-  const isThemePresent = ThemesArr.some(
-    (obj: any) => obj?.theme === storedEditorTheme
-  );
+  const isThemePresent = ThemesArr.some((obj: any) => obj?.theme === storedEditorTheme);
   return isThemePresent ? storedEditorTheme : ThemesArr[1]?.theme || "cobalt";
 };
 
 // This function returns name of the stored programming language
 export const GetStoredLanguage = (LanguageArr: any) => {
   const storedLanguage = GetLsData()?.convertLanguage || "Javascript";
-  const isLanguagePresent = LanguageArr.some(
-    (obj: any) => obj?.name === storedLanguage
-  );
-  return isLanguagePresent
-    ? storedLanguage
-    : LanguageArr[0]?.name || "Javascript";
+  const isLanguagePresent = LanguageArr.some((obj: any) => obj?.name === storedLanguage);
+  return isLanguagePresent ? storedLanguage : LanguageArr[0]?.name || "Javascript";
 };

@@ -5,11 +5,7 @@ export const Context = createContext<any>(null);
 const ContextProvider = ({ children }: any) => {
   const [states, dispatch] = useReducer(Reducer, initVal);
 
-  return (
-    <Context.Provider value={{ ...states, dispatch }}>
-      {children}
-    </Context.Provider>
-  );
+  return <Context.Provider value={{ ...states, dispatch }}>{children}</Context.Provider>;
 };
 
 export default ContextProvider;

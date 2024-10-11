@@ -10,12 +10,7 @@ const Particle = () => {
     await loadFull(engine);
   }, []);
 
-  return (
-    <Particles
-      options={ParticleOptions as ParticleOptionsType}
-      init={ParticleInit}
-    />
-  );
+  return <Particles init={ParticleInit} options={ParticleOptions as ParticleOptionsType} />;
 };
 
 export default Particle;
