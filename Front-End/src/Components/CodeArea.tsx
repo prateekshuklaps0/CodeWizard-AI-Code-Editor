@@ -165,7 +165,7 @@ const CodeArea = ({ isBelow768px, isBelow480px }: any) => {
       </Box>
       <Box className="wrapper" flexGrow={1} css={css.BothEditorContainers}>
         {/* Input Editor */}
-        <Box className="left-block" h={isBelow768px ? VerticalPosition : "100%"} width={isBelow768px ? "100%" : HorizontalPosition}          >
+        <Box className="left-block" h={isBelow768px ? VerticalPosition : "100%"} width={isBelow768px ? "100%" : HorizontalPosition} >
           <EditorComponent
             name="Input Code Editor"
             width="100%"
